@@ -34,17 +34,17 @@ _handle = [{
 	_jetpackHeatGauge ctrlSetTextColor knd_jetpack_heatColor;
 
 	private _pack = backpackContainer ace_player;
-	private _maxFuel = _pack getVariable ["knd_jetpack_tankSize",nil];
+	private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 	if (isNil {_maxFuel}) then {
-		private _fuelCapacity = [configFile >> "CfgVehicles" >> typeOf _pack, "knd_jetpack_fuelCapacity",knd_jetpack_maxfuel] call BIS_fnc_returnConfigEntry;
-		_pack setVariable ["knd_jetpack_tankSize",_fuelCapacity];
+		private _fuelCapacity = [configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),GVAR(maxFuel)] call BIS_fnc_returnConfigEntry;
+		_pack setVariable [QGVAR(tankSize),_fuelCapacity];
 	};
-	private _fuel = _pack getVariable ["knd_jet_fuel",_maxFuel];
-    private _heat = _pack getVariable ["knd_jet_overheat",0];
+	private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
+    private _heat = _pack getVariable [QGVAR(overheat),0];
     _fuel =  ((_fuel/_maxFuel));
     _heat = _heat/knd_jetpack_maxheat;
 
-	if ((((_heat > 0.85) || _fuel < 0.05) && ((time-knd_gadgets_timeSinceLastBeep) > 2) && !knd_disable_jetpackalarm) && ace_player getVariable ["knd_isJetpacking",false]) then {
+	if ((((_heat > 0.85) || _fuel < 0.05) && ((time-knd_gadgets_timeSinceLastBeep) > 2) && !knd_disable_jetpackalarm) && ace_player getVariable [QGVAR(isJetpacking),false]) then {
 		knd_gadgets_timeSinceLastBeep = time;
 		playSoundUI ["knd_jetpack_warning",knd_jetpack_alarm_volume];
 	};
