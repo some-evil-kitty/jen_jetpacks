@@ -8,8 +8,8 @@ class CfgPatches {
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
         requiredAddons[] = {}; // include external addons here that your whole mod depends on and have your other addons require this one.
-        authors[] = {"Your Name", "Other Author"}; // sub array of authors, considered for the specific addon
-        author = "TAG Team"; // primary author name, either yours or your team's, considered for the whole mod
+        authors[] = {}; // sub array of authors, considered for the specific addon
+
         VERSION_CONFIG;
     };
 };
@@ -18,17 +18,15 @@ class CfgPatches {
 class CfgMods {
     class PREFIX {
         dir = "@MOD_NAME";
-        name = "My Cool Mod";
-        
-        author = "TAG Team";                    // probably shown somewhere in the mods menu, but probably ignored by CBA/HEMTT
+        name = "KJW's Jetpacks";
 
         picture         = "title_co.paa";       // Picture displayed from the expansions menu. Optimal size is 2048x1024
         hideName        = "false";              // Hide the extension name in main menu and extension menu
         hidePicture     = "false";              // Hide the extension picture in the extension menu
 
-        action          = "https://www.ehre.to"; // Website URL, that can accessed from the expansions menu 
-        actionName      = "today?";              // label of button/tooltip in extension menu
-        description     = "It's unclear where this will show"; // Probably in context with action
+        action          = ""; // Website URL, that can accessed from the expansions menu 
+        actionName      = "";              // label of button/tooltip in extension menu
+        description     = "KJW's Jetpacks"; // Probably in context with action
 
         // Color used for DLC stripes and backgrounds (RGBA)
         dlcColor[] = {1, 0.0, 0.86, 1};
