@@ -1,5 +1,5 @@
 #define MAINPREFIX z
-#define PREFIX jen_jetpacks
+#define PREFIX jen
 
 #include "script_version.hpp"
 
@@ -9,7 +9,7 @@
 #define REQUIRED_VERSION 2.12 // Change this if you want to be compatible with older Arma versions
 
 #ifdef COMPONENT_BEAUTIFIED
-    #define COMPONENT_NAME QUOTE(jen_jetpacks - COMPONENT_BEAUTIFIED)
+    #define COMPONENT_NAME QUOTE(jen - COMPONENT_BEAUTIFIED)
 #else
-    #define COMPONENT_NAME QUOTE(jen_jetpacks - COMPONENT)
+    #define COMPONENT_NAME QUOTE(jen - COMPONENT)
 #endif

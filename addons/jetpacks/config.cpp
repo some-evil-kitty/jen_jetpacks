@@ -8,7 +8,7 @@ class CfgPatches {
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
         requiredAddons[] = {"jen_main"}; // Include addons from this mod that contain code or assets you depend on. Affects loadorder. Including main as an example here.
-        authors[] = {"Your Name", "Other Author"}; // sub array of authors, considered for the specific addon, can be removed or left empty {}
+        authors[] = {"Jenna", "Also Jenna"}; // sub array of authors, considered for the specific addon, can be removed or left empty {}
         VERSION_CONFIG;
     };
 };
