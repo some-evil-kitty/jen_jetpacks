@@ -266,7 +266,7 @@ _vel =  [
 	(_vel select 2) - (2.5 * diag_deltaTime)
 ];};
 
-if (_unit getvariable ["knd_jet_Hover",false]) then {
+if (_unit getvariable [QGVAR(controlUp),false]) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _vel =  [
@@ -317,7 +317,7 @@ if !([QGVAR(soundHandle)] call CBA_fnc_removePerFrameHandler) then
 			private _volume = 3;
 			if (!(isTouchingGround _unit or [_unit] call FUNC(isSwimming))) then 
 			{
-				private _volumecoef = {_unit getVariable [_x, false]} count ["knd_jet_Hover"];
+				private _volumecoef = {_unit getVariable [_x, false]} count [QGVAR(controlUp)];
 				_volumecoef = _volumecoef + ({inputAction _x == 1} count ["moveBack","TurnLeft","TurnRight","MoveForward"]);
 				_volume = 4 + _volume * _volumecoef;
 			};
