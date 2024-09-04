@@ -1,5 +1,5 @@
 #define MAINPREFIX z
-#define PREFIX jen
+#define PREFIX jen_jetpacks
 
 #include "script_version.hpp"
 

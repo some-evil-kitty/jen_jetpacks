@@ -57,7 +57,7 @@ if (isNil {_pack getVariable [QGVAR(coolingHandle),nil]}) then {
 	private _handle = [
 	{
 	if (isGamePaused) exitWith {};
-	_this select 0 params ["_pack","_coolCoef"];
+	_this select 0 params ["_unit","_pack","_coolCoef"];
 	if isNull _pack exitwith {
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
 	_pack setVariable [QGVAR(coolingHandle),nil];
@@ -76,7 +76,7 @@ if (isNil {_pack getVariable [QGVAR(coolingHandle),nil]}) then {
 	
 	}, 
 
-	0, [_pack,_coolCoef]] call CBA_fnc_addPerFrameHandler;
+	0, [_unit,_pack,_coolCoef]] call CBA_fnc_addPerFrameHandler;
 	_pack setVariable [QGVAR(coolingHandle),_handle]
 };
 
@@ -150,7 +150,7 @@ if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _u
 	["knd_jetpackParticleEvent", [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
-	[QGVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
+	[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
 	[_pack] call knd_fnc_jetpack_variableSync;
 
 };
@@ -174,7 +174,7 @@ if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (vehicle _unit !=
 	if (_idletimer < 0) exitwith 
 	{
 		[_this select 1] call CBA_fnc_removePerFrameHandler;
-		[QGVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
+		[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
 		[_pack] call knd_fnc_jetpack_variableSync;
 		["knd_jetpackParticleEvent", [_unit,false]] call CBA_fnc_globalEvent;
 		_unit setVariable [QGVAR(isJetpacking),false];
@@ -203,7 +203,7 @@ if (_heat > knd_jetpack_maxheat) exitwith {
 	_heat = _heat + 5;
 	_pack setVariable [QGVAR(cooldown),true];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
-	[QGVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
+	[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
 	[_pack] call knd_fnc_jetpack_variableSync;
 	["knd_jetpackParticleEvent", [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
@@ -308,9 +308,9 @@ _pack setVariable [QGVAR(overheat),_heat];
 };
 
 
-if !([QGVAR(soundHandle)] call CBA_fnc_removePerFrameHandler) then
+if !([GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler) then
 {
-	QGVAR(soundHandle) = [
+	GVAR(soundHandle) = [
 		{
 			_this select 0 params ["_unit"];
 			if (isGamePaused) exitWith {};

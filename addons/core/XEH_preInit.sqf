@@ -66,4 +66,4 @@ ADDON = true;
 ] call CBA_fnc_addSetting;
 
 
-
+jen_player = objNull;

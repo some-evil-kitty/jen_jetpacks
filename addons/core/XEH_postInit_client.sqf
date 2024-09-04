@@ -3,30 +3,29 @@
 // only executed on client
 
 [
-	"House Kandosii Aux Mod",
-	"knd_jet_toggle",
+	"KJW's Jetpacks",
+	QGVAR(controls_activate),
 	"Jetpack - Toggle On/Off",
 	{
-		call FUNC(jetpack);
-		if (GVAR(alternateControls) then {GETPLAYER setvariable [QGVAR(controlUp),true]};
+		[jen_player] call FUNC(doJetpack);
+		if (GVAR(alternateControls)) then {jen_player setvariable [QGVAR(controlUp),true]};
 		
 	},
 	{
-		if (knd_jetpacks_alternateHoverControls) then {GETPLAYER setvariable [QGVAR(controlUp),false]};
+		if (GVAR(alternateControls)) then {jen_player setvariable [QGVAR(controlUp),false]};
 	},
 	[DIK_SPACE,[false,true,false]]
 ] call CBA_fnc_addKeybind;
 
-
 [
-	"House Kandosii Aux Mod",
-	"knd_jet_hover",
+	"KJW's Jetpacks",
+	QGVAR(controls_ascend),
 	"Jetpack - Up",
 	{
-		GETPLAYER setvariable [QGVAR(controlUp),true]
+		jen_player setvariable [QGVAR(controlUp),true]
 	},
 	{
-		GETPLAYER setvariable [QGVAR(controlUp),false]
+		jen_player setvariable [QGVAR(controlUp),false]
 	},
 	[DIK_SPACE,[false,false,false]]
 ] call CBA_fnc_addKeybind;
@@ -251,3 +250,10 @@ private _action =
 
 // Default max fuel, will only be used in weird situations (such as jetpack fuel being iterated before jetpack has been used)
 knd_jetpack_maxfuel = 250;
+
+
+// add EH to handle player changes 
+
+["unit", {
+    jen_player = (_this select 0);
+}, true] call CBA_fnc_addPlayerEventHandler;

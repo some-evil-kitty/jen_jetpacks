@@ -7,7 +7,7 @@ class CfgPatches {
         units[] = {};
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
-        requiredAddons[] = {"jen_main"}; // Include addons from this mod that contain code or assets you depend on. Affects loadorder. Including main as an example here.
+        requiredAddons[] = {"jen_jetpacks_main","A3_Weapons_F_Ammoboxes"}; // Include addons from this mod that contain code or assets you depend on. Affects loadorder. Including main as an example here.
         authors[] = {"Jenna", "Also Jenna"}; // sub array of authors, considered for the specific addon, can be removed or left empty {}
         VERSION_CONFIG;
     };
@@ -15,3 +15,4 @@ class CfgPatches {
 
 // configs go here
 #include "CfgEventHandlers.hpp"
+#include "CfgVehicles.hpp"
