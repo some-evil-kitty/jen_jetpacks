@@ -8,7 +8,8 @@ if !(hasInterface) exitwith {};
 params ["_unit","_activate"];
 private _pack = backpackContainer _unit;
 private _config = (configFile >> typeOf _pack);
-private _particlePoints = GET_ARRAY(_config >> QGVAR(particlePoints),["effect_right","effect_left"]);
+private _defaultPoints = ["effect_left","_effect_right"];
+private _particlePoints = GET_ARRAY(_config >> QGVAR(particlePoints),_defaultPoints);
 
 private _existingParticles = _unit getVariable [QGVAR(particles),[]];
 {
@@ -27,7 +28,7 @@ private _newParticles = [];
 		_jetsmoke setParticleClass "AvionicsSmoke";
 		_jetsmoke setDropInterval 0.01;
 		_jetsmoke attachTo [_unit, [-0.2,0,0], "Aimpoint",true];
-		private _newParticles = [_jetsparks,_jetsmoke];
+		_newParticles = [_jetsparks,_jetsmoke];
 		_unit setVariable [QGVAR(particles),_newParticles];
 	};
 	private _jetfire = "#particlesource" createVehicleLocal (getPosATL _pack);
@@ -41,6 +42,5 @@ private _newParticles = [];
 	_jetfire setParticleClass "Flare2";
 	_jetfire setDropInterval 0.005;
 } foreach _particlePoints;
-
 
 _unit setVariable [QGVAR(particles),_newParticles];

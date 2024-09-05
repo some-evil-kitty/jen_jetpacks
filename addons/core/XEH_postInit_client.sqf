@@ -114,7 +114,7 @@ bocr_main_varblacklist = bocr_main_varblacklist + ["knd_jetpack_tanksize","knd_j
 
 private _action = 
 [
-	"knd_refuel_action", //Action name
+	QGVAR(refuelAction), //Action name
 	"Refuel Jetpack", //Display name
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", 
 	{["", 100] call FUNC(doRefuel)}, //Code
@@ -151,7 +151,7 @@ private _action =
 params ["_source"];  
 private _action = 
 [
-	"knd_refuel_action", //Action name
+	QGVAR(refuelAction), //Action name
 	"Refuel Jetpack", //Display name
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", //Icon path
 	{["", 100] call knd_fnc_jetpackRefuel}, //Code
@@ -189,3 +189,5 @@ GVAR(maxHeat) = 40;
 ["unit", {
     jen_player = (_this select 0);
 }, true] call CBA_fnc_addPlayerEventHandler;
+
+call FUNC(initHUD);

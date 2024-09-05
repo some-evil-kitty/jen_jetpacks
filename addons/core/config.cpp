@@ -18,3 +18,4 @@ class CfgPatches {
 #include "CfgVehicles.hpp"
 #include "RscTitles.hpp"
 #include "CfgUIGrids.hpp"
+#include "CfgSounds.hpp"

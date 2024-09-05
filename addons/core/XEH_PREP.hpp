@@ -5,3 +5,5 @@ PREP(doRefuel);
 PREP(isSwimming);
 PREP(addCoolingHandle);
 PREP(reset);
+PREP(hasJetpack);
+PREP(jetpackParticles);

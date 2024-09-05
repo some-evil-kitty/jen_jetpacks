@@ -7,8 +7,12 @@
 #include "script_component.hpp"
 
 
-params ["_item","_fuelamount"];
+params ["_item",["_fuelAmount",nil]];
 
+if (isNil _fuelAmount) then {
+private _config = configFile >> "CfgWeapons" >> _item;
+_fuelAmount = GET_NUMBER(_config >> QGVAR(fuelCanAmount),200);
+};
 
 //animation is ultimately inconsequential, can deal with the strangeness of switchMove
 jen_player switchMove "Acts_carFixingWheel";

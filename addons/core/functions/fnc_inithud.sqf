@@ -13,9 +13,9 @@
 // To show HUD:
 QGVAR(HUDLayer) cutRsc [QGVAR(RscHUD), "PLAIN"];
 private _display = uiNamespace getVariable QGVAR(RscHUD);
-private _jetpackBackgroundGauge = _display displayCtrl 3948;
-private _jetpackFuelGauge = _display displayCtrl 3947;
-private _jetpackHeatGauge = _display displayCtrl 3946;
+private _jetpackBackgroundGauge = _display displayCtrl 4948;
+private _jetpackFuelGauge = _display displayCtrl 4947;
+private _jetpackHeatGauge = _display displayCtrl 4946;
 
 _jetpackBackgroundGauge ctrlSetBackgroundColor [0,0,0,0.2];
 
@@ -32,8 +32,8 @@ _handle = [{
 		_x ctrlShow true
 	} foreach [_jetpackFuelGauge,_jetpackHeatGauge,_jetpackBackgroundGauge];
 
-	_jetpackFuelGauge ctrlSetTextColor knd_jetpack_fuelColor;
-	_jetpackHeatGauge ctrlSetTextColor knd_jetpack_heatColor;
+	_jetpackFuelGauge ctrlSetTextColor GVAR(fuelColor);
+	_jetpackHeatGauge ctrlSetTextColor GVAR(heatColor);
 
 	private _pack = backpackContainer jen_player;
 	private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
@@ -46,9 +46,9 @@ _handle = [{
     _fuel =  ((_fuel/_maxFuel));
     _heat = _heat/knd_jetpack_maxheat;
 
-	if ((((_heat > 0.85) || _fuel < 0.05) && ((time-knd_gadgets_timeSinceLastBeep) > 2) && !knd_disable_jetpackalarm) && jen_player getVariable [QGVAR(isJetpacking),false]) then {
-		knd_gadgets_timeSinceLastBeep = time;
-		playSoundUI ["knd_jetpack_warning",knd_jetpack_alarm_volume];
+	if ((((_heat > 0.85) || _fuel < 0.05) && ((time-GVAR(timeSinceLastBeep)) > 2) && !GVAR(disableAlarm)) && jen_player getVariable [QGVAR(isJetpacking),false]) then {
+		GVAR(timeSinceLastBeep) = time;
+		playSoundUI [QGVAR(warning),GVAR(alarmVolume)];
 	};
 	
     _jetpackFuelGauge progressSetPosition _fuel;
