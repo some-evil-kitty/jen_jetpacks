@@ -8,19 +8,21 @@
 //
 
 #include "script_component.hpp"
+
+
 // To show HUD:
-"KND_JenpackLayer" cutRsc ["KND_JenpackHUD", "PLAIN"];
-private _display = uiNamespace getVariable "KND_JenpackHUD";
-private _jetpackBackgroundGauge = _display displayCtrl 4948;
-private _jetpackFuelGauge = _display displayCtrl 4947;
-private _jetpackHeatGauge = _display displayCtrl 4946;
+QGVAR(HUDLayer) cutRsc [QGVAR(RscHUD), "PLAIN"];
+private _display = uiNamespace getVariable QGVAR(RscHUD);
+private _jetpackBackgroundGauge = _display displayCtrl 3948;
+private _jetpackFuelGauge = _display displayCtrl 3947;
+private _jetpackHeatGauge = _display displayCtrl 3946;
 
 _jetpackBackgroundGauge ctrlSetBackgroundColor [0,0,0,0.2];
 
 _handle = [{
     params ["_args","_handle"];
     _args params ["_jetpackFuelGauge","_jetpackHeatGauge","_jetpackBackgroundGauge"];
-	if (!([false] call knd_fnc_hasJetpack) OR visibleMap OR (ace_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitwith 
+	if (!([false] call FUNC(hasJetpack)) OR visibleMap OR (jen_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitwith 
 	{
 		{
 			_x ctrlShow false
@@ -33,7 +35,7 @@ _handle = [{
 	_jetpackFuelGauge ctrlSetTextColor knd_jetpack_fuelColor;
 	_jetpackHeatGauge ctrlSetTextColor knd_jetpack_heatColor;
 
-	private _pack = backpackContainer ace_player;
+	private _pack = backpackContainer jen_player;
 	private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 	if (isNil {_maxFuel}) then {
 		private _fuelCapacity = [configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),knd_jetpack_maxfuel] call BIS_fnc_returnConfigEntry;
@@ -44,7 +46,7 @@ _handle = [{
     _fuel =  ((_fuel/_maxFuel));
     _heat = _heat/knd_jetpack_maxheat;
 
-	if ((((_heat > 0.85) || _fuel < 0.05) && ((time-knd_gadgets_timeSinceLastBeep) > 2) && !knd_disable_jetpackalarm) && ace_player getVariable [QGVAR(isJetpacking),false]) then {
+	if ((((_heat > 0.85) || _fuel < 0.05) && ((time-knd_gadgets_timeSinceLastBeep) > 2) && !knd_disable_jetpackalarm) && jen_player getVariable [QGVAR(isJetpacking),false]) then {
 		knd_gadgets_timeSinceLastBeep = time;
 		playSoundUI ["knd_jetpack_warning",knd_jetpack_alarm_volume];
 	};
