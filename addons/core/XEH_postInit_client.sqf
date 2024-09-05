@@ -38,32 +38,7 @@
 	private _pack = backpackContainer ace_player;
 	private _packClass = typeOf _pack;
 	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
-	if (isNil {_pack getVariable ["knd_jetpacks_coolingHandle",nil]}) then {
-		private _handle = [
-		{
-		if (isGamePaused) exitWith {};
-		_this select 0 params ["_pack","_coolCoef"];
-				if isNull _pack exitwith {
-				[_this select 1] call CBA_fnc_removePerFrameHandler;
-			};
-		if (ace_player getVariable ["knd_isJetpacking",false]) exitwith {};
-		private _heat = _pack getvariable ["knd_jet_overheat",0];
-		private _fuel = _pack getVariable ["knd_jet_fuel",knd_jetpack_maxfuel];
-		if (_heat > 0) exitwith {_heat = _heat - (diag_deltaTime * _coolCoef);
-		if (_heat < knd_jetpack_maxheat * 0.7) then { _pack setVariable ["knd_jet_cooldown",false]};
-		_pack setVariable ["knd_jet_overheat",_heat];
-		};
-		if !(_pack isEqualTo (backpackContainer ace_player)) then {
-			[_this select 1] call CBA_fnc_removePerFrameHandler;
-			_pack setVariable ["knd_jetpacks_coolingHandle",nil];
-			_pack setVariable ["knd_jet_overheat",_heat,true];
-		};
-		
-		}, 
-	
-		0, [_pack,_coolCoef]] call CBA_fnc_addPerFrameHandler;
-		_pack setVariable ["knd_jetpacks_coolingHandle",_handle]
-	};
+	[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
 	}] call CBA_fnc_addEventHandler;
 
 
@@ -75,32 +50,7 @@
 	private _pack = backpackContainer ace_player;
 	private _packClass = typeOf _pack;
 	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
-	if (isNil {_pack getVariable ["knd_jetpacks_coolingHandle",nil]}) then {
-		private _handle = [
-		{
-		if (isGamePaused) exitWith {};
-		_this select 0 params ["_pack","_coolCoef"];
-			if isNull _pack exitwith {
-		[_this select 1] call CBA_fnc_removePerFrameHandler;
-	};
-		if (ace_player getVariable ["knd_isJetpacking",false]) exitwith {};
-		private _heat = _pack getvariable ["knd_jet_overheat",0];
-		private _fuel = _pack getVariable ["knd_jet_fuel",knd_jetpack_maxfuel];
-		if (_heat > 0) exitwith {_heat = _heat - (diag_deltaTime * _coolCoef);
-		if (_heat < knd_jetpack_maxheat * 0.7) then { _pack setVariable ["knd_jet_cooldown",false]};
-		_pack setVariable ["knd_jet_overheat",_heat];
-		};
-		if !(_pack isEqualTo (backpackContainer ace_player)) then {
-			[_this select 1] call CBA_fnc_removePerFrameHandler;
-			_pack setVariable ["knd_jetpacks_coolingHandle",nil];
-			_pack setVariable ["knd_jet_overheat",_heat,true];
-		};
-		
-		}, 
-	
-		0, [_pack,_coolCoef]] call CBA_fnc_addPerFrameHandler;
-		_pack setVariable ["knd_jetpacks_coolingHandle",_handle]
-	};
+	[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
  }] call bis_fnc_addScriptedEventhandler;
 
 
@@ -145,39 +95,14 @@
 			private _pack = backpackContainer _unit;
 			private _packClass = typeOf _pack;
 			private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
-			if (isNil {_pack getVariable ["knd_jetpacks_coolingHandle",nil]}) then {
-				private _handle = [
-				{
-				if (isGamePaused) exitWith {};
-				_this select 0 params ["_pack","_coolCoef"];
-				if isNull _pack exitwith {
-					[_this select 1] call CBA_fnc_removePerFrameHandler;
-				};
-				if (ace_player getVariable ["knd_isJetpacking",false]) exitwith {};
-				private _heat = _pack getvariable ["knd_jet_overheat",0];
-				private _fuel = _pack getVariable ["knd_jet_fuel",knd_jetpack_maxfuel];
-				if (_heat > 0) exitwith {_heat = _heat - (diag_deltaTime * _coolCoef);
-				if (_heat < knd_jetpack_maxheat * 0.7) then { _pack setVariable ["knd_jet_cooldown",false]};
-				_pack setVariable ["knd_jet_overheat",_heat];
-				};
-				if !(_pack isEqualTo (backpackContainer ace_player)) then {
-					[_this select 1] call CBA_fnc_removePerFrameHandler;
-					_pack setVariable ["knd_jetpacks_coolingHandle",nil];
-					_pack setVariable ["knd_jet_overheat",_heat,true];
-				};
-				
-				}, 
-			
-				0, [_pack,_coolCoef]] call CBA_fnc_addPerFrameHandler;
-				_pack setVariable ["knd_jetpacks_coolingHandle",_handle]
-			};
+			[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
 		};
 	};
 }] call CBA_fnc_addClassEventHandler;
 
 
 //todo: add isNil logic
-bocr_main_varblacklist = bocr_main_varblacklist + ["knd_jetpack_tanksize","knd_jet_cooldown","knd_jetpacks_coolinghandle"];
+if (!isNil bocr_main_varblacklist) then {bocr_main_varblacklist = bocr_main_varblacklist + ["knd_jetpack_tanksize","knd_jet_cooldown","knd_jetpacks_coolinghandle"]};
 
 //todo: conversion
 
