@@ -3,3 +3,4 @@ PREP(doJetpack);
 PREP(initHUD);
 PREP(refuel);
 PREP(isSwimming);
+PREP(addCoolingHandle);
