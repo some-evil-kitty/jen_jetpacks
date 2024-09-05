@@ -12,4 +12,5 @@
 
 
 #define GET_NUMBER(config,default) (if (isNumber (config)) then {getNumber (config)} else {default})
+#define GET_ARRAY(config,default) (if (isArray (config)) then {getArray (config)} else {default})
 #define GET_PLAYER (if !(isNull remoteControlled player) then {remoteControlled player} else {player})

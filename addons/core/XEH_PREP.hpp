@@ -4,3 +4,4 @@ PREP(initHUD);
 PREP(doRefuel);
 PREP(isSwimming);
 PREP(addCoolingHandle);
+PREP(reset);

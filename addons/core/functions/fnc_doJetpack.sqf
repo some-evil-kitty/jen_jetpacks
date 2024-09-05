@@ -41,7 +41,7 @@ private _coolCoef = GET_NUMBER(_config >> QGVAR(coolCoef),1);
 private _strafeCoef = GET_NUMBER(_config >> QGVAR(strafeCoef),1);
 private _ascensionCoef = GET_NUMBER(_config >> QGVAR(ascensionCoef),1);
 private _jumpCoef = GET_NUMBER(_config >> QGVAR(jumpCoef),1);
-private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),knd_jetpack_maxfuel);
+private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),GVAR(maxFuel));
 
 //allow external disablement of jetpacks and modification fom custom conditions
 [QGVAR(jetpackEvent), [_unit,_isPack,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_ascensionCoef,_jumpCoef,_fuelCapacity]] call CBA_fnc_localEvent;
@@ -67,7 +67,7 @@ if !([GVAR(mainHandle)] call CBA_fnc_removePerFrameHandler) then {
 
 
 //Reset or set the idle timer 
-_unit setvariable ["knd_jet_idletimer",0.2];  
+_unit setvariable [QGVAR(idleTimer),0.2];  
 
 
 private _oldfreefall = (getUnitFreefallInfo _unit) select 2;
@@ -89,13 +89,11 @@ if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldo
 	_vel set [2, (_vel select 2) + 7 * _jumpCoef];
 	_unit setposASL _pos;
 	_unit setvelocity _vel;
-	playsound3d ["knd_gadgets_core\snd\jetpack_ignition.wss", _unit, false, getposASL _unit,5,1,30];
-	//_unit say3D "knd_jetpack_ignition";
+	playsound3d [QPATHTOF(snd\jetpack_ignition.wss), _unit, false, getposASL _unit,5,1,30];
 };
 
-//_unit say3D "knd_jetpack_loop";
-["knd_say3dglobal", [_unit,"knd_jetpack_loop"]] call CBA_fnc_globalEvent;
-["knd_jetpackParticleEvent", [_unit,true]] call CBA_fnc_globalEvent;
+[QGVAR(say3dGlobal), [_source,QGVAR(soundLoop)]] call CBA_fnc_globalEvent;
+[QGVAR(particleEvent), [_unit,true]] call CBA_fnc_globalEvent;
 
 //Tag player as jetpacking
 
@@ -119,7 +117,7 @@ private _pack = backpackContainer _unit;
 private _heat = _pack getvariable [QGVAR(overheat),0];
 private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 if (isNil {_maxFuel}) then {
-	private _fuelCapacity = [configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),knd_jetpack_maxfuel];
+	private _fuelCapacity = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),GVAR(maxFuel));
 	_pack setVariable [QGVAR(tankSize),_fuelCapacity];
 };
 private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
@@ -129,11 +127,11 @@ private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
 // Keep uncon people from continuing to fly
 if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _unit getVariable [QGVAR(jetpackDisabled),false]) exitwith 
 {
-	["knd_jetpackParticleEvent", [_unit,false]] call CBA_fnc_globalEvent;
+	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
 	[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
-	[_pack] call knd_fnc_jetpack_variableSync;
+	[_pack] call FUNC(variableSync);
 
 };
 
@@ -148,20 +146,19 @@ if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (vehicle _unit !=
 	//_unit allowdamage true; 
 	_unit setunitFreefallHeight _oldfreefall;
 	if (_heat > 0) then {_heat = _heat - diag_deltaTime};
-	if (_heat < knd_jetpack_maxheat * 0.7) then { _pack setVariable [QGVAR(cooldown),false]};
+	if (_heat < GVAR(maxHeat) * 0.7) then { _pack setVariable [QGVAR(cooldown),false]};
 	_pack setVariable [QGVAR(overheat),_heat];
-	private _idletimer = _unit getvariable ["knd_jet_idletimer",2];
+	private _idletimer = _unit getvariable [QGVAR(idleTimer),2];
 	_idletimer = _idletimer - diag_deltaTime;
-	_unit setvariable ["knd_jet_idletimer",_idletimer];
+	_unit setvariable [QGVAR(idleTimer),_idletimer];
 	if (_idletimer < 0) exitwith 
 	{
 		[_this select 1] call CBA_fnc_removePerFrameHandler;
 		[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
-		[_pack] call knd_fnc_jetpack_variableSync;
-		["knd_jetpackParticleEvent", [_unit,false]] call CBA_fnc_globalEvent;
+		[_pack] call FUNC(variableSync);
+		[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 		_unit setVariable [QGVAR(isJetpacking),false];
-		playsound3d ["knd_gadgets_core\snd\jetpack_off.wss", _unit, false, getposASL _unit, 5,1,20];
-		//_unit say3D "knd_jetpack_off";
+		playsound3d [QPATHTOF(snd\jetpack_off.wss), _unit, false, getposASL _unit, 5,1,20];
 		private _source = _unit getVariable [QGVAR(soundSource),objNull];
 		deleteVehicle _source;
 	};
@@ -169,7 +166,7 @@ if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (vehicle _unit !=
 
 //Reset the idle timer if you're not on the ground
 
-_unit setvariable ["knd_jet_idletimer",0.2];  
+_unit setvariable [QGVAR(idleTimer),0.2];  
 
 
 //If player is on cooldown (due to overheating), only do the heat reduction and the fall damage un-fuckery
@@ -181,19 +178,17 @@ if (_pack getVariable [QGVAR(cooldown),false] OR _fuel < 0.01) exitwith
 
 
 // Handle overheating
-if (_heat > knd_jetpack_maxheat) exitwith {
+if (_heat > GVAR(maxHeat)) exitwith {
 	_heat = _heat + 5;
 	_pack setVariable [QGVAR(cooldown),true];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
 	[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
-	[_pack] call knd_fnc_jetpack_variableSync;
-	["knd_jetpackParticleEvent", [_unit,false]] call CBA_fnc_globalEvent;
+	[_pack] call FUNC(variableSync);
+	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
 	private _source = _unit getVariable [QGVAR(soundSource),objNull];
 	deleteVehicle _source;
-	playsound3d ["knd_gadgets_core\snd\jetpack_shutdown.wss", _unit, false, getposASL _unit, 5,1,10];
-	//_unit say3D "knd_jetpack_shutdown";
-
+	playsound3d [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getposASL _unit, 5,1,10];
 };
 
 // Reset overheating if needed (will only be needed in select situations, likely almost never)
@@ -280,13 +275,12 @@ _pack setVariable [QGVAR(overheat),_heat];
 } else 
 {
 	//Tag player as not jetpacking
-	[_pack] call knd_fnc_jetpack_variableSync;
-	["knd_jetpackParticleEvent", [_unit,false]] call CBA_fnc_globalEvent;
+	[_pack] call FUNC(variableSync);
+	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
 	private _source = _unit getVariable [QGVAR(soundSource),objNull];
 	deleteVehicle _source;
-	playsound3d ["knd_gadgets_core\snd\jetpack_shutdown.wss", _unit, false, getposASL _unit, 4,1,10]; 
-	//_unit say3D "knd_jetpack_off";	
+	playsound3d [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getposASL _unit, 4,1,10]; 
 };
 
 
@@ -309,8 +303,7 @@ if !([GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler) then
 			_source attachto [_unit,[0,0,0]];
 			_unit setvariable [QGVAR(soundSource),_source];
 			};
-			//_source say3D "knd_jetpack_loop";
-			["knd_say3dglobal", [_source,"knd_jetpack_loop"]] call CBA_fnc_globalEvent;
+			[QGVAR(say3dGlobal), [_source,QGVAR(soundLoop)]] call CBA_fnc_globalEvent;
 		}, 
 		
 		0.49, [_unit]] call CBA_fnc_addPerFrameHandler;

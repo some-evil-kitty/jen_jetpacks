@@ -60,6 +60,12 @@
 	_this call FUNC(jetpackParticles);
 }] call CBA_fnc_addEventHandler;  
 
+[QGVAR(say3DGlobal), {
+	params ["_object","_sound"];
+	_object say3d _sound;
+	}
+] call CBA_fnc_addEventHandler;
+
 
 ["knd_jetpacks_core_refuelItem", "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[jen_player] call FUNC(hasJetpack)}, {
 	params ["_unit", "_container", "_item", "_slot", "_params"];
@@ -175,6 +181,7 @@ private _action =
 
 // Default max fuel, will only be used in weird situations (such as jetpack fuel being iterated before jetpack has been used)
 GVAR(maxFuel) = 250;
+GVAR(maxHeat) = 40;
 
 
 // add EH to handle player changes 
