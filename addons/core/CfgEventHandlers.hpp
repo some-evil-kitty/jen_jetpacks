@@ -17,3 +17,14 @@ class Extended_PostInit_EventHandlers {
         clientInit = QUOTE(call COMPILE_FILE(XEH_postInit_client));
     };
 };
+
+class extended_respawn_eventhandlers
+{
+    class CAManBase
+    {
+        class ADDON
+        {
+            respawn = QUOTE(call FUNC(reset));
+        };
+    };
+};

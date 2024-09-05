@@ -16,3 +16,5 @@ class CfgPatches {
 // configs go here
 #include "CfgEventHandlers.hpp"
 #include "CfgVehicles.hpp"
+#include "RscTitles.hpp"
+#include "CfgUIGrids.hpp"

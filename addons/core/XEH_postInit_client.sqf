@@ -63,7 +63,7 @@
 
 ["knd_jetpacks_core_refuelItem", "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[jen_player] call FUNC(hasJetpack)}, {
 	params ["_unit", "_container", "_item", "_slot", "_params"];
-	[_item,200] call FUNC(refuel);
+	[_item,200] call FUNC(doRefuel);
 }, false, []] call CBA_fnc_addItemContextMenuOption;
 
 ["CAManBase", "GetOutMan", { 
@@ -102,7 +102,7 @@
 
 
 //todo: add isNil logic
-if (!isNil bocr_main_varblacklist) then {bocr_main_varblacklist = bocr_main_varblacklist + ["knd_jetpack_tanksize","knd_jet_cooldown","knd_jetpacks_coolinghandle"]};
+bocr_main_varblacklist = bocr_main_varblacklist + ["knd_jetpack_tanksize","knd_jet_cooldown","knd_jetpacks_coolinghandle"];
 
 //todo: move to ace compat pbo
 
@@ -111,7 +111,7 @@ private _action =
 	"knd_refuel_action", //Action name
 	"Refuel Jetpack", //Display name
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", 
-	{["", 100] call FUNC(Refuel)}, //Code
+	{["", 100] call FUNC(doRefuel)}, //Code
 	{
 		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;

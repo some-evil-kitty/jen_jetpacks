@@ -18,10 +18,10 @@ jen_player switchMove "Acts_carFixingWheel";
 	jen_player removeitem _item;
 	private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 	if (isNil {_maxFuel}) then {
-	private _fuelCapacity = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),QGVAR(maxFuel);
+	private _fuelCapacity = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),QGVAR(maxFuel));
 	_pack setVariable [QGVAR(tankSize),_fuelCapacity];};
 	private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
-	[QGVAR(jetpackRefueled),[_pack,_fuel,_fuelAmount] call CBA_fnc_localEvent;
+	[QGVAR(jetpackRefueled),[_pack,_fuel,_fuelAmount]] call CBA_fnc_localEvent;
 	_fuel = (_fuel + _fuelAmount) min _maxFuel;
 	_pack setvariable [QGVAR(fuelAmount),_fuel,true];
 	jen_player switchMove "AmovPknlMstpSnonWnonDnon";
