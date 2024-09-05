@@ -22,6 +22,9 @@ private _packclass = typeOf _pack;
 private _config = configFile >> "CfgVehicles" >> _packclass;
 private _isPack = (GET_NUMBER(_config >> QGVAR(isJetpack),0) == 1);
 
+//allow external disablement of jetpacks, ie custom conditions
+[QGVAR(jetpackEvent), [_isPack]] call CBA_fnc_localEvent;
+
 if !_isPack exitwith {}; //Not wearing a jetpack!
 
 if (GVAR(debounce)) exitwith {};
