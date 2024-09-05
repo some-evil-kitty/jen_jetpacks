@@ -22,8 +22,6 @@ private _packclass = typeOf _pack;
 private _config = configFile >> "CfgVehicles" >> _packclass;
 private _isPack = (GET_NUMBER(_config >> QGVAR(isJetpack),0) == 1);
 
-//allow external disablement of jetpacks, ie custom conditions
-[QGVAR(jetpackEvent), [_isPack]] call CBA_fnc_localEvent;
 
 if !_isPack exitwith {}; //Not wearing a jetpack!
 
@@ -44,6 +42,12 @@ private _strafeCoef = GET_NUMBER(_config >> QGVAR(strafeCoef),1);
 private _ascensionCoef = GET_NUMBER(_config >> QGVAR(ascensionCoef),1);
 private _jumpCoef = GET_NUMBER(_config >> QGVAR(jumpCoef),1);
 private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),knd_jetpack_maxfuel);
+
+//allow external disablement of jetpacks and modification fom custom conditions
+[QGVAR(jetpackEvent), [_unit,_isPack,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_ascensionCoef,_jumpCoef,_fuelCapacity]] call CBA_fnc_localEvent;
+
+// check again; event may have changed this
+if !_isPack exitwith {}; //Not wearing a jetpack!
 
 if ((secondaryWeapon _unit) isNotEqualTo "") then {
 	_acceleration = _acceleration min 2.5;
