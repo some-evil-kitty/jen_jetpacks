@@ -38,13 +38,13 @@ _handle = [{
 	private _pack = backpackContainer jen_player;
 	private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 	if (isNil {_maxFuel}) then {
-		private _fuelCapacity = [configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),knd_jetpack_maxfuel] call BIS_fnc_returnConfigEntry;
+		private _fuelCapacity = [configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),GVAR(maxFuel)] call BIS_fnc_returnConfigEntry;
 		_pack setVariable [QGVAR(tankSize),_fuelCapacity];
 	};
 	private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
     private _heat = _pack getVariable [QGVAR(overheat),0];
     _fuel =  ((_fuel/_maxFuel));
-    _heat = _heat/knd_jetpack_maxheat;
+    _heat = _heat/GVAR(maxHeat);
 
 	if ((((_heat > 0.85) || _fuel < 0.05) && ((time-GVAR(timeSinceLastBeep)) > 2) && !GVAR(disableAlarm)) && jen_player getVariable [QGVAR(isJetpacking),false]) then {
 		GVAR(timeSinceLastBeep) = time;

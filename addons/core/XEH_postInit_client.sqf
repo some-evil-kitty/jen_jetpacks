@@ -32,12 +32,12 @@
 
 ["ace_arsenal_displayclosed", {
 	if !([false] call FUNC(hasJetpack)) exitwith {
-	jen_player setVariable ["knd_jenpacks_hasJetpack",false,true];
+	jen_player setVariable [QGVAR(hasJetpack),false,true];
 	};
-	jen_player setVariable ["knd_jenpacks_hasJetpack",([false] call FUNC(hasJetpack)),true];
+	jen_player setVariable [QGVAR(hasJetpack),([false] call FUNC(hasJetpack)),true];
 	private _pack = backpackContainer jen_player;
 	private _packClass = typeOf _pack;
-	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
+	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, QGVAR(coolCoef),1] call BIS_fnc_returnConfigEntry;
 	[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
 	}] call CBA_fnc_addEventHandler;
 
@@ -46,10 +46,10 @@
 [missionNamespace,"arsenalClosed", {
 	if !([false] call FUNC(hasJetpack)) exitwith {
 	};
-	jen_player setVariable ["knd_jenpacks_hasJetpack",true,true];
+	jen_player setVariable [QGVAR(hasJetpack),true,true];
 	private _pack = backpackContainer jen_player;
 	private _packClass = typeOf _pack;
-	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
+	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, QGVAR(coolCoef),1] call BIS_fnc_returnConfigEntry;
 	[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
  }] call bis_fnc_addScriptedEventhandler;
 
@@ -100,7 +100,7 @@
 		if ([false] call FUNC(hasJetpack)) then {
 			private _pack = backpackContainer jen_player;
 			private _packClass = typeOf _pack;
-			private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
+			private _coolCoef = GET_NUMBER(configFile >> "CfgVehicles" >> _packclass, QGVAR(coolCoef),1);
 			[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
 		};
 	};
@@ -108,7 +108,7 @@
 
 
 //todo: add isNil logic
-bocr_main_varblacklist = bocr_main_varblacklist + ["knd_jetpack_tanksize","knd_jet_cooldown","knd_jetpacks_coolinghandle"];
+bocr_main_varblacklist = bocr_main_varblacklist + [QGVAR(tankSize),QGVAR(coolDown),QGVAR(coolingHandle)];
 
 //todo: move to ace compat pbo
 
@@ -121,7 +121,7 @@ private _action =
 	{
 		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;
-		_isPack = [configFile >> "CfgVehicles" >> _packclass, "knd_isJetpack",0] call BIS_fnc_returnConfigEntry;
+		_isPack = [configFile >> "CfgVehicles" >> _packclass, QGVAR(isJetpack),0] call BIS_fnc_returnConfigEntry;
 		([_this select 0] call ace_refuel_fnc_getFuel > 10) AND (_isPack == 1)
 		
 	}, // Condition
@@ -154,11 +154,11 @@ private _action =
 	QGVAR(refuelAction), //Action name
 	"Refuel Jetpack", //Display name
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", //Icon path
-	{["", 100] call knd_fnc_jetpackRefuel}, //Code
+	{["", 100] call FUNC(doRefuel)}, //Code
 	{
 		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;
-		_isPack = [configFile >> "CfgVehicles" >> _packclass, "knd_isJetpack",0] call BIS_fnc_returnConfigEntry;
+		_isPack = [configFile >> "CfgVehicles" >> _packclass, QGVAR(isJetpack),0] call BIS_fnc_returnConfigEntry;
 		([_this select 0] call ace_refuel_fnc_getFuel > 10) AND (_isPack == 1)
 		
 	}, // Condition
@@ -176,7 +176,7 @@ private _action =
 
 
 [missionNamespace,"arsenalOpened", {	
-	jen_player setvariable ["knd_jet_Hover",false]
+	jen_player setvariable [QGVAR(controls_ascend),false]
  }] call bis_fnc_addScriptedEventhandler;
 
 // Default max fuel, will only be used in weird situations (such as jetpack fuel being iterated before jetpack has been used)
