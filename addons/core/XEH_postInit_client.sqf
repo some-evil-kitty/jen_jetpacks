@@ -31,59 +31,59 @@
 ] call CBA_fnc_addKeybind;
 
 ["ace_arsenal_displayclosed", {
-	if !([false] call knd_fnc_hasjetpack) exitwith {
-	_unit setVariable ["knd_jenpacks_hasJetpack",false,true];
+	if !([false] call FUNC(hasJetpack)) exitwith {
+	jen_player setVariable ["knd_jenpacks_hasJetpack",false,true];
 	};
-	ACE_PLAYER setVariable ["knd_jenpacks_hasJetpack",([false] call knd_fnc_hasjetpack),true];
-	private _pack = backpackContainer ace_player;
+	jen_player setVariable ["knd_jenpacks_hasJetpack",([false] call FUNC(hasJetpack)),true];
+	private _pack = backpackContainer jen_player;
 	private _packClass = typeOf _pack;
 	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
-	[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
+	[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
 	}] call CBA_fnc_addEventHandler;
 
 
 //todo: convert to cooling handle fnc
 [missionNamespace,"arsenalClosed", {
-	if !([false] call knd_fnc_hasjetpack) exitwith {
+	if !([false] call FUNC(hasJetpack)) exitwith {
 	};
-	ACE_PLAYER setVariable ["knd_jenpacks_hasJetpack",true,true];
-	private _pack = backpackContainer ace_player;
+	jen_player setVariable ["knd_jenpacks_hasJetpack",true,true];
+	private _pack = backpackContainer jen_player;
 	private _packClass = typeOf _pack;
 	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
-	[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
+	[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
  }] call bis_fnc_addScriptedEventhandler;
 
 
 //todo: convert from knd to jen
-["knd_jetpackParticleEvent", {  
+[QGVAR(particleEvent), {  
 	if !(hasInterface) exitwith {};
-	_this call KND_fnc_jetpackParticles;
+	_this call FUNC(jetpackParticles);
 }] call CBA_fnc_addEventHandler;  
 
 
-["knd_jetpackfuel", "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[ace_player] call knd_fnc_hasJetpack}, {
+["knd_jetpacks_core_refuelItem", "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[jen_player] call FUNC(hasJetpack)}, {
 	params ["_unit", "_container", "_item", "_slot", "_params"];
-	[_item,200] call knd_fnc_jetpackrefuel
+	[_item,200] call FUNC(refuel);
 }, false, []] call CBA_fnc_addItemContextMenuOption;
 
 ["CAManBase", "GetOutMan", { 
  params ["_unit", "_role", "_vehicle", "_turret", "_isEject"];
- if !(_unit == ace_player) exitwith {};
+ if !(jen_player == jen_player) exitwith {};
  if (vectorMagnitude (velocity _vehicle) < 3) exitWith {};
  
- if ([false] call knd_fnc_hasjetpack) then { 
-  _unit setUnitFreefallHeight (((_vehicle modelToWorld [0,0,0]) select 2)+ 200); 
-  _unit allowDamage false; 
+ if ([false] call FUNC(hasJetpack)) then { 
+  jen_player setUnitFreefallHeight (((_vehicle modelToWorld [0,0,0]) select 2)+ 200); 
+  jen_player allowDamage false; 
   private _offset = random [-10,0,10]; 
   private _getOutPos = _vehicle modelToWorld [_offset,-30,0]; 
-  _unit setposASL (AGLToASL _getOutPos); 
+  jen_player setposASL (AGLToASL _getOutPos); 
   private _vehicleVel = velocity _vehicle; 
-  _unit setVelocity _vehicleVel; 
-  _unit setDir (getDir _vehicle);
+  jen_player setVelocity _vehicleVel; 
+  jen_player setDir (getDir _vehicle);
   [{ 
   params ["_unit"]; 
-  _unit allowDamage true; 
-  }, [_unit], 1.5] call CBA_fnc_waitAndExecute; 
+  jen_player allowDamage true; 
+  }, [jen_player], 1.5] call CBA_fnc_waitAndExecute; 
  }; 
  
 }] call CBA_fnc_addClassEventHandler;
@@ -91,11 +91,11 @@
 ["CAManBase", "SlotItemChanged", {
 	params ["_unit", "_name", "_slot", "_assigned"];
 	if (_slot == 901) then {
-		if ([false] call knd_fnc_hasjetpack) then {
-			private _pack = backpackContainer _unit;
+		if ([false] call FUNC(hasJetpack)) then {
+			private _pack = backpackContainer jen_player;
 			private _packClass = typeOf _pack;
 			private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, "knd_jetpack_coolCoef",1] call BIS_fnc_returnConfigEntry;
-			[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
+			[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
 		};
 	};
 }] call CBA_fnc_addClassEventHandler;
@@ -104,16 +104,16 @@
 //todo: add isNil logic
 if (!isNil bocr_main_varblacklist) then {bocr_main_varblacklist = bocr_main_varblacklist + ["knd_jetpack_tanksize","knd_jet_cooldown","knd_jetpacks_coolinghandle"]};
 
-//todo: conversion
+//todo: move to ace compat pbo
 
 private _action = 
 [
 	"knd_refuel_action", //Action name
 	"Refuel Jetpack", //Display name
-	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", //Icon path
-	{["", 100] call knd_fnc_jetpackRefuel}, //Code
+	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", 
+	{["", 100] call FUNC(Refuel)}, //Code
 	{
-		_pack = backpackContainer ace_player;
+		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;
 		_isPack = [configFile >> "CfgVehicles" >> _packclass, "knd_isJetpack",0] call BIS_fnc_returnConfigEntry;
 		([_this select 0] call ace_refuel_fnc_getFuel > 10) AND (_isPack == 1)
@@ -150,7 +150,7 @@ private _action =
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", //Icon path
 	{["", 100] call knd_fnc_jetpackRefuel}, //Code
 	{
-		_pack = backpackContainer ace_player;
+		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;
 		_isPack = [configFile >> "CfgVehicles" >> _packclass, "knd_isJetpack",0] call BIS_fnc_returnConfigEntry;
 		([_this select 0] call ace_refuel_fnc_getFuel > 10) AND (_isPack == 1)
@@ -170,7 +170,7 @@ private _action =
 
 
 [missionNamespace,"arsenalOpened", {	
-	ace_player setvariable ["knd_jet_Hover",false]
+	jen_player setvariable ["knd_jet_Hover",false]
  }] call bis_fnc_addScriptedEventhandler;
 
 // Default max fuel, will only be used in weird situations (such as jetpack fuel being iterated before jetpack has been used)
