@@ -174,7 +174,7 @@ private _action =
  }] call bis_fnc_addScriptedEventhandler;
 
 // Default max fuel, will only be used in weird situations (such as jetpack fuel being iterated before jetpack has been used)
-knd_jetpack_maxfuel = 250;
+GVAR(maxFuel) = 250;
 
 
 // add EH to handle player changes 
