@@ -27,7 +27,8 @@ private _children = [];
 		format ["Use %1", getText(_childConfig >> "DisplayName")],
 		getText(_childConfig >> "Picture"),
 		{
-		params ["","","_unit","_item","_capacity"];
+		params ["","","_args"];
+		_args params ["_unit","_item","_capacity"];
 		[_item,_capacity] call EFUNC(core,doRefuel);
 		},
 		{true},

@@ -9,7 +9,7 @@
 
 params ["_item",["_fuelAmount",nil]];
 
-if (isNil _fuelAmount) then {
+if (isNil {_fuelAmount}) then {
 private _config = configFile >> "CfgWeapons" >> _item;
 _fuelAmount = GET_NUMBER(_config >> QGVAR(fuelCanAmount),200);
 };
