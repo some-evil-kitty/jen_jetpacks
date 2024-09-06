@@ -24,8 +24,8 @@ class CfgMods {
         hideName        = "false";              // Hide the extension name in main menu and extension menu
         hidePicture     = "false";              // Hide the extension picture in the extension menu
 
-        action          = ""; // Website URL, that can accessed from the expansions menu 
-        actionName      = "";              // label of button/tooltip in extension menu
+        action          = "https://discord.gg/jw2GCgN2Yr"; // Website URL, that can accessed from the expansions menu 
+        actionName      = "Join the discord!";              // label of button/tooltip in extension menu
         description     = "KJW's Jetpacks"; // Probably in context with action
 
         // Color used for DLC stripes and backgrounds (RGBA)
