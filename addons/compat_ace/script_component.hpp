@@ -1,4 +1,4 @@
-#define COMPONENT core
+#define COMPONENT compat_ace
 #include "\z\jen_jetpacks\addons\main\script_mod.hpp"
 
 // #define DEBUG_MODE_FULL

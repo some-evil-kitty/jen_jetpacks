@@ -7,7 +7,7 @@ class CfgPatches {
         units[] = {};
         weapons[] = {};
         requiredVersion = REQUIRED_VERSION;
-        requiredAddons[] = {}; // include external addons here that your whole mod depends on and have your other addons require this one.
+        requiredAddons[] = {"cba_common","cba_events","cba_settings"}; // include external addons here that your whole mod depends on and have your other addons require this one.
         authors[] = {}; // sub array of authors, considered for the specific addon
 
         VERSION_CONFIG;
@@ -17,7 +17,7 @@ class CfgPatches {
 // information on the whole mod (only needed once)
 class CfgMods {
     class PREFIX {
-        dir = "@MOD_NAME";
+        dir = "@Jen_Jetpacks";
         name = "KJW's Jetpacks";
 
         picture         = "title_co.paa";       // Picture displayed from the expansions menu. Optimal size is 2048x1024

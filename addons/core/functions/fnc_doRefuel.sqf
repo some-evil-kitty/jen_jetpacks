@@ -15,6 +15,7 @@ _fuelAmount = GET_NUMBER(_config >> QGVAR(fuelCanAmount),200);
 };
 
 [{
+	params ["_item","_fuelAmount"];
 	jen_player switchMove "Acts_carFixingWheel";
 	["Refueling Jetpack...", 5, {true}, {
 		_this select 0 params ["_item","_fuelAmount"];
@@ -22,7 +23,8 @@ _fuelAmount = GET_NUMBER(_config >> QGVAR(fuelCanAmount),200);
 		jen_player removeitem _item;
 		private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 		if (isNil {_maxFuel}) then {
-		private _fuelCapacity = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),QGVAR(maxFuel));
+		private _config = configFile >> "CfgVehicles" >> typeOf _pack;
+		private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),QGVAR(maxFuel));
 		_pack setVariable [QGVAR(tankSize),_fuelCapacity];};
 		private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
 		[QGVAR(jetpackRefueled),[_pack,_fuel,_fuelAmount]] call CBA_fnc_localEvent;

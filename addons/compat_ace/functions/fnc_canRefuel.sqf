@@ -5,4 +5,6 @@
 
 #include "script_component.hpp"
 params ["_unit"];
-items _unit findif {GET_NUMBER(configfile >> "CfgWeapons" >> _x >> QEGVAR(isFuelCan),0) == 1} > -1;
+items _unit findif {
+	GET_NUMBER(configfile >> "CfgWeapons" >> _x >> QEGVAR(core,isFuelCan),0) == 1
+} > -1;

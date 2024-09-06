@@ -55,11 +55,13 @@
 	}
 ] call CBA_fnc_addEventHandler;
 
-
-["knd_jetpacks_core_refuelItem", "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[jen_player] call FUNC(hasJetpack)}, {
+[QGVAR(refuelItemBase), "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[false] call FUNC(hasJetpack)}, {
 	params ["_unit", "_container", "_item", "_slot", "_params"];
-	[_item,200] call FUNC(doRefuel);
+	closeDialog 0;
+	[_item] call FUNC(doRefuel);
+	true
 }, false, []] call CBA_fnc_addItemContextMenuOption;
+
 
 ["CAManBase", "GetOutMan", { 
  params ["_unit", "_role", "_vehicle", "_turret", "_isEject"];
@@ -88,8 +90,7 @@
 	if (_slot == 901) then {
 		if ([false] call FUNC(hasJetpack)) then {
 			private _pack = backpackContainer jen_player;
-			private _packClass = typeOf _pack;
-			private _coolCoef = GET_NUMBER(configFile >> "CfgVehicles" >> _packclass, QGVAR(coolCoef),1);
+			private _coolCoef = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack >> QGVAR(coolCoef),1);
 			[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
 		};
 	};

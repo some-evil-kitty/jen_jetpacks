@@ -19,3 +19,4 @@ class CfgPatches {
 #include "RscTitles.hpp"
 #include "CfgUIGrids.hpp"
 #include "CfgSounds.hpp"
+#include "CfgWeapons.hpp"

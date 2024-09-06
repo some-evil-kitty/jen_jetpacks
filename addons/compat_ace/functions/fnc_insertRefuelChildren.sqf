@@ -23,12 +23,12 @@ private _children = [];
 	_x params ["_item","_capacity"];
 	private _childConfig = ConfigFile >> "CfgWeapons" >> _item;
 	_children pushback [[
-		format ["knd_UAV_%1",_forEachIndex],
-		format ["Unpack %1", getText(_childConfig >> "DisplayName")],
+		format ["jen_jetpacks_refuelChild_%1",_forEachIndex],
+		format ["Use %1", getText(_childConfig >> "DisplayName")],
 		getText(_childConfig >> "Picture"),
 		{
 		params ["","","_unit","_item","_capacity"];
-		[_unit,_item,_capacity] call knd_fnc_deployDrone;
+		[_item,_capacity] call EFUNC(core,doRefuel);
 		},
 		{true},
 		{},

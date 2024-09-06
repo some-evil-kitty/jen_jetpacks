@@ -7,9 +7,9 @@ class CfgVehicles
             class ACE_Equipment {  
                 class GVAR(refuelParent) {
                     displayName = "Refuel Jetpack";
-                    condition = QFUNC(canRefuel);
+                    condition = QUOTE([_player] call FUNC(canRefuel));
                     exceptions[] = {};
-                    insertChildren = QFUNC(insertRefuelChildren);
+                    insertChildren = QUOTE([_player] call FUNC(insertRefuelChildren));
                     statement = "true";
                 };
             };
