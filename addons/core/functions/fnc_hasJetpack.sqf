@@ -6,16 +6,9 @@
 
 #include "script_component.hpp"
 
-params [["_isPFH",false]];
+params [["_unit",jen_player]];
 
-if _isPFH exitwith {
-private _isPack = jen_player getVariable [QGVAR(hasJetpack),false];
-_isPack
-};
+private _pack = backpackContainer _unit;
+private _packClass = typeOf _pack;
 
-
-private _pack = backpackContainer jen_player;
-private _packclass = typeOf _pack;
-private _isPack = GET_NUMBER(configFile >> "CfgVehicles" >> _packclass >> QGVAR(isJetpack),0) == 1;
-jen_player setVariable [QGVAR(hasJetpack),_isPack,true];
-_isPack
+GVAR(hashCache) getOrDefault [_packClass,false,false]

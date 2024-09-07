@@ -33,7 +33,7 @@
 
 
 [missionNamespace,"arsenalClosed", {
-	if !([false] call FUNC(hasJetpack)) exitwith {
+	if !([jen_player] call FUNC(hasJetpack)) exitwith {
 	};
 	jen_player setVariable [QGVAR(hasJetpack),true,true];
 	private _pack = backpackContainer jen_player;
@@ -55,7 +55,7 @@
 	}
 ] call CBA_fnc_addEventHandler;
 
-[QGVAR(refuelItemBase), "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[false] call FUNC(hasJetpack)}, {
+[QGVAR(refuelItemBase), "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[jen_player] call FUNC(hasJetpack)}, {
 	params ["_unit", "_container", "_item", "_slot", "_params"];
 	closeDialog 0;
 	[_item] call FUNC(doRefuel);
@@ -68,7 +68,7 @@
  if !(jen_player == jen_player) exitwith {};
  if (vectorMagnitude (velocity _vehicle) < 3) exitWith {};
  
- if ([false] call FUNC(hasJetpack)) then { 
+ if ([jen_player] call FUNC(hasJetpack)) then { 
   jen_player setUnitFreefallHeight (((_vehicle modelToWorld [0,0,0]) select 2)+ 200); 
   jen_player allowDamage false; 
   private _offset = random [-10,0,10]; 
@@ -88,7 +88,7 @@
 ["CAManBase", "SlotItemChanged", {
 	params ["_unit", "_name", "_slot", "_assigned"];
 	if (_slot == 901) then {
-		if ([false] call FUNC(hasJetpack)) then {
+		if ([jen_player] call FUNC(hasJetpack)) then {
 			private _pack = backpackContainer jen_player;
 			private _coolCoef = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack >> QGVAR(coolCoef),1);
 			[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);

@@ -7,3 +7,4 @@ PREP(addCoolingHandle);
 PREP(reset);
 PREP(hasJetpack);
 PREP(jetpackParticles);
+PREP(cacheJetpacks);

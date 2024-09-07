@@ -5,10 +5,10 @@
 
 
 ["ace_arsenal_displayclosed", {
-	if !([false] call FUNC(hasJetpack)) exitwith {
+	if !([jen_player] call FUNC(hasJetpack)) exitwith {
 	jen_player setVariable [QGVAR(hasJetpack),false,true];
 	};
-	jen_player setVariable [QGVAR(hasJetpack),([false] call FUNC(hasJetpack)),true];
+	jen_player setVariable [QGVAR(hasJetpack),([jen_player] call FUNC(hasJetpack)),true];
 	private _pack = backpackContainer jen_player;
 	private _packClass = typeOf _pack;
 	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, QGVAR(coolCoef),1] call BIS_fnc_returnConfigEntry;
@@ -75,7 +75,3 @@ private _action =
 [_source, 0, ["ACE_MainActions"], _action] call ace_interact_menu_fnc_addActionToObject;
 
 }] call CBA_fnc_addEventHandler;  
-
-
-
-

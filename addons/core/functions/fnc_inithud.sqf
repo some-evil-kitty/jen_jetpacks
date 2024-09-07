@@ -22,7 +22,7 @@ _jetpackBackgroundGauge ctrlSetBackgroundColor [0,0,0,0.2];
 _handle = [{
     params ["_args","_handle"];
     _args params ["_jetpackFuelGauge","_jetpackHeatGauge","_jetpackBackgroundGauge"];
-	if (!([false] call FUNC(hasJetpack)) OR visibleMap OR (jen_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitwith 
+	if (!([jen_player] call FUNC(hasJetpack)) OR visibleMap OR (jen_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitwith 
 	{
 		{
 			_x ctrlShow false

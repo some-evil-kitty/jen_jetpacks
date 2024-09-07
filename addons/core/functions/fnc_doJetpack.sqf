@@ -16,14 +16,11 @@ if (vehicle _unit != _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit get
 
 if (_unit getVariable [QGVAR(jetpackDisabled),false]) exitwith {};
 
+if !([_unit] call FUNC(hasJetpack)) exitwith {};
 
 private _pack = backpackContainer _unit;
 private _packclass = typeOf _pack;
 private _config = configFile >> "CfgVehicles" >> _packclass;
-private _isPack = (GET_NUMBER(_config >> QGVAR(isJetpack),0) == 1);
-
-
-if !_isPack exitwith {}; //Not wearing a jetpack!
 
 if (GVAR(debounce)) exitwith {};
 
@@ -55,8 +52,7 @@ if ((secondaryWeapon _unit) isNotEqualTo "") then {
 	_ascensionCoef = _ascensionCoef  * 0.8;
 };
 
-if (((secondaryWeapon _unit) isNotEqualTo "") AND (_isRocketPack)) exitwith {
-};
+
 
 
 _pack setVariable [QGVAR(tankSize),_fuelCapacity];
@@ -92,7 +88,7 @@ if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldo
 	playsound3d [QPATHTOF(snd\jetpack_ignition.wss), _unit, false, getposASL _unit,5,1,30];
 };
 
-[QGVAR(say3dGlobal), [_source,QGVAR(soundLoop)]] call CBA_fnc_globalEvent;
+playsound3d [QPATHTOF(snd\jetpack_loop.wss), _unit, false, getposASL _unit, 1.5,1,25];
 [QGVAR(particleEvent), [_unit,true]] call CBA_fnc_globalEvent;
 
 //Tag player as jetpacking
@@ -108,8 +104,6 @@ if (isGamePaused) exitWith {};
 
 _this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_oldfreefall"];
 // Make sure damage is allowed
-//_unit allowdamage true; 
-
 
 
 // Get our variables
@@ -117,7 +111,7 @@ private _pack = backpackContainer _unit;
 private _heat = _pack getvariable [QGVAR(overheat),0];
 private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 if (isNil {_maxFuel}) then {
-	private _fuelCapacity = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),GVAR(maxFuel));
+	private _fuelCapacity = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack >> QGVAR(fuelCapacity),GVAR(maxFuel));
 	_pack setVariable [QGVAR(tankSize),_fuelCapacity];
 };
 private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
@@ -132,11 +126,7 @@ if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _u
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
 	[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
 	[_pack] call FUNC(variableSync);
-
 };
-
-
-
 
 
 

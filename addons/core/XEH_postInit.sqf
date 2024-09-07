@@ -5,3 +5,4 @@ addMissionEventHandler ["HandleDisconnect", {
 	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 }];
 
+call FUNC(cacheJetpacks);
