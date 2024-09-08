@@ -25,6 +25,8 @@ class RscTitles {
 				y = "profileNamespace getVariable ['IGUI_jen_jetpacks_grid_Y',  (((0.2) + 0.04) * safezoneH + safezoneY)]";
 				w = "0.15*safezoneW";
 				h = "0.025*safezoneH";
+				texture = "\A3\ui_f\data\GUI\RscCommon\RscProgress\progressbar_ca.paa";
+				colorFrame[] = {0,0,0,1};
 			};
 			class Heat: RscProgress {
 				idc = 4946;
@@ -32,6 +34,8 @@ class RscTitles {
 				y = "(profileNamespace getVariable ['IGUI_jen_jetpacks_grid_Y',  (((0.2) + 0.04) * safezoneH + safezoneY)]) + ((0.025) * safezoneH)";// (((0.225) + 0.04) * safezoneH + safezoneY)
 				w = "0.15*safezoneW"; 
 				h = "0.025*safezoneH";
+				texture = "\A3\ui_f\data\GUI\RscCommon\RscProgress\progressbar_ca.paa";
+				colorFrame[] = {0,0,0,1};
 			};
 		};
 	};
