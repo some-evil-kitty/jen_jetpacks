@@ -9,7 +9,7 @@ hidePicture     = "false";                  // Hide the extension menu
 
 logoSmall       = "icon_64_ca.paa";         // Display next to the item added by the mod 64x64
 logo            = "icon_128_ca.paa";        // Logo displayed in the main menu 128x128
-logoOver        = "icon_128_highlight_ca.paa"; // When the mouse is over, in the main menu 128x128
+logoOver        = "icon_128_ca.paa"; // When the mouse is over, in the main menu 128x128
 tooltip         = "";
 tooltipOwned    = "Jen's Jetpacks";  // Tool tip displayed when the mouse is left over, in the main menu
 overview        = "Adds jetpacks";         // Overview text, displayed from the extension menu

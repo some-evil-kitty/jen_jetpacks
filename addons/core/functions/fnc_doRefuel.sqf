@@ -14,7 +14,7 @@ private _config = configFile >> "CfgWeapons" >> _item;
 _fuelAmount = GET_NUMBER(_config >> QGVAR(fuelCanAmount),200);
 };
 
-if (ace_common) then {
+if !(isNil {ace_common}) then {
 	[jen_player, "Acts_carFixingWheel", 2] call ace_common_fnc_doAnimation;
 	[		
 		5, 
@@ -41,6 +41,8 @@ if (ace_common) then {
 	] call ace_common_fnc_progressBar
 } else {
 	jen_player switchMove "Acts_carFixingWheel";
+	closeDialog 0;
+
 	["Refueling Jetpack...", 5, {true}, {
 		_this select 0 params ["_item","_fuelAmount"];
 		private _pack = backpackContainer jen_player;

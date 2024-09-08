@@ -15,3 +15,4 @@ class CfgPatches {
 
 
 #include "CfgVehicles.hpp"
+#include "CfgWeapons.hpp"
