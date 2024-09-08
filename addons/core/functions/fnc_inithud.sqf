@@ -48,7 +48,7 @@ _handle = [{
 
 	if ((((_heat > 0.85) || _fuel < 0.05) && ((time-GVAR(timeSinceLastBeep)) > 2) && !GVAR(disableAlarm)) && jen_player getVariable [QGVAR(isJetpacking),false]) then {
 		GVAR(timeSinceLastBeep) = time;
-		playSoundUI [QGVAR(warning),GVAR(alarmVolume)];
+		playSoundUI [QGVAR(soundWarning),GVAR(alarmVolume)];
 	};
 	
     _jetpackFuelGauge progressSetPosition _fuel;
