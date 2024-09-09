@@ -16,9 +16,7 @@ if (vehicle _unit != _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit get
 
 if (_unit getVariable [QGVAR(jetpackDisabled),false]) exitwith {};
 
-private _isPack = [_unit] call FUNC(hasJetpack);
-
-if !(_isPack) exitwith {};
+if !([_unit] call FUNC(hasJetpack)) exitwith {};
 
 private _pack = backpackContainer _unit;
 private _packclass = typeOf _pack;
@@ -42,11 +40,12 @@ private _ascensionCoef = GET_NUMBER(_config >> QGVAR(ascensionCoef),1);
 private _jumpCoef = GET_NUMBER(_config >> QGVAR(jumpCoef),1);
 private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),GVAR(maxFuel));
 
-//allow external disablement of jetpacks and modification fom custom conditions
-[QGVAR(jetpackEvent), [_unit,_isPack,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_ascensionCoef,_jumpCoef,_fuelCapacity]] call CBA_fnc_localEvent;
+private _externalCondition = true;
 
-// check again; event may have changed this
-if !_isPack exitwith {}; //Not wearing a jetpack!
+//allow external disablement of jetpacks and modification fom custom conditions
+[QGVAR(jetpackEvent), [_unit,_externalCondition,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_ascensionCoef,_jumpCoef,_fuelCapacity]] call CBA_fnc_localEvent;
+
+if !_externalCondition exitwith {};
 
 if ((secondaryWeapon _unit) isNotEqualTo "") then {
 	_acceleration = _acceleration min 2.5;
