@@ -16,7 +16,9 @@ if (vehicle _unit != _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit get
 
 if (_unit getVariable [QGVAR(jetpackDisabled),false]) exitwith {};
 
-if !([_unit] call FUNC(hasJetpack)) exitwith {};
+private _isPack = [_unit] call FUNC(hasJetpack);
+
+if !(_isPack) exitwith {};
 
 private _pack = backpackContainer _unit;
 private _packclass = typeOf _pack;
