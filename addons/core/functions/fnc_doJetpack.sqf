@@ -40,6 +40,11 @@ private _ascensionCoef = GET_NUMBER(_config >> QGVAR(ascensionCoef),1);
 private _jumpCoef = GET_NUMBER(_config >> QGVAR(jumpCoef),1);
 private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),GVAR(maxFuel));
 
+// Global multipliers
+
+_fuelCoef = _fuelCoef * GVAR(globalFuelCoef);
+_heatCoef = _heatCoef * GVAR(globalheatCoef);
+
 private _externalCondition = true;
 
 //allow external disablement of jetpacks and modification fom custom conditions
