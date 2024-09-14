@@ -65,22 +65,22 @@
 
 ["CAManBase", "GetOutMan", { 
  params ["_unit", "_role", "_vehicle", "_turret", "_isEject"];
- if !(jen_player == jen_player) exitwith {};
+if !(local _unit) exitwith{};
  if (vectorMagnitude (velocity _vehicle) < 3) exitWith {};
  
- if ([jen_player] call FUNC(hasJetpack)) then { 
-  jen_player setUnitFreefallHeight (((_vehicle modelToWorld [0,0,0]) select 2)+ 200); 
-  jen_player allowDamage false; 
+ if ([_unit] call FUNC(hasJetpack)) then { 
+  _unit setUnitFreefallHeight (((_vehicle modelToWorld [0,0,0]) select 2)+ 200); 
+  _unit allowDamage false; 
   private _offset = random [-10,0,10]; 
   private _getOutPos = _vehicle modelToWorld [_offset,-30,0]; 
-  jen_player setposASL (AGLToASL _getOutPos); 
+  _unit setposASL (AGLToASL _getOutPos); 
   private _vehicleVel = velocity _vehicle; 
-  jen_player setVelocity _vehicleVel; 
-  jen_player setDir (getDir _vehicle);
+  _unit setVelocity _vehicleVel; 
+  _unit setDir (getDir _vehicle);
   [{ 
   params ["_unit"]; 
-  jen_player allowDamage true; 
-  }, [jen_player], 1.5] call CBA_fnc_waitAndExecute; 
+  _unit allowDamage true; 
+  }, [_unit], 1.5] call CBA_fnc_waitAndExecute; 
  }; 
  
 }] call CBA_fnc_addClassEventHandler;
@@ -88,10 +88,10 @@
 ["CAManBase", "SlotItemChanged", {
 	params ["_unit", "_name", "_slot", "_assigned"];
 	if (_slot == 901) then {
-		if ([jen_player] call FUNC(hasJetpack)) then {
-			private _pack = backpackContainer jen_player;
+		if ([_unit] call FUNC(hasJetpack)) then {
+			private _pack = backpackContainer _unit;
 			private _coolCoef = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack >> QGVAR(coolCoef),1);
-			[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
+			[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
 		};
 	};
 }] call CBA_fnc_addClassEventHandler;
