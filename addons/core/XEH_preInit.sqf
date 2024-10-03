@@ -68,6 +68,19 @@ ADDON = true;
 ] call CBA_fnc_addSetting;
 
 [
+    QGVAR(ejectHelper), // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.
+    "CHECKBOX", // setting type
+    [
+        "Ejection Helper", //Display name
+        "Turns on 'eject' helping" //Tooltip
+    ], // Pretty name shown inside the ingame settings menu. Can be stringtable entry.
+    ["KJW's Jetpacks","Jetpack Misc"], // Pretty name of the category where the setting can be found. Can be stringtable entry.
+    true, // data for this setting: [min, max, default, number of shown trailing decimals]
+    0, // "_isGlobal" flag. Set this to true to always have this setting synchronized between all clients in multiplayer
+    {} // function that will be executed once on mission start and every time the setting is changed.
+] call CBA_fnc_addSetting;
+
+[
     QGVAR(globalHeatCoef), // Internal setting name, should always contain a tag! This will be the global variable which takes the value of the setting.
     "SLIDER", // setting type
     ["Global Heat Coefficient","WARNING: May have unintended consequences on jetpack archetype balancing."], // Pretty name shown inside the ingame settings menu. Can be stringtable entry.

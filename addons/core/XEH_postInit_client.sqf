@@ -63,9 +63,11 @@
 }, false, []] call CBA_fnc_addItemContextMenuOption;
 
 
-["CAManBase", "GetOutMan", { 
+["CAManBase", "GetOutMan", {
+if !GVAR(ejectHelper) exitwith {};
  params ["_unit", "_role", "_vehicle", "_turret", "_isEject"];
 if !(local _unit) exitwith{};
+if (isNull _vehicle) exitwith {};
  if (vectorMagnitude (velocity _vehicle) < 3) exitWith {};
  
  if ([_unit] call FUNC(hasJetpack)) then { 
