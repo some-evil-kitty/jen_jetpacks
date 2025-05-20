@@ -48,7 +48,10 @@ _heatCoef = _heatCoef * GVAR(globalheatCoef);
 private _externalCondition = true;
 
 //allow external disablement of jetpacks and modification fom custom conditions
-[QGVAR(jetpackEvent), [_unit,_externalCondition,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_ascensionCoef,_jumpCoef,_fuelCapacity]] call CBA_fnc_localEvent;
+
+private _argsArray = [_unit,_externalCondition,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_ascensionCoef,_jumpCoef,_fuelCapacity];
+[QGVAR(jetpackEvent), _argsArray] call CBA_fnc_localEvent;
+_argsArray params ["_unit","_externalCondition","_acceleration","_resistance","_fuelCoef","_heatCoef","_coolCoef","_strafeCoef","_ascensionCoef","_jumpCoef","_fuelCapacity"];
 
 if !_externalCondition exitwith {};
 
