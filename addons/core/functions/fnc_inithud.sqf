@@ -22,15 +22,15 @@ _jetpackBackgroundGauge ctrlSetBackgroundColor [0,0,0,0.2];
 _handle = [{
     params ["_args","_handle"];
     _args params ["_jetpackFuelGauge","_jetpackHeatGauge","_jetpackBackgroundGauge"];
-	if (!([jen_player] call FUNC(hasJetpack)) OR visibleMap OR (jen_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitwith 
+	if (!([jen_player] call FUNC(hasJetpack)) OR visibleMap OR (jen_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitWith 
 	{
 		{
 			_x ctrlShow false
-		} foreach [_jetpackFuelGauge,_jetpackHeatGauge,_jetpackBackgroundGauge]
+		} forEach [_jetpackFuelGauge,_jetpackHeatGauge,_jetpackBackgroundGauge]
 	};
 	{
 		_x ctrlShow true
-	} foreach [_jetpackFuelGauge,_jetpackHeatGauge,_jetpackBackgroundGauge];
+	} forEach [_jetpackFuelGauge,_jetpackHeatGauge,_jetpackBackgroundGauge];
 
 	_jetpackFuelGauge ctrlSetTextColor GVAR(fuelColor);
 	_jetpackHeatGauge ctrlSetTextColor GVAR(heatColor);

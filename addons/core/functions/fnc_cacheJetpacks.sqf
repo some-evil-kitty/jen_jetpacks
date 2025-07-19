@@ -18,8 +18,8 @@ private _jetpacks = _backpacks select {
 	GET_NUMBER(_config >> QGVAR(isJetpack),0) == 1
 };
 
-GVAR(hashCache) = createHashmap;
+GVAR(hashCache) = createHashMap;
 
 {
 	GVAR(hashCache) set [_x,true]
-} foreach _jetpacks;
+} forEach _jetpacks;

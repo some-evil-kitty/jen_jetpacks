@@ -4,7 +4,7 @@
 //
 // 
 #include "script_component.hpp"
-if !(hasInterface) exitwith {};
+if !(hasInterface) exitWith {};
 params ["_unit","_activate"];
 private _pack = backpackContainer _unit;
 private _config = (configFile >> "CfgVehicles" >> typeOf _pack);
@@ -13,13 +13,13 @@ private _particlePoints = GET_ARRAY(_config >> QGVAR(particlePoints),_defaultPoi
 
 private _existingParticles = _unit getVariable [QGVAR(particles),[]];
 {
-	deletevehicle _x;
-} foreach _existingParticles;
-if !_activate exitwith {};
+	deleteVehicle _x;
+} forEach _existingParticles;
+if !_activate exitWith {};
 private _newParticles = [];
 {
 	_firepos = _pack selectionPosition [_x,"Memory"];
-	if (_firepos isEqualTo [0,0,0]) exitwith {
+	if (_firepos isEqualTo [0,0,0]) exitWith {
 		private _jetsparks = "#particlesource" createVehicleLocal (getPosATL _pack);
 		private _jetsmoke = "#particlesource" createVehicleLocal (getPosATL _pack);
 		_jetsparks setParticleClass "FireSparks";
@@ -41,6 +41,6 @@ private _newParticles = [];
 	_jetsmoke setParticleClass "AvionicsSmoke";
 	_jetfire setParticleClass "Flare2";
 	_jetfire setDropInterval 0.005;
-} foreach _particlePoints;
+} forEach _particlePoints;
 
 _unit setVariable [QGVAR(particles),_newParticles];

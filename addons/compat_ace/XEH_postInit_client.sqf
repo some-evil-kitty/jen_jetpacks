@@ -5,7 +5,7 @@
 
 
 ["ace_arsenal_displayclosed", {
-	if !([jen_player] call FUNC(hasJetpack)) exitwith {
+	if !([jen_player] call FUNC(hasJetpack)) exitWith {
 	jen_player setVariable [QGVAR(hasJetpack),false,true];
 	};
 	jen_player setVariable [QGVAR(hasJetpack),([jen_player] call FUNC(hasJetpack)),true];

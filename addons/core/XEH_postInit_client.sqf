@@ -8,11 +8,11 @@
 	"Jetpack - Toggle On/Off",
 	{
 		[jen_player] call FUNC(doJetpack);
-		if (GVAR(alternateControls)) then {jen_player setvariable [QGVAR(controlUp),true]};
+		if (GVAR(alternateControls)) then {jen_player setVariable [QGVAR(controlUp),true]};
 		
 	},
 	{
-		if (GVAR(alternateControls)) then {jen_player setvariable [QGVAR(controlUp),false]};
+		if (GVAR(alternateControls)) then {jen_player setVariable [QGVAR(controlUp),false]};
 	},
 	[DIK_SPACE,[false,true,false]]
 ] call CBA_fnc_addKeybind;
@@ -22,10 +22,10 @@
 	QGVAR(controls_ascend),
 	"Jetpack - Up",
 	{
-		jen_player setvariable [QGVAR(controlUp),true]
+		jen_player setVariable [QGVAR(controlUp),true]
 	},
 	{
-		jen_player setvariable [QGVAR(controlUp),false]
+		jen_player setVariable [QGVAR(controlUp),false]
 	},
 	[DIK_SPACE,[false,false,false]]
 ] call CBA_fnc_addKeybind;
@@ -33,7 +33,7 @@
 
 
 [missionNamespace,"arsenalClosed", {
-	if !([jen_player] call FUNC(hasJetpack)) exitwith {
+	if !([jen_player] call FUNC(hasJetpack)) exitWith {
 	};
 	jen_player setVariable [QGVAR(hasJetpack),true,true];
 	private _pack = backpackContainer jen_player;
@@ -45,13 +45,13 @@
 
 //todo: convert from knd to jen
 [QGVAR(particleEvent), {  
-	if !(hasInterface) exitwith {};
+	if !(hasInterface) exitWith {};
 	_this call FUNC(jetpackParticles);
 }] call CBA_fnc_addEventHandler;  
 
 [QGVAR(say3DGlobal), {
 	params ["_object","_sound"];
-	_object say3d _sound;
+	_object say3D _sound;
 	}
 ] call CBA_fnc_addEventHandler;
 
@@ -64,10 +64,10 @@
 
 
 ["CAManBase", "GetOutMan", {
-if !GVAR(ejectHelper) exitwith {};
+if !GVAR(ejectHelper) exitWith {};
  params ["_unit", "_role", "_vehicle", "_turret", "_isEject"];
-if !(local _unit) exitwith{};
-if (isNull _vehicle) exitwith {};
+if !(local _unit) exitWith{};
+if (isNull _vehicle) exitWith {};
  if (vectorMagnitude (velocity _vehicle) < 3) exitWith {};
  
  if ([_unit] call FUNC(hasJetpack)) then { 
@@ -75,7 +75,7 @@ if (isNull _vehicle) exitwith {};
   _unit allowDamage false; 
   private _offset = random [-10,0,10]; 
   private _getOutPos = _vehicle modelToWorld [_offset,-30,0]; 
-  _unit setposASL (AGLToASL _getOutPos); 
+  _unit setPosASL (AGLToASL _getOutPos); 
   private _vehicleVel = velocity _vehicle; 
   _unit setVelocity _vehicleVel; 
   _unit setDir (getDir _vehicle);
@@ -104,7 +104,7 @@ bocr_main_varblacklist = bocr_main_varblacklist + [QGVAR(tankSize),QGVAR(coolDow
 
 
 [missionNamespace,"arsenalOpened", {	
-	jen_player setvariable [QGVAR(controls_ascend),false]
+	jen_player setVariable [QGVAR(controls_ascend),false]
  }] call bis_fnc_addScriptedEventhandler;
 
 // Default max fuel, will only be used in weird situations (such as jetpack fuel being iterated before jetpack has been used)

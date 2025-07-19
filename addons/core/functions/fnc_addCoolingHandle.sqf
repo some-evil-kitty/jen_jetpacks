@@ -13,17 +13,17 @@ if (isNil {_pack getVariable [QGVAR(coolingHandle),nil]}) then {
 	{
 	if (isGamePaused) exitWith {};
 	_this select 0 params ["_unit","_pack","_coolCoef"];
-	if isNull _pack exitwith {
+	if isNull _pack exitWith {
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
 	_pack setVariable [QGVAR(coolingHandle),nil];
 	};
-	if (_unit getVariable [QGVAR(isJetpacking),false]) exitwith {};
-	private _heat = _pack getvariable [QGVAR(overheat),0];
-	if (_heat > 0) exitwith {_heat = _heat - (diag_deltaTime * _coolCoef);
+	if (_unit getVariable [QGVAR(isJetpacking),false]) exitWith {};
+	private _heat = _pack getVariable [QGVAR(overheat),0];
+	if (_heat > 0) exitWith {_heat = _heat - (diag_deltaTime * _coolCoef);
 	if (_heat < knd_jetpack_maxheat * 0.7) then { _pack setVariable [QGVAR(cooldown),false]};
 	_pack setVariable [QGVAR(overheat),_heat];
 	};
-	if !(_pack isEqualTo (backpackContainer _unit)) then {
+	if (_pack isNotEqualTo (backpackContainer _unit)) then {
 		[_this select 1] call CBA_fnc_removePerFrameHandler;
 		_pack setVariable [QGVAR(coolingHandle),nil];
 		_pack setVariable [QGVAR(overheat),_heat,true];
