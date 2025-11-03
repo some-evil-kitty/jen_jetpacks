@@ -12,7 +12,7 @@ _flightDirection = vectorNormalized _flightDirection;
 private _flightNormal = [-(_flightDirection select 1), _flightDirection select 0, _flightDirection select 2];
 private _lineTests = [
     [_start, _start vectorAdd (vectorNormalized (_flightDirection vectorAdd (_flightNormal vectorMultiply 0.25)) vectorMultiply _testDistance), _unit, objNull, true, 1, "GEOM"],
-    [_start, _start vectorAdd (vectorNormalized (_flightDirection vectorAdd (_flightNormal vectorMultiply 0)) vectorMultiply _testDistance), _unit, objNull, true, 1, "GEOM"],
+    [_start, _start vectorAdd (vectorNormalized (_flightDirection vectorAdd [0, 0, -0.01] vectorAdd (_flightNormal vectorMultiply 0)) vectorMultiply _testDistance), _unit, objNull, true, 1, "GEOM"],
     [_start, _start vectorAdd (vectorNormalized (_flightDirection vectorAdd (_flightNormal vectorMultiply -0.25)) vectorMultiply _testDistance), _unit, objNull, true, 1, "GEOM"],
     [_start, _start vectorAdd (vectorNormalized (_flightDirection vectorAdd [0, 0, 0.5]) vectorMultiply (2 * _testDistance)), _unit, objNull, true, 1, "GEOM"]
 ];
@@ -61,7 +61,7 @@ if (_centerIntersects isNotEqualTo []) then {
 };
 
 _steering = _steering vectorAdd (_unit call FUNC(pid_vertical));
-_steering = _steering  vectorAdd (_unit call FUNC(pid_horizontal));
+_steering = _steering vectorAdd (_unit call FUNC(pid_horizontal));
 
 [_unit, _steering] call FUNC(move);
 

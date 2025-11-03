@@ -8,7 +8,7 @@ GVAR(debug) = true;
 
 GVAR(jetpackUnits) = [];
 
-GVAR(defaultFlightTolerance) = 0.05; // percent
+GVAR(defaultFlightTolerance) = 0.15; // percent
 GVAR(defaultHoverTolerance) = 0.05; // percent
 GVAR(defaultHoverHeight) = 10;  // meters
 GVAR(defaultRotateSpeed) = 30;     // degrees/second
