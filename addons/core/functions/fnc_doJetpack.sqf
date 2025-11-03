@@ -68,7 +68,9 @@ _pack setVariable [QGVAR(tankSize),_fuelCapacity];
 
 [_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
 
-if !([GVAR(mainHandle)] call CBA_fnc_removePerFrameHandler) then {
+private _pfhHandle = _unit getVariable [QGVAR(mainHandle), -1];
+
+if !([_pfhHandle] call CBA_fnc_removePerFrameHandler) then {
 
 
 //Reset or set the idle timer 
@@ -105,7 +107,7 @@ playSound3D [QPATHTOF(snd\jetpack_loop.wss), _unit, false, getPosASL _unit, 1.5,
 _unit setVariable [QGVAR(isJetpacking),true];
 
 //Add the PFH
-GVAR(mainHandle) = [{
+_pfhHandle = [{
 
 // Prevent backlog when paused or alt-tabbed
 if (isGamePaused) exitWith {};
@@ -199,10 +201,34 @@ if (_heat > GVAR(maxHeat)) exitWith {
 private _dir = direction _unit;
 private _vel = velocity _unit;
 
+private _moveUp = false;
+private _moveForward = false;
+private _moveBackward = false;
+private _moveLeft = false;
+private _moveRight = false;
 
+if (isPlayer _unit) then {
+	_moveUp = _unit getVariable [QGVAR(controlUp), false];
+	_moveForward = (inputAction "MoveForward" == 1);
+	_moveBackward = (inputAction "MoveBack" == 1);
+	_moveLeft = (inputAction "TurnLeft" == 1);
+	_moveRight = (inputAction "TurnRight" == 1);
+} else {
+	_moveUp = _unit getVariable [QGVAR(controlUp), false];
+	_moveForward = _unit getVariable [QGVAR(controlForward), false];
+	_moveBackward  = _unit getVariable [QGVAR(controlBackward), false];
+	_moveLeft = _unit getVariable [QGVAR(controlLeft), false];
+	_moveRight = _unit getVariable [QGVAR(controlRight), false];
+
+	_unit setVariable [QGVAR(controlUp), false];
+	_unit setVariable [QGVAR(controlForward), false];
+	_unit setVariable [QGVAR(controlBackward), false];
+	_unit setVariable [QGVAR(controlLeft), false];
+	_unit setVariable [QGVAR(controlRight), false];
+};
 
 // Check for controls, change velocity variable accordingly. Multiply by previous frametime to normalize for different performance situations.
-if (inputAction "MoveForward" == 1) then {
+if (_moveForward) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - (_fuelCoef * diag_deltaTime);
 _speed = diag_deltaTime * 5 * _acceleration;
@@ -212,7 +238,7 @@ _vel = [
 	(_vel select 2) + (5 * diag_deltaTime)
 ];};
 
-if (inputAction "TurnRight" == 1) then {
+if (_moveRight) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _speed = diag_deltaTime * 5 * _acceleration * _strafeCoef;
@@ -222,7 +248,7 @@ _vel =  [
 	(_vel select 2) + (4.9 * diag_deltaTime)
 ];};
 
-if (inputAction "TurnLeft" == 1) then {
+if (_moveLeft) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _speed = diag_deltaTime * 5 * _acceleration * _strafeCoef;
@@ -232,7 +258,7 @@ _vel =  [
 	(_vel select 2) + (4.9 * diag_deltaTime)
 ];};
 
-if (inputAction "MoveBack" == 1) then {
+if (_moveBack) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _speed = diag_deltaTime * -5 * _acceleration;
@@ -242,7 +268,7 @@ _vel =  [
 	(_vel select 2) - (2.5 * diag_deltaTime)
 ];};
 
-if (_unit getVariable [QGVAR(controlUp),false]) then {
+if (_moveUp) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _vel =  [
@@ -270,6 +296,7 @@ _pack setVariable [QGVAR(overheat),_heat];
 
 
 }, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _oldfreefall]] call CBA_fnc_addPerFrameHandler;
+_unit setVariable [QGVAR(mainHandle), _pfhHandle];
 
 } else 
 {
