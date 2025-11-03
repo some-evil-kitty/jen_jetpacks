@@ -30,6 +30,10 @@ class GVAR(fsm_flightManager) {
             condition = QFUNC(hasWaypoint);
             targetState = "MoveTo";
         };
+        class OnGround {
+            condition = QUOTE(!(_this call FUNC(inAir)));
+            targetState = "Ground";
+        };
     };
 
     class MoveTo {
