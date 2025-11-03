@@ -1,0 +1,1 @@
+#define ERROR_HISTORY_LEN 15

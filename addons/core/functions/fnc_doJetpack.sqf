@@ -11,8 +11,7 @@
 
 params ["_unit"];
 
-if (objectParent _unit != _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit getVariable ["ace_dragging_isDragging",false]) OR (_unit getVariable ["ace_captives_isHandcuffed",false])) exitWith {}; 
-
+if (!isNull objectParent _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit getVariable ["ace_dragging_isDragging",false]) OR (_unit getVariable ["ace_captives_isHandcuffed",false])) exitWith {}; 
 
 if (_unit getVariable [QGVAR(jetpackDisabled),false]) exitWith {};
 
@@ -127,8 +126,6 @@ if (isNil {_maxFuel}) then {
 };
 private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
 
-
-
 // Keep uncon people from continuing to fly
 if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _unit getVariable [QGVAR(jetpackDisabled),false]) exitWith 
 {
@@ -140,9 +137,8 @@ if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _u
 };
 
 
-
 // Make sure you can take damage while on the ground, reset freefall height. It's more performant to do this each frame of the handler than to check. Also, increment the idle timer.
-if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (objectParent _unit != _unit) OR (lifeState _unit == "INCAPACITATED") OR ((getPosVisual _unit) select 2 < 0.05)) exitWith 
+if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (!isNull objectParent _unit) OR (lifeState _unit == "INCAPACITATED") OR ((getPosVisual _unit) select 2 < 0.05)) exitWith 
 {
 	//_unit allowdamage true; 
 	_unit setUnitFreefallHeight _oldfreefall;
@@ -194,7 +190,9 @@ if (_heat > GVAR(maxHeat)) exitWith {
 
 // Reset overheating if needed (will only be needed in select situations, likely almost never)
  _pack setVariable [QGVAR(cooldown),false];
+ 
 
+_unit setVariable [QGVAR(acceleration),_acceleration];
 
 
 // Define our direction and velocity variables
@@ -258,7 +256,7 @@ _vel =  [
 	(_vel select 2) + (4.9 * diag_deltaTime)
 ];};
 
-if (_moveBack) then {
+if (_moveBackward) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _speed = diag_deltaTime * -5 * _acceleration;
