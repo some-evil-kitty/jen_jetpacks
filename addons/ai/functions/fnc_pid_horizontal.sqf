@@ -4,6 +4,8 @@ params ["_unit"];
 
 private _waypointPosition = _unit getVariable [QGVAR(waypoint), [0, 0, 0]];
 if (_waypointPosition isEqualTo [0, 0, 0]) then {
+    private _waypoint = (waypoints _unit) select currentWaypoint group _unit;
+    _waypointPosition = waypointPosition _waypoint;
 };
 
 private _position = getPosASLVisual _unit;
