@@ -20,5 +20,6 @@ PREP(state_hover);
 PREP(state_land);
 PREP(state_land_enter);
 PREP(state_moveTo);
+PREP(state_moveTo_leave);
 PREP(state_shoot);
 PREP(targetDead);

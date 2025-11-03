@@ -5,7 +5,7 @@ params ["_unit"];
 private _verticalAltitudePid = _unit getVariable QGVAR(pid_verticalAltitude);
 _verticalAltitudePid params ["_pGain", "_iGain", "_dGain", "_errorHistory", "_setpoint"];
 
-private _error = _setpoint - ((getPosATLVisual _unit) select 2);
+private _error = _setpoint - ((getPosVisual _unit) select 2);
 _errorHistory pushBack [
     CBA_missionTime,
     _error

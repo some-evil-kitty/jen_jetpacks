@@ -38,6 +38,7 @@ class GVAR(fsm_flightManager) {
 
     class MoveTo {
         onState = QFUNC(state_moveTo);
+        onStateLeaving = QFUNC(state_moveTo_leave);
         class AtPosition {
             condition = QFUNC(atPosition);
             targetState = "Hover";

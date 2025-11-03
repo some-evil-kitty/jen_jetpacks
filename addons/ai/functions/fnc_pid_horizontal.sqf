@@ -19,7 +19,6 @@ private _a = _unit getVariable [QEGVAR(core,acceleration), 0];
 private _timeToGo = _distanceToTarget / (_speedInDirection + _a);
 
 if (_timeToGo < TTGO_THRESHOLD) exitWith {
-    systemChat str [_timeToGo];
     _unit setVariable [QGVAR(atWaypoint), true];
 };
 
