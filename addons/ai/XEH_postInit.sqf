@@ -14,27 +14,44 @@ GVAR(defaultHoverHeight) = 7;  // meters
 GVAR(defaultRotateSpeed) = 60;     // degrees/second
 
 GVAR(fsm_flightManager) = [configFile >> QGVAR(fsm_flightManager)] call CBA_statemachine_fnc_createFromConfig;
+GVAR(fsm_combatManager) = [configFile >> QGVAR(fsm_combatManager)] call CBA_statemachine_fnc_createFromConfig;
+[QFUNC(cleanup), 10] call CBA_fnc_addPerFrameHandler;
+
 [{
     if !(GVAR(debug)) exitWith {};
-    params ["_args"];
-    _args params ["_fsm"];
-
-    private _list = _fsm getVariable "cba_statemachine_list";
     {
-        private _state = [_x, _fsm] call CBA_statemachine_fnc_getCurrentState;
+        private _flightState = [_x, GVAR(fsm_flightManager)] call CBA_statemachine_fnc_getCurrentState;
+        private _combatState = [_x, GVAR(fsm_combatManager)] call CBA_statemachine_fnc_getCurrentState;
+        private _basePos = getPosATLVisual _x;
+
         drawIcon3D [
             "",
             [0, 0, 1, 1],
-            getPosATLVisual _x,
+            _basePos vectorAdd [0, 0, 0.5],
             1,
             1,
             0,
-            format ["State: %1", _state],
+            format ["Flight State: %1", _flightState],
             0,
             0.05,
             "PuristaMedium",
             "center",
             false
         ];
-    } forEach _list;
-}, 0, [GVAR(fsm_flightManager)]] call CBA_fnc_addPerFrameHandler;
+
+        drawIcon3D [
+            "",
+            [1, 0, 0, 1],
+            _basePos vectorAdd [0, 0, -0.5],
+            1,
+            1,
+            0,
+            format ["Combat State: %1", _combatState],
+            0,
+            0.05,
+            "PuristaMedium",
+            "center",
+            false
+        ];
+    } forEach GVAR(jetpackUnits);
+}] call CBA_fnc_addPerFrameHandler;

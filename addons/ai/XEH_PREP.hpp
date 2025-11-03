@@ -2,6 +2,7 @@ PREP(atHover);
 PREP(atPosition);
 PREP(canLand);
 PREP(canTakeoff);
+PREP(cleanup);
 PREP(hasWaypoint);
 PREP(inAir);
 PREP(initJetpackUnit);

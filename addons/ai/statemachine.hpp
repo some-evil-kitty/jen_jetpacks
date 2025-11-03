@@ -54,3 +54,90 @@ class GVAR(fsm_flightManager) {
         };
     };
 };
+
+class GVAR(fsm_combatManager) {
+    list = QGVAR(jetpackUnits);
+    skipNull = 1;
+
+    class Idle {
+        class InCombat {
+            targetState = "Combat";
+        };
+    };
+
+    class Combat {
+        class InForest {
+            targetState = "Forest";
+        };
+        class InOpen {
+            targetState = "Open";
+        };
+        class NearBuildings {
+            targetState = "Urban";
+        };
+    };
+
+    class Forest {
+        class ContactIsClose {
+            targetState = "MoveAway";
+        };
+        class ContactIsDead {
+            targetState = "Idle";
+        };
+    };
+
+    class MoveAway {
+        class ContactIsMedium {
+            targetState = "Forest";
+        };
+    };
+
+    class Open {
+        class ContactIsClose {
+            targetState = "FlyCombat";
+        };
+        class ContactIsNotClose {
+            targetState = "GetClose";
+        };
+    };
+
+    class GetClose {
+        class ContactIsClose {
+            targetState = "FlyCombat";
+        };
+    };
+
+    class FlyCombat {
+        class ContactIsDead {
+            targetState = "Idle";
+        };
+    };
+
+    class Urban {
+        class ContactIsCloseOrMedium {
+            targetState = "FindRoof";
+        };
+        class ContactIsDead {
+            targetState = "GetOffRoof";
+        };
+    };
+
+    class FindRoof {
+        class FoundRoof {
+            targetState = "LandOnRoof";
+        };
+    };
+
+    class LandOnRoof {
+        class NewContact {
+            targetState = "Urban";
+        };
+    };
+
+    class GetOffRoof {
+        class OnGround {
+            targetState = "Idle";
+        };
+    };
+
+};
