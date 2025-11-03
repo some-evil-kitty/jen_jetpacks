@@ -32,29 +32,4 @@ private _commandedAccelerationX = ([_unit, _zeroEffortMiss select 0, _timeToGo] 
 private _commandedAccelerationY = ([_unit, _zeroEffortMiss select 1, _timeToGo] call FUNC(pid_horizontal_y));
 
 private _relativeCommand = _unit vectorWorldToModelVisual [_commandedAccelerationX, _commandedAccelerationY, 0];
-
-private _ratioX = (_relativeCommand select 0) / _a;
-private _ratioY = (_relativeCommand select 1) / _a;
-
-private _moveLeft = false;
-private _moveRight = false;
-if (_ratioX > GVAR(defaultFlightTolerance)) then {
-    _moveRight = true;
-};
-if (_ratioX < -GVAR(defaultFlightTolerance)) then {
-    _moveLeft = true;
-};
-
-private _moveForward = false;
-private _moveBackward = false;
-if (_ratioY > GVAR(defaultFlightTolerance)) then {
-    _moveForward = true;
-};
-if (_ratioY < -GVAR(defaultFlightTolerance)) then {
-    _moveBackward = true;
-};
-
-_unit setVariable [QEGVAR(core,controlLeft), _moveLeft];
-_unit setVariable [QEGVAR(core,controlRight), _moveRight];
-_unit setVariable [QEGVAR(core,controlForward), _moveForward];
-_unit setVariable [QEGVAR(core,controlBackward), _moveBackward];
+_relativeCommand 

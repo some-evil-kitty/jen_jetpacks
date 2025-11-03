@@ -2,4 +2,4 @@
 
 params ["_unit"];
 
-_unit call FUNC(pid_vertical);
+[_unit, _unit call FUNC(pid_vertical)] call FUNC(move);

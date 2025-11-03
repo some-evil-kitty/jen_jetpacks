@@ -5,6 +5,7 @@ PREP(canTakeoff);
 PREP(hasWaypoint);
 PREP(inAir);
 PREP(initJetpackUnit);
+PREP(move);
 PREP(pid_angle);
 PREP(pid_horizontal);
 PREP(pid_horizontal_x);
