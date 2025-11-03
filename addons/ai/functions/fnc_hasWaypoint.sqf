@@ -2,6 +2,10 @@
 
 params ["_unit"];
 
+if (_unit getVariable [QGVAR(atWaypoint), false]) exitWith {
+    false
+};
+
 private _waypointCount = count waypoints _unit;
 if (currentWaypoint group _unit != _waypointCount) exitWith {
     true
