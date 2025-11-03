@@ -41,10 +41,11 @@ switch (true) do {
 private _sum = 0;
 private _tn_prev = 0;
 {
+    if (_forEachIndex == 0) then { continue };
     _x params ["_tn", "_error"];
     private _stride = _tn - _tn_prev;
     if (_stride == 0) then { continue };
-    _sum = _sum + (_error / _stride);
+    _sum = _sum + (_error * _stride);
     _tn_prev = _tn;
 } forEach _errorHistory;
 

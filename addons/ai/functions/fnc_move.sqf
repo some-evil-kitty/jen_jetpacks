@@ -6,7 +6,6 @@ private _a = _unit getVariable [QEGVAR(core,acceleration), 0];
 
 private _ratioX = (_relativeCommand select 0) / _a;
 private _ratioY = (_relativeCommand select 1) / _a;
-private _ratioZ = (_relativeCommand select 2) / _a;
 
 private _moveLeft = false;
 private _moveRight = false;
@@ -26,11 +25,16 @@ if (_ratioY < -GVAR(defaultFlightTolerance)) then {
     _moveBackward = true;
 };
 
+if ((_relativeCommand select 2) < 0) then {
+    _a = -9.81;
+};
+private _ratioZ = (_relativeCommand select 2) / _a;
+
 private _moveUp = false;
 if (_a > 0) then {
-    _moveUp = _ratioZ > (1 - GVAR(defaultHoverTolerance));
+    _moveUp = _ratioZ > (1 + GVAR(defaultHoverTolerance));
 } else {
-    _moveUp  = _ratioZ < (1 + GVAR(defaultHoverTolerance));
+    _moveUp = _ratioZ < (1 + GVAR(defaultHoverTolerance));
 };
 
 _unit setVariable [QEGVAR(core,controlUp), _moveUp];

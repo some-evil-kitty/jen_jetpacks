@@ -11,9 +11,9 @@ _unit setVariable [QGVAR(waypoint), [0, 0, 0]];
 // From this, we take our achieveable vertical acceleration and generate an acceleration command
 // We have bang-bang controls, so either we can fully accelerate up or we fall via gravity
 _unit setVariable [QGVAR(pid_verticalAltitude), [
-    1.5,                                // p gain
-    0.3,                                // i gain
-    0.8,                                // d gain
+    5.0,                                // p gain
+    0.02,                               // i gain
+    0.4,                                // d gain
     [],                                 // error history
     GVAR(defaultHoverHeight)            // setpoint
 ]];

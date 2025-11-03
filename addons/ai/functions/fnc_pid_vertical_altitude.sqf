@@ -5,7 +5,19 @@ params ["_unit"];
 private _verticalAltitudePid = _unit getVariable QGVAR(pid_verticalAltitude);
 _verticalAltitudePid params ["_pGain", "_iGain", "_dGain", "_errorHistory", "_setpoint"];
 
-private _error = _setpoint - ((getPosVisual _unit) select 2);
+private _start = getPosASLVisual _unit;
+private _end = _start vectorAdd [0, 0, -150];
+private _below = lineIntersectsSurfaces [_start, _end, _unit];
+private _altitude = (getPosATLVisual _unit) select 2;
+if (_below isNotEqualTo []) then {
+    _altitude = _start vectorDistance ((_below select 0) select 0);
+};
+
+if (GVAR(debug)) then {
+    drawLine3D [ASLtoAGL _start, ASLtoAGL _end, [1, 1, 0, 1], 5];
+};
+
+private _error = _setpoint - _altitude;
 _errorHistory pushBack [
     CBA_missionTime,
     _error
