@@ -22,6 +22,7 @@ private _timeToGo = _distanceToTarget / (_speedInDirection + _a);
 
 if (_timeToGo < TTGO_THRESHOLD) exitWith {
     _unit setVariable [QGVAR(atWaypoint), true];
+    [0, 0, 0]
 };
 
 private _predictedPosition = _position vectorAdd (_velocity vectorMultiply _timeToGo);

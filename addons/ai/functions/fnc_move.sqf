@@ -29,6 +29,7 @@ if ((_relativeCommand select 2) < 0) then {
     _a = -9.81;
 };
 private _ratioZ = (_relativeCommand select 2) / _a;
+systemChat str [_ratioZ];
 
 private _moveUp = false;
 if (_a > 0) then {

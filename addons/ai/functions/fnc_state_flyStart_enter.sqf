@@ -12,8 +12,8 @@ _unit setVariable [QGVAR(waypoint), [0, 0, 0]];
 // We have bang-bang controls, so either we can fully accelerate up or we fall via gravity
 _unit setVariable [QGVAR(pid_verticalAltitude), [
     5.0,                                // p gain
-    0.02,                               // i gain
-    0.4,                                // d gain
+    0.01,                               // i gain
+    0.8,                                // d gain
     [],                                 // error history
     GVAR(defaultHoverHeight)            // setpoint
 ]];
@@ -27,23 +27,23 @@ _unit setVariable [QGVAR(pid_verticalSpeed), [
 ]];
 
 _unit setVariable [QGVAR(pid_horizontal_speed_x), [
-    3.0,                                // p gain
+    5.0,                                // p gain
     0.02,                               // i gain
-    0.6,                                // d gain
+    0.8,                                // d gain
     [],                                 // error history
     0                                   // setpoint
 ]];
 _unit setVariable [QGVAR(pid_horizontal_speed_y), [
-    3.0,                                // p gain
+    5.0,                                // p gain
     0.02,                               // i gain
-    0.6,                                // d gain
+    0.8,                                // d gain
     [],                                 // error history
     0                                   // setpoint
 ]];
 
 _unit setVariable [QGVAR(pid_angle), [
     1.0,                                // p gain
-    0.02,                               // i gain
+    0.0,                                // i gain
     0.2,                                // d gain
     [],                                 // error history
     0                                   // setpoint
