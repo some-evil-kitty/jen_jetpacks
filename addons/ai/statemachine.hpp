@@ -45,9 +45,10 @@ class GVAR(fsm_flightManager) {
     };
 
     class Land {
+        onStateEntered = QFUNC(state_land_enter);
         onState = QFUNC(state_land);
         class OnGround {
-            condition = QUOTE(!(_this call FUNC(onGround)));
+            condition = QUOTE(!(_this call FUNC(inAir)));
             targetState = "Ground";
         };
     };
