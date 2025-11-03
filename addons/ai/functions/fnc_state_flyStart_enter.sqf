@@ -40,3 +40,11 @@ _unit setVariable [QGVAR(pid_horizontal_speed_y), [
     [],                                 // error history
     0                                   // setpoint
 ]];
+
+_unit setVariable [QGVAR(pid_angle), [
+    1.0,                                // p gain
+    0.02,                               // i gain
+    0.2,                                // d gain
+    [],                                 // error history
+    0                                   // setpoint
+]];

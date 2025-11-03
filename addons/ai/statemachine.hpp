@@ -26,10 +26,6 @@ class GVAR(fsm_flightManager) {
             events[] = { QGVAR(land) };
             targetState = "Land";
         };
-        class HasTarget {
-            condition = QFUNC(hasTarget);
-            targetState = "Aim";
-        };
         class HasWaypoint {
             condition = QFUNC(hasWaypoint);
             targetState = "MoveTo";
@@ -51,30 +47,6 @@ class GVAR(fsm_flightManager) {
         class OnGround {
             condition = QUOTE(!(_this call FUNC(inAir)));
             targetState = "Ground";
-        };
-    };
-
-    class Aim {
-        onState = QFUNC(state_aim);
-        class PointedAtTarget {
-            condition = QFUNC(pointedAtTarget);
-            targetState = "Shoot";
-        };
-        class HasWaypoint {
-            condition = QFUNC(hasWaypoint);
-            targetState = "MoveTo";
-        };
-    };
-
-    class Shoot {
-        onState = QFUNC(state_shoot);
-        class TargetDead {
-            condition = QFUNC(targetDead);
-            targetState = "Hover";
-        };
-        class HasWaypoint {
-            condition = QFUNC(hasWaypoint);
-            targetState = "MoveTo";
         };
     };
 };

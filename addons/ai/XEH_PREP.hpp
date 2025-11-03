@@ -6,6 +6,7 @@ PREP(hasTarget);
 PREP(hasWaypoint);
 PREP(inAir);
 PREP(initJetpackUnit);
+PREP(pid_angle);
 PREP(pid_horizontal);
 PREP(pid_horizontal_x);
 PREP(pid_horizontal_y);

@@ -10,8 +10,7 @@ GVAR(jetpackUnits) = [];
 
 GVAR(defaultFlightTolerance) = 0.05; // percent
 GVAR(defaultHoverTolerance) = 0.05; // percent
-GVAR(defaultHoverHeight) = 20;  // meters
-GVAR(defaultFlySpeed) = 15;     // meters/second
+GVAR(defaultHoverHeight) = 10;  // meters
 GVAR(defaultRotateSpeed) = 30;     // degrees/second
 
 GVAR(fsm_flightManager) = [configFile >> QGVAR(fsm_flightManager)] call CBA_statemachine_fnc_createFromConfig;
