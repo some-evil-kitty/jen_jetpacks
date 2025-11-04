@@ -11,8 +11,7 @@
 
 params ["_unit"];
 
-if (objectParent _unit != _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit getVariable ["ace_dragging_isDragging",false]) OR (_unit getVariable ["ace_captives_isHandcuffed",false])) exitWith {}; 
-
+if (!isNull objectParent _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit getVariable ["ace_dragging_isDragging",false]) OR (_unit getVariable ["ace_captives_isHandcuffed",false])) exitWith {}; 
 
 if (_unit getVariable [QGVAR(jetpackDisabled),false]) exitWith {};
 
@@ -22,13 +21,13 @@ private _pack = backpackContainer _unit;
 private _packclass = typeOf _pack;
 private _config = configFile >> "CfgVehicles" >> _packclass;
 
-if (GVAR(debounce)) exitWith {};
+if (_unit getVariable [QGVAR(debounce), false]) exitWith {};
 
-GVAR(debounce) = true;
+_unit setVariable [QGVAR(debounce), true];
 
 [{
-GVAR(debounce) = false;			
-}, [], 0.1] call CBA_fnc_waitAndExecute;
+	_this setVariable [QGVAR(debounce), false];
+}, _unit, 0.1] call CBA_fnc_waitAndExecute;
 
 private _acceleration = GET_NUMBER(_config >> QGVAR(acceleration),4);
 private _resistance = GET_NUMBER(_config >> QGVAR(drag),6);
@@ -36,6 +35,7 @@ private _fuelCoef = GET_NUMBER(_config >> QGVAR(fuelCoef),1);
 private _heatCoef = GET_NUMBER(_config >> QGVAR(heatCoef),1);
 private _coolCoef = GET_NUMBER(_config >> QGVAR(coolCoef),1);
 private _strafeCoef = GET_NUMBER(_config >> QGVAR(strafeCoef),1);
+private _hoverCoef = GET_NUMBER(_config >> QGVAR(hoverCoef),1);
 private _ascensionCoef = GET_NUMBER(_config >> QGVAR(ascensionCoef),1);
 private _jumpCoef = GET_NUMBER(_config >> QGVAR(jumpCoef),1);
 private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),GVAR(maxFuel));
@@ -49,9 +49,9 @@ private _externalCondition = true;
 
 //allow external disablement of jetpacks and modification fom custom conditions
 
-private _argsArray = [_unit,_externalCondition,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_ascensionCoef,_jumpCoef,_fuelCapacity];
+private _argsArray = [_unit,_externalCondition,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_hoverCoef,_ascensionCoef,_jumpCoef,_fuelCapacity];
 [QGVAR(jetpackEvent), _argsArray] call CBA_fnc_localEvent;
-_argsArray params ["_unit","_externalCondition","_acceleration","_resistance","_fuelCoef","_heatCoef","_coolCoef","_strafeCoef","_ascensionCoef","_jumpCoef","_fuelCapacity"];
+_argsArray params ["_unit","_externalCondition","_acceleration","_resistance","_fuelCoef","_heatCoef","_coolCoef","_strafeCoef","_hoverCoef","_ascensionCoef","_jumpCoef","_fuelCapacity"];
 
 if !_externalCondition exitWith {};
 
@@ -68,7 +68,9 @@ _pack setVariable [QGVAR(tankSize),_fuelCapacity];
 
 [_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
 
-if !([GVAR(mainHandle)] call CBA_fnc_removePerFrameHandler) then {
+private _pfhHandle = _unit getVariable [QGVAR(mainHandle), -1];
+
+if !([_pfhHandle] call CBA_fnc_removePerFrameHandler) then {
 
 
 //Reset or set the idle timer 
@@ -84,7 +86,6 @@ _unit setUnitFreefallHeight 10000;
 // "Jump" when starting out
 private _pack = backpackContainer _unit;
 private _fuel = _pack getVariable [QGVAR(fuelAmount),_fuelCapacity];
-
 
 if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldown),false])) then
 {
@@ -105,7 +106,7 @@ playSound3D [QPATHTOF(snd\jetpack_loop.wss), _unit, false, getPosASL _unit, 1.5,
 _unit setVariable [QGVAR(isJetpacking),true];
 
 //Add the PFH
-GVAR(mainHandle) = [{
+_pfhHandle = [{
 
 // Prevent backlog when paused or alt-tabbed
 if (isGamePaused) exitWith {};
@@ -120,12 +121,10 @@ private _pack = backpackContainer _unit;
 private _heat = _pack getVariable [QGVAR(overheat),0];
 private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 if (isNil {_maxFuel}) then {
-	private _fuelCapacity = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack >> QGVAR(fuelCapacity),GVAR(maxFuel));
+	private _fuelCapacity = GET_NUMBER(configOf _pack >> QGVAR(fuelCapacity),GVAR(maxFuel));
 	_pack setVariable [QGVAR(tankSize),_fuelCapacity];
 };
 private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
-
-
 
 // Keep uncon people from continuing to fly
 if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _unit getVariable [QGVAR(jetpackDisabled),false]) exitWith 
@@ -138,9 +137,8 @@ if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _u
 };
 
 
-
 // Make sure you can take damage while on the ground, reset freefall height. It's more performant to do this each frame of the handler than to check. Also, increment the idle timer.
-if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (objectParent _unit != _unit) OR (lifeState _unit == "INCAPACITATED") OR ((getPosVisual _unit) select 2 < 0.05)) exitWith 
+if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (!isNull objectParent _unit) OR (lifeState _unit == "INCAPACITATED") OR ((getPosVisual _unit) select 2 < 0.05)) exitWith 
 {
 	//_unit allowdamage true; 
 	_unit setUnitFreefallHeight _oldfreefall;
@@ -177,7 +175,7 @@ if (_pack getVariable [QGVAR(cooldown),false] OR _fuel < 0.01) exitWith
 
 
 // Handle overheating
-if (_heat > GVAR(maxHeat)) exitWith {
+if (isPlayer _unit && { _heat > GVAR(maxHeat) }) exitWith {
 	_heat = _heat + 5;
 	_pack setVariable [QGVAR(cooldown),true];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
@@ -192,17 +190,37 @@ if (_heat > GVAR(maxHeat)) exitWith {
 
 // Reset overheating if needed (will only be needed in select situations, likely almost never)
  _pack setVariable [QGVAR(cooldown),false];
+ 
 
+_unit setVariable [QGVAR(acceleration),_acceleration];
 
 
 // Define our direction and velocity variables
 private _dir = direction _unit;
 private _vel = velocity _unit;
 
+private _moveUp = false;
+private _moveForward = false;
+private _moveBackward = false;
+private _moveLeft = false;
+private _moveRight = false;
 
+if (isPlayer _unit) then {
+	_moveUp = _unit getVariable [QGVAR(controlUp), false];
+	_moveForward = (inputAction "MoveForward" == 1);
+	_moveBackward = (inputAction "MoveBack" == 1);
+	_moveLeft = (inputAction "TurnLeft" == 1);
+	_moveRight = (inputAction "TurnRight" == 1);
+} else {
+	_moveUp = _unit getVariable [QGVAR(controlUp), false];
+	_moveForward = _unit getVariable [QGVAR(controlForward), false];
+	_moveBackward  = _unit getVariable [QGVAR(controlBackward), false];
+	_moveLeft = _unit getVariable [QGVAR(controlLeft), false];
+	_moveRight = _unit getVariable [QGVAR(controlRight), false];
+};
 
 // Check for controls, change velocity variable accordingly. Multiply by previous frametime to normalize for different performance situations.
-if (inputAction "MoveForward" == 1) then {
+if (_moveForward) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - (_fuelCoef * diag_deltaTime);
 _speed = diag_deltaTime * 5 * _acceleration;
@@ -212,7 +230,7 @@ _vel = [
 	(_vel select 2) + (5 * diag_deltaTime)
 ];};
 
-if (inputAction "TurnRight" == 1) then {
+if (_moveRight) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _speed = diag_deltaTime * 5 * _acceleration * _strafeCoef;
@@ -222,7 +240,7 @@ _vel =  [
 	(_vel select 2) + (4.9 * diag_deltaTime)
 ];};
 
-if (inputAction "TurnLeft" == 1) then {
+if (_moveLeft) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _speed = diag_deltaTime * 5 * _acceleration * _strafeCoef;
@@ -232,7 +250,7 @@ _vel =  [
 	(_vel select 2) + (4.9 * diag_deltaTime)
 ];};
 
-if (inputAction "MoveBack" == 1) then {
+if (_moveBackward) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _speed = diag_deltaTime * -5 * _acceleration;
@@ -242,7 +260,7 @@ _vel =  [
 	(_vel select 2) - (2.5 * diag_deltaTime)
 ];};
 
-if (_unit getVariable [QGVAR(controlUp),false]) then {
+if (_moveUp) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
 _fuel = _fuel - diag_deltaTime;
 _vel =  [
@@ -270,6 +288,7 @@ _pack setVariable [QGVAR(overheat),_heat];
 
 
 }, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _oldfreefall]] call CBA_fnc_addPerFrameHandler;
+_unit setVariable [QGVAR(mainHandle), _pfhHandle];
 
 } else 
 {
