@@ -63,6 +63,8 @@ private _tn_prev = 0;
 
 private _deltaAltitude = (_error * _pGain + _sum * _iGain + _derivative * _dGain);
 
+if (_deltaAltitude == 0) exitWith {0};
+
 private _a = _unit getVariable [QEGVAR(core,acceleration), 0];
 private _v0 = (velocity _unit select 2) ^ 2; 
 private _radicand = _v0 - 2 * _deltaAltitude * _a;
