@@ -65,13 +65,17 @@ _steering = _steering vectorAdd (_unit call FUNC(pid_horizontal));
 
 [_unit, _steering] call FUNC(move);
 
-private _direction = velocity _unit;
-_direction set [2, 0];
+if !(_unit getVariable [QGVAR(setRotation), false]) then {
+    private _direction = velocity _unit;
+    _direction set [2, 0];
 
-private _angle = acos ([0, 1, 0] vectorCos vectorNormalized _direction);
+    private _angle = acos ([0, 1, 0] vectorCos vectorNormalized _direction);
 
-private _pid = _unit getVariable QGVAR(pid_angle);
-_pid set [4, _angle];
-_unit setVariable [QGVAR(pid_angle), _pid];
+    private _pid = _unit getVariable QGVAR(pid_angle);
+    _pid set [4, _angle];
+    _unit setVariable [QGVAR(pid_angle), _pid];
 
-_unit call FUNC(pid_angle);
+    _unit call FUNC(pid_angle);
+} else {
+    _unit setVariable [QGVAR(setRotation), false];
+};

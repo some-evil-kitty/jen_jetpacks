@@ -18,7 +18,7 @@ _directionToTarget = vectorNormalized _directionToTarget;
 private _speedInDirection = vectorMagnitude (_directionToTarget vectorMultiply (_velocity vectorDotProduct _directionToTarget));
 
 private _a = _unit getVariable [QEGVAR(core,acceleration), 0];
-private _timeToGo = _distanceToTarget / (_speedInDirection + _a);
+private _timeToGo = _distanceToTarget / (1 + _speedInDirection + _a);
 
 if (_timeToGo < TTGO_THRESHOLD) exitWith {
     _unit setVariable [QGVAR(atWaypoint), true];

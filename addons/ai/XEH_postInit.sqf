@@ -11,18 +11,22 @@ GVAR(jetpackUnits) = [];
 GVAR(defaultFlightTolerance) = 0.15; // percent
 GVAR(defaultHoverTolerance) = 0.05; // percent
 GVAR(defaultHoverHeight) = 7;  // meters
-GVAR(defaultRotateSpeed) = 60;     // degrees/second
+GVAR(defaultRotateSpeed) = 220;     // degrees/second
 
 GVAR(fsm_flightManager) = [configFile >> QGVAR(fsm_flightManager)] call CBA_statemachine_fnc_createFromConfig;
 GVAR(fsm_combatManager) = [configFile >> QGVAR(fsm_combatManager)] call CBA_statemachine_fnc_createFromConfig;
-[QFUNC(cleanup), 10] call CBA_fnc_addPerFrameHandler;
+[FUNC(cleanup), 10] call CBA_fnc_addPerFrameHandler;
+
+[QGVAR(initUnit), {
+    _this call FUNC(initJetpackUnit);
+}] call CBA_fnc_addEventHandler;
 
 [{
     if !(GVAR(debug)) exitWith {};
     {
         private _flightState = [_x, GVAR(fsm_flightManager)] call CBA_statemachine_fnc_getCurrentState;
         private _combatState = [_x, GVAR(fsm_combatManager)] call CBA_statemachine_fnc_getCurrentState;
-        private _basePos = getPosATLVisual _x;
+        private _basePos = (getPosATLVisual _x) vectorAdd [0, 0, 2];
 
         drawIcon3D [
             "",

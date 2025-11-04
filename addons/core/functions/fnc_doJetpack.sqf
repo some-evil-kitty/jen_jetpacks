@@ -21,13 +21,13 @@ private _pack = backpackContainer _unit;
 private _packclass = typeOf _pack;
 private _config = configFile >> "CfgVehicles" >> _packclass;
 
-if (GVAR(debounce)) exitWith {};
+if (_unit getVariable [QGVAR(debounce), false]) exitWith {};
 
-GVAR(debounce) = true;
+_unit setVariable [QGVAR(debounce), true];
 
 [{
-GVAR(debounce) = false;			
-}, [], 0.1] call CBA_fnc_waitAndExecute;
+	_this setVariable [QGVAR(debounce), false];
+}, _unit, 0.1] call CBA_fnc_waitAndExecute;
 
 private _acceleration = GET_NUMBER(_config >> QGVAR(acceleration),4);
 private _resistance = GET_NUMBER(_config >> QGVAR(drag),6);
@@ -85,7 +85,6 @@ _unit setUnitFreefallHeight 10000;
 // "Jump" when starting out
 private _pack = backpackContainer _unit;
 private _fuel = _pack getVariable [QGVAR(fuelAmount),_fuelCapacity];
-
 
 if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldown),false])) then
 {
@@ -217,12 +216,6 @@ if (isPlayer _unit) then {
 	_moveBackward  = _unit getVariable [QGVAR(controlBackward), false];
 	_moveLeft = _unit getVariable [QGVAR(controlLeft), false];
 	_moveRight = _unit getVariable [QGVAR(controlRight), false];
-
-	_unit setVariable [QGVAR(controlUp), false];
-	_unit setVariable [QGVAR(controlForward), false];
-	_unit setVariable [QGVAR(controlBackward), false];
-	_unit setVariable [QGVAR(controlLeft), false];
-	_unit setVariable [QGVAR(controlRight), false];
 };
 
 // Check for controls, change velocity variable accordingly. Multiply by previous frametime to normalize for different performance situations.

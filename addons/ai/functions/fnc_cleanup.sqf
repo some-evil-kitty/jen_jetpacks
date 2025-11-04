@@ -6,8 +6,9 @@ GVAR(jetpackUnits) = GVAR(jetpackUnits) select {
 };
 private _seen = createHashmap;
 GVAR(jetpackUnits) = GVAR(jetpackUnits) select {
-    if (_x in _seen) exitWith { false };
-    _seen set [_x, 0];
+    private _hash = hashValue _x;
+    if (_hash in _seen) exitWith { false };
+    _seen set [_hash, 0];
     true
 };
 GVAR(jetpackUnits) = GVAR(jetpackUnits) select {
