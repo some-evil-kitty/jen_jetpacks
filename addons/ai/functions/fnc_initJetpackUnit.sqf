@@ -13,5 +13,10 @@ _unit setVariable [QGVAR(setRotation), false];
 if (_unit isNil QGVAR(hoverHeight)) then {
     _unit setVariable [QGVAR(hoverHeight), GVAR(defaultHoverHeight)];
 };
+_unit setUnitPos "UP";
+if !(isNil "lambs_danger_fnc_setdisableai") then {
+	[[_unit],0] call lambs_danger_fnc_setdisableai;
+};
+
 GVAR(jetpackUnits) pushBack _unit;
 
