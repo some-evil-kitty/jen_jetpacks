@@ -18,5 +18,7 @@ if !(isNil "lambs_danger_fnc_setdisableai") then {
 	[[_unit],0] call lambs_danger_fnc_setdisableai;
 };
 
+[_unit,true] call ace_headless_fnc_blacklist;
+
 GVAR(jetpackUnits) pushBack _unit;
 
