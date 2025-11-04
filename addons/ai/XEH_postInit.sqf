@@ -21,6 +21,26 @@ GVAR(fsm_combatManager) = [configFile >> QGVAR(fsm_combatManager)] call CBA_stat
     _this call FUNC(initJetpackUnit);
 }] call CBA_fnc_addEventHandler;
 
+["CAManBase", "SlotItemChanged", {
+	params ["_unit", "", "_slot", ""];
+    if !(isPlayer _unit) then {
+        if (_slot == 901) then {
+            if ([_unit] call EFUNC(core,hasJetpack)) then {
+                [QGVAR(initUnit), _unit, _unit] call CBA_fnc_targetEvent;
+            };
+        };
+    };
+}] call CBA_fnc_addClassEventHandler;
+
+["CAManBase", "init", {
+	params ["_unit"];
+    if !(isPlayer _unit) then {
+        if ([_unit] call EFUNC(core,hasJetpack)) then {
+            [QGVAR(initUnit), _unit, _unit] call CBA_fnc_targetEvent;
+        };
+    };
+}, true, [], true] call CBA_fnc_addClassEventHandler;
+
 [{
     if !(GVAR(debug)) exitWith {};
     {

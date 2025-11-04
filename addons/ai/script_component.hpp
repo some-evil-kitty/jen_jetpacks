@@ -1,8 +1,8 @@
 #define COMPONENT ai
 #include "\z\jen_jetpacks\addons\main\script_mod.hpp"
 
-#define DEBUG_MODE_FULL
-#define DISABLE_COMPILE_CACHE
+// #define DEBUG_MODE_FULL
+// #define DISABLE_COMPILE_CACHE
 
 #ifdef DEBUG_ENABLED_AI
     #define DEBUG_MODE_FULL
