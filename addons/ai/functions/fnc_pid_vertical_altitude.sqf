@@ -14,7 +14,7 @@ if (_below isNotEqualTo []) then {
 };
 
 if (GVAR(debug)) then {
-    drawLine3D [ASLtoAGL _start, ASLtoAGL _end, [1, 1, 0, 1], 5];
+    drawLine3D [ASLToAGL _start, ASLToAGL _end, [1, 1, 0, 1], 5];
 };
 
 private _error = _setpoint - _altitude;

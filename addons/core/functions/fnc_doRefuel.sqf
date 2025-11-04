@@ -25,7 +25,7 @@ if !(isNil {ace_common}) then {
 			jen_player removeItem _item;
 			private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 			if (isNil {_maxFuel}) then {
-			private _config = configFile >> "CfgVehicles" >> typeOf _pack;
+			private _config = configOf _pack;
 			private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),QGVAR(maxFuel));
 			_pack setVariable [QGVAR(tankSize),_fuelCapacity];};
 			private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
@@ -49,7 +49,7 @@ if !(isNil {ace_common}) then {
 		jen_player removeItem _item;
 		private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 		if (isNil {_maxFuel}) then {
-		private _config = configFile >> "CfgVehicles" >> typeOf _pack;
+		private _config = configOf _pack;
 		private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),QGVAR(maxFuel));
 		_pack setVariable [QGVAR(tankSize),_fuelCapacity];};
 		private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];

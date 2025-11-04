@@ -7,7 +7,7 @@
 if !(hasInterface) exitWith {};
 params ["_unit","_activate"];
 private _pack = backpackContainer _unit;
-private _config = (configFile >> "CfgVehicles" >> typeOf _pack);
+private _config = (configOf _pack);
 private _defaultPoints = ["effect_left","effect_right"];
 private _particlePoints = GET_ARRAY(_config >> QGVAR(particlePoints),_defaultPoints);
 

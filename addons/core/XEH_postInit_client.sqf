@@ -92,7 +92,7 @@ if (isNull _vehicle) exitWith {};
 	if (_slot == 901) then {
 		if ([_unit] call FUNC(hasJetpack)) then {
 			private _pack = backpackContainer _unit;
-			private _coolCoef = GET_NUMBER(configFile >> "CfgVehicles" >> typeOf _pack >> QGVAR(coolCoef),1);
+			private _coolCoef = GET_NUMBER(configOf _pack >> QGVAR(coolCoef),1);
 			[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
 		};
 	};

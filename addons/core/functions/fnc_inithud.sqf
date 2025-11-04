@@ -38,7 +38,7 @@ _handle = [{
 	private _pack = backpackContainer jen_player;
 	private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 	if (isNil {_maxFuel}) then {
-		private _fuelCapacity = [configFile >> "CfgVehicles" >> typeOf _pack, QGVAR(fuelCapacity),GVAR(maxFuel)] call BIS_fnc_returnConfigEntry;
+		private _fuelCapacity = [configOf _pack, QGVAR(fuelCapacity),GVAR(maxFuel)] call BIS_fnc_returnConfigEntry;
 		_pack setVariable [QGVAR(tankSize),_fuelCapacity];
 	};
 	private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];

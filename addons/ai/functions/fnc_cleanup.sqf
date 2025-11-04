@@ -1,7 +1,7 @@
 #include "script_component.hpp"
 
 // Periodic cleanup of whatever we need to cleanup
-private _seen = createHashmap;
+private _seen = createHashMap;
 GVAR(jetpackUnits) = GVAR(jetpackUnits) select {
     alive _x
 } select {

@@ -20,10 +20,10 @@ private _lineTests = [
 
 if (GVAR(debug)) then {
     _lineTests params ["_right", "_center", "_left", "_up"];
-    drawLine3D [ASLtoAGL (_right select 0), ASLtoAGL (_right select 1), [1, 0, 0, 1], 5];
-    drawLine3D [ASLtoAGL (_center select 0), ASLtoAGL (_center select 1), [1, 1, 1, 1], 5];
-    drawLine3D [ASLtoAGL (_left select 0), ASLtoAGL (_left select 1), [0, 0, 1, 1], 5];
-    drawLine3D [ASLtoAGL (_up select 0), ASLtoAGL (_up select 1), [0, 1, 0, 1], 5];
+    drawLine3D [ASLToAGL (_right select 0), ASLToAGL (_right select 1), [1, 0, 0, 1], 5];
+    drawLine3D [ASLToAGL (_center select 0), ASLToAGL (_center select 1), [1, 1, 1, 1], 5];
+    drawLine3D [ASLToAGL (_left select 0), ASLToAGL (_left select 1), [0, 0, 1, 1], 5];
+    drawLine3D [ASLToAGL (_up select 0), ASLToAGL (_up select 1), [0, 1, 0, 1], 5];
 };
 
 // We're gonna fly into something
