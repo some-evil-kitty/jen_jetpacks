@@ -18,14 +18,15 @@ private _itemsArray = [];
 } forEach items _unit;
 
 {
-	private _config = configFile >> "CfgMagazines" >> _x;
+	_x params ["_magazine", "_count"];
+	private _config = configFile >> "CfgMagazines" >> _magazine;
 	private _isFuelcan = GET_NUMBER(_config >> QEGVAR(core,isFuelCan),0) == 1;
 	if _isFuelcan then 
 	{
 		private _capacity = GET_NUMBER(_config >> QEGVAR(core,fuelCanSize),200);
 		_itemsArray pushBackUnique [_x, _capacity, [true,_count]];
 	};
-} forEach items _unit;
+} forEach magazinesAmmoFull _unit;
 
 private _children = [];
 
