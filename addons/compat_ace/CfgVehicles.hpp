@@ -11,6 +11,7 @@ class CfgVehicles
                     exceptions[] = {};
                     insertChildren = QUOTE([_player] call FUNC(insertRefuelChildren));
                     statement = "true";
+					icon = "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa";
                 };
             };
 	    };
