@@ -37,7 +37,7 @@ private _children = [];
 	private _childConfig = configFile >> (["CfgWeapons","CfgMagazines"] select _isMagazine) >> _item;
 	_children pushBack [[
 		format ["jen_jetpacks_refuelChild_%1",_forEachIndex],
-		format ["Use %1 (%2)", getText(_childConfig >> "DisplayName", str _count)],
+		format ["%1 (%2)", getText(_childConfig >> "DisplayName", str _count)],
 		getText(_childConfig >> "Picture"),
 		{
 		params ["", "", "_args"];
