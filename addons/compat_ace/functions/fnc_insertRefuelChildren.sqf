@@ -24,6 +24,7 @@ private _itemsArray = [];
 	if _isFuelcan then 
 	{
 		private _capacity = GET_NUMBER(_config >> QEGVAR(core,fuelCanSize),200);
+		private _count = GET_NUMBER(_config >> "count",1);
 		_itemsArray pushBackUnique [_x, _capacity, [true,_count]];
 	};
 } forEach magazinesAmmoFull _unit;
