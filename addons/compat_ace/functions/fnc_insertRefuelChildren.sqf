@@ -42,7 +42,7 @@ private _children = [];
 		{
 		params ["", "", "_args"];
 		_args params ["_unit", "_item", "_capacity", "_magazineData"];
-		[_item,_capacity,_magazineData] call EFUNC(core,doRefuel);
+		[_unit, _item ,_capacity, _magazineData] call EFUNC(core,doRefuel);
 		},
 		{true},
 		{},
