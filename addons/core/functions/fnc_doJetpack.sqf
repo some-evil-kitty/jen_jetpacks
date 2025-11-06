@@ -55,7 +55,14 @@ _argsArray params ["_unit","_externalCondition","_acceleration","_resistance","_
 
 if !_externalCondition exitWith {};
 
-if ((secondaryWeapon _unit) isNotEqualTo "") then {
+private _launcher = secondaryWeapon _unit;
+
+if (_launcher isNotEqualTo "") then {
+	if !(isNil {CBA_disposable_NormalLaunchers get _launcher}) exitWith {
+		_acceleration = _acceleration min 3;
+		_resistance = _resistance * 1.1;
+		_ascensionCoef = _ascensionCoef  * 0.9;
+	};
 	_acceleration = _acceleration min 2.5;
 	_resistance = _resistance * 1.2;
 	_ascensionCoef = _ascensionCoef  * 0.8;
