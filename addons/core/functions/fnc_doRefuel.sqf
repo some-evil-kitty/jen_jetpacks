@@ -25,7 +25,7 @@ if !(isNil {ace_common}) then {
 			_magazineData params ["_isMagazine", "_count"];
 			private _pack = backpackContainer _unit;
 			if (_isMagazine) then {
-				[_unit, _item, -1] call ace_common_fnc_adjustMagazineAmmo;
+				[_unit, _item, _count] call FUNC(decrementMagazineAmmo);
 			} else {
 				_unit removeItem _item;
 			};
@@ -67,5 +67,5 @@ if !(isNil {ace_common}) then {
 		_fuel = (_fuel + _fuelAmount) min _maxFuel;
 		_pack setVariable [QGVAR(fuelAmount),_fuel,true];
 		_unit switchMove "AmovPknlMstpSnonWnonDnon";
-	}, {_unit switchMove "AmovPknlMstpSnonWnonDnon";},[_unit, _item, _fuelamount_magazineData]] call CBA_fnc_progressBar;
+	}, {_unit switchMove "AmovPknlMstpSnonWnonDnon";},[_unit, _item, _fuelamount, _magazineData]] call CBA_fnc_progressBar;
 };

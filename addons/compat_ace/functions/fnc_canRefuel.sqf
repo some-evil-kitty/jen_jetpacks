@@ -14,9 +14,9 @@ _itemsToSearch = [];
 
 {
 	_itemsToSearch pushBackUnique [_x, "CfgMagazines"];
-} forEach magazinesAmmoFull _unit; 
+} forEach magazines _unit; 
 
-itemsToSearch findIf {
+_itemsToSearch findIf {
 	_x params ["_item", "_configParent"];
-	GET_NUMBER(configFile >> _configParent >> _x >> QEGVAR(core,isFuelCan),0) == 1;
+	GET_NUMBER(configFile >> _configParent >> _item >> QEGVAR(core,isFuelCan),0) == 1;
 } > -1;

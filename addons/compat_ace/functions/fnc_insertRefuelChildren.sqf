@@ -24,8 +24,7 @@ private _itemsArray = [];
 	if _isFuelcan then 
 	{
 		private _capacity = GET_NUMBER(_config >> QEGVAR(core,fuelCanSize),200);
-		private _count = GET_NUMBER(_config >> "count",1);
-		_itemsArray pushBackUnique [_x, _capacity, [true,_count]];
+		_itemsArray pushBackUnique [_magazine, _capacity, [true,_count]];
 	};
 } forEach magazinesAmmoFull _unit;
 
@@ -37,7 +36,7 @@ private _children = [];
 	private _childConfig = configFile >> (["CfgWeapons","CfgMagazines"] select _isMagazine) >> _item;
 	_children pushBack [[
 		format ["jen_jetpacks_refuelChild_%1",_forEachIndex],
-		format ["%1 (%2)", getText(_childConfig >> "DisplayName", str _count)],
+		format ["%1 (%2)", getText(_childConfig >> "DisplayName"), str _count],
 		getText(_childConfig >> "Picture"),
 		{
 		params ["", "", "_args"];
