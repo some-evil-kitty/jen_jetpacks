@@ -24,7 +24,8 @@ private _itemsArray = [];
 	if _isFuelcan then 
 	{
 		private _capacity = GET_NUMBER(_config >> QEGVAR(core,fuelCanSize),200);
-		_itemsArray pushBackUnique [_magazine, _capacity, [true,_count]];
+		private _maxAmmo = GET_NUMBER(_config >> "count",1);
+		_itemsArray pushBackUnique [_magazine, _capacity, [true, _count, _maxAmmo]];
 	};
 } forEach magazinesAmmoFull _unit;
 
@@ -32,21 +33,21 @@ private _children = [];
 
 {
 	_x params ["_item", "_capacity", "_magazineData"];
-	_magazineData params ["_isMagazine","_count"];
+	_magazineData params ["_isMagazine","_count", "_maxAmmo"];
 	private _childConfig = configFile >> (["CfgWeapons","CfgMagazines"] select _isMagazine) >> _item;
 	_children pushBack [[
-		format ["jen_jetpacks_refuelChild_%1",_forEachIndex],
-		format ["%1 (%2)", getText(_childConfig >> "DisplayName"), str _count],
+		format ["jen_jetpacks_refuelChild_%1", _forEachIndex],
+		format ["%1 (%2/%3)", getText(_childConfig >> "DisplayName"), str _count, str _maxAmmo],
 		getText(_childConfig >> "Picture"),
 		{
 		params ["", "", "_args"];
 		_args params ["_unit", "_item", "_capacity", "_magazineData"];
-		[_unit, _item ,_capacity, _magazineData] call EFUNC(core,doRefuel);
+		[_unit, _item , _capacity, _magazineData] call EFUNC(core,doRefuel);
 		},
 		{true},
 		{},
-		[_unit,_item, _capacity,_magazineData]
-	] call ace_interact_menu_fnc_createaction,[],_unit]
+		[_unit, _item, _capacity, _magazineData]
+	] call ace_interact_menu_fnc_createaction,[], _unit]
 } forEach _itemsArray;
 
 _children
