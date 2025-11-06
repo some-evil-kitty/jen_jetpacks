@@ -3,7 +3,7 @@
 // only executed on client
 
 [
-	"KJW's Jetpacks",
+	"Jenna's Jetpacks",
 	QGVAR(controls_activate),
 	"Jetpack - Toggle On/Off",
 	{
@@ -18,7 +18,7 @@
 ] call CBA_fnc_addKeybind;
 
 [
-	"KJW's Jetpacks",
+	"Jenna's Jetpacks",
 	QGVAR(controls_ascend),
 	"Jetpack - Up",
 	{

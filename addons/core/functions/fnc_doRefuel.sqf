@@ -7,22 +7,28 @@
 #include "script_component.hpp"
 
 
-params ["_item",["_fuelAmount",nil]];
+params ["_unit", "_item", ["_fuelAmount", nil], ["_magazineData", [false,1]]];
+_magazineData params ["_isMagazine", "_count"];
 
 if (isNil {_fuelAmount}) then {
-private _config = configFile >> "CfgWeapons" >> _item;
-_fuelAmount = GET_NUMBER(_config >> QGVAR(fuelCanAmount),200);
+	private _config = configFile >> (["CfgWeapons", "CfgMagazines"] select _isMagazine) >> _item;
+	_fuelAmount = GET_NUMBER(_config >> QGVAR(fuelCanAmount),200);
 };
 
 if !(isNil {ace_common}) then {
-	[jen_player, "Acts_carFixingWheel", 2] call ace_common_fnc_doAnimation;
+	[_unit, "Acts_carFixingWheel", 2] call ace_common_fnc_doAnimation;
 	[		
 		5, 
-		[_item, _fuelamount], 
+		[_unit, _item, _fuelamount,_magazineData], 
 		{
-			_this select 0 params ["_item","_fuelAmount"];
-			private _pack = backpackContainer jen_player;
-			jen_player removeItem _item;
+			_this select 0 params ["_unit", "_item", "_fuelAmount", "_magazineData"];
+			_magazineData params ["_isMagazine", "_count"];
+			private _pack = backpackContainer _unit;
+			if (_isMagazine) then {
+				[_unit, _item, _count] call FUNC(decrementMagazineAmmo);
+			} else {
+				_unit removeItem _item;
+			};
 			private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 			if (isNil {_maxFuel}) then {
 			private _config = configOf _pack;
@@ -32,21 +38,25 @@ if !(isNil {ace_common}) then {
 			[QGVAR(jetpackRefueled),[_pack,_fuel,_fuelAmount]] call CBA_fnc_localEvent;
 			_fuel = (_fuel + _fuelAmount) min _maxFuel;
 			_pack setVariable [QGVAR(fuelAmount),_fuel,true];
-			[jen_player, "AmovPknlMstpSnonWnonDnon", 2] call ace_common_fnc_doAnimation
+			[_unit, "AmovPknlMstpSnonWnonDnon", 2] call ace_common_fnc_doAnimation
 		}, 
 		{
-			[jen_player, "AmovPknlMstpSnonWnonDnon", 2] call ace_common_fnc_doAnimation
+			[_unit, "AmovPknlMstpSnonWnonDnon", 2] call ace_common_fnc_doAnimation
 		}
 		, "Refueling Jetpack..."
 	] call ace_common_fnc_progressBar
 } else {
-	jen_player switchMove "Acts_carFixingWheel";
+	_unit switchMove "Acts_carFixingWheel";
 	closeDialog 0;
-
 	["Refueling Jetpack...", 5, {true}, {
-		_this select 0 params ["_item","_fuelAmount"];
-		private _pack = backpackContainer jen_player;
-		jen_player removeItem _item;
+		_this select 0 params ["_unit", "_item", "_fuelAmount", "_magazineData"];
+		_magazineData params ["_isMagazine", "_count"];
+		private _pack = backpackContainer _unit;
+		if (_isMagazine) then {
+			_unit removeMagazine _item;
+		} else {
+			_unit removeItem _item;
+		};
 		private _maxFuel = _pack getVariable [QGVAR(tankSize),nil];
 		if (isNil {_maxFuel}) then {
 		private _config = configOf _pack;
@@ -56,6 +66,6 @@ if !(isNil {ace_common}) then {
 		[QGVAR(jetpackRefueled),[_pack,_fuel,_fuelAmount]] call CBA_fnc_localEvent;
 		_fuel = (_fuel + _fuelAmount) min _maxFuel;
 		_pack setVariable [QGVAR(fuelAmount),_fuel,true];
-		jen_player switchMove "AmovPknlMstpSnonWnonDnon";
-	}, {jen_player switchMove "AmovPknlMstpSnonWnonDnon";},[_item, _fuelamount]] call CBA_fnc_progressBar;
+		_unit switchMove "AmovPknlMstpSnonWnonDnon";
+	}, {_unit switchMove "AmovPknlMstpSnonWnonDnon";},[_unit, _item, _fuelamount, _magazineData]] call CBA_fnc_progressBar;
 };

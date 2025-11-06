@@ -16,5 +16,6 @@ class CfgPatches {
 
 // configs go here
 #include "CfgEventHandlers.hpp"
+#include "CfgMagazines.hpp"
 #include "CfgVehicles.hpp"
 #include "ACE_Arsenal_Stats.hpp"
