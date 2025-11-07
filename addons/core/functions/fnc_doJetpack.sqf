@@ -182,7 +182,7 @@ if (_pack getVariable [QGVAR(cooldown),false] OR _fuel < 0.01) exitWith
 
 
 // Handle overheating
-if (isPlayer _unit && { _heat > GVAR(maxHeat) }) exitWith {
+if ((_unit == jen_player) && { _heat > GVAR(maxHeat) }) exitWith {
 	_heat = _heat + 5;
 	_pack setVariable [QGVAR(cooldown),true];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
