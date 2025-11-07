@@ -48,6 +48,8 @@ private _hasDecremented = false;
 			_hasDecremented = true;
 		};
 		_container addMagazineAmmoCargo [_magazine,-1, _x];
-		_container addMagazineAmmoCargo [_magazine, 1, _magCount];
+		if (_magCount > 0) then {
+			_container addMagazineAmmoCargo [_magazine, 1, _magCount];
+		};
 	} forEach _magazinesContainer;
 } forEach _containers;

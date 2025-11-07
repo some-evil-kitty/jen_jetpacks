@@ -21,7 +21,7 @@ private _action =
 	QGVAR(refuelAction), //Action name
 	"Refuel Jetpack", //Display name
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", 
-	{["", 100] call FUNC(doRefuel)}, //Code
+	{[jen_player, "", backpackContainer jen_player, 100] call FUNC(doRefuel)}, //Code
 	{
 		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;
@@ -58,7 +58,7 @@ private _action =
 	QGVAR(refuelAction), //Action name
 	"Refuel Jetpack", //Display name
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", //Icon path
-	{["", 100] call FUNC(doRefuel)}, //Code
+	{[jen_player, "", backpackContainer jen_player, 100] call FUNC(doRefuel)}, //Code
 	{
 		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;

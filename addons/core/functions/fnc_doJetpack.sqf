@@ -119,7 +119,7 @@ _pfhHandle = [{
 if (isGamePaused) exitWith {};
 
 
-_this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_oldfreefall"];
+_this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_hoverCoef","_oldfreefall"];
 // Make sure damage is allowed
 
 
@@ -212,7 +212,7 @@ private _moveBackward = false;
 private _moveLeft = false;
 private _moveRight = false;
 
-if (isPlayer _unit) then {
+if (_unit == jen_player) then {
 	_moveUp = _unit getVariable [QGVAR(controlUp), false];
 	_moveForward = (inputAction "MoveForward" == 1);
 	_moveBackward = (inputAction "MoveBack" == 1);
@@ -244,7 +244,7 @@ _speed = diag_deltaTime * 5 * _acceleration * _strafeCoef;
 _vel =  [
 	(_vel select 0) + (sin (_dir + 90) * _speed),
 	(_vel select 1) + (cos (_dir + 90) * _speed),
-	(_vel select 2) + (4.9 * diag_deltaTime)
+	(_vel select 2) + (4.9 * diag_deltaTime * _hoverCoef)
 ];};
 
 if (_moveLeft) then {
@@ -254,7 +254,7 @@ _speed = diag_deltaTime * 5 * _acceleration * _strafeCoef;
 _vel =  [
 	(_vel select 0) + (sin (_dir - 90) * _speed),
 	(_vel select 1) + (cos (_dir - 90) * _speed),
-	(_vel select 2) + (4.9 * diag_deltaTime)
+	(_vel select 2) + (4.9 * diag_deltaTime * _hoverCoef)
 ];};
 
 if (_moveBackward) then {
@@ -294,7 +294,7 @@ _pack setVariable [QGVAR(fuelAmount), _fuel];
 _pack setVariable [QGVAR(overheat),_heat];
 
 
-}, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _oldfreefall]] call CBA_fnc_addPerFrameHandler;
+}, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _hoverCoef, _oldfreefall]] call CBA_fnc_addPerFrameHandler;
 _unit setVariable [QGVAR(mainHandle), _pfhHandle];
 
 } else 

@@ -1,5 +1,7 @@
 #include "script_component.hpp"
 
+if (missionName isEqualTo "Arsenal") exitWith {};
+
 // Units that are wearing the jetpack
 GVAR(debug) = false;
 #ifdef DEBUG_MODE_FULL

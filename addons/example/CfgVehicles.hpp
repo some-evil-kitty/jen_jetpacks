@@ -17,6 +17,7 @@ class CfgVehicles
         };
         EGVAR(core,particlePoints)[] = {"effect_Left","effect_Right"};
         mass = 150;
+        maximumLoad = 10;
     };
 
     class GVAR(mk5Jetpack_nato) : GVAR(mk5Jetpack_base)

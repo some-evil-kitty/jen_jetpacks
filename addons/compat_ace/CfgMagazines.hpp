@@ -4,9 +4,9 @@ class CfgMagazines
 
     class GVAR(magazineCan): CA_Magazine
     {
-        displayName = "Fuel Can Magazine";
+        displayName = "Fuel Can (Multi-Use)";
         count = 2;
-        scope = 2;
+        scope = 1;
         EGVAR(core,isFuelCan) = 1;
         EGVAR(core,fuelCanSize) = 200;
         picture = "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa";

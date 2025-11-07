@@ -58,7 +58,7 @@
 [QGVAR(refuelItemBase), "CONTAINER", "Refuel Jetpack", nil, "\A3\ui_f\data\igui\cfg\simpleTasks\types\refuel_ca.paa", {[jen_player] call FUNC(hasJetpack)}, {
 	params ["_unit", "_container", "_item", "_slot", "_params"];
 	closeDialog 0;
-	[_item] call FUNC(doRefuel);
+	[jen_player, _item, backpackContainer jen_player] call FUNC(doRefuel);
 	true
 }, false, []] call CBA_fnc_addItemContextMenuOption;
 

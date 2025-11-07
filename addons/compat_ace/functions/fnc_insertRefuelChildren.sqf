@@ -4,7 +4,7 @@
 //
 
 #include "script_component.hpp"
-params ["_unit"];
+params ["_unit", "_target"];
 
 private _itemsArray = [];
 {
@@ -41,13 +41,13 @@ private _children = [];
 		getText(_childConfig >> "Picture"),
 		{
 		params ["", "", "_args"];
-		_args params ["_unit", "_item", "_capacity", "_magazineData"];
-		[_unit, _item , _capacity, _magazineData] call EFUNC(core,doRefuel);
+		_args params ["_unit", "_item", "_target", "_capacity", "_magazineData"];
+		[_unit, _item, backpackContainer _target, _capacity, _magazineData] call EFUNC(core,doRefuel);
 		},
 		{true},
 		{},
-		[_unit, _item, _capacity, _magazineData]
-	] call ace_interact_menu_fnc_createaction,[], _unit]
+		[_unit, _item, _target, _capacity, _magazineData]
+	] call ace_interact_menu_fnc_createaction,[], _target]
 } forEach _itemsArray;
 
 _children
