@@ -18,7 +18,7 @@ class CfgPatches {
 class CfgMods {
     class PREFIX {
         dir = "@Jen_Jetpacks";
-        name = "KJW's Jetpacks";
+        name = "Jenna's Jetpacks";
 
         picture         = "title_co.paa";       // Picture displayed from the expansions menu. Optimal size is 2048x1024
         hideName        = "false";              // Hide the extension name in main menu and extension menu

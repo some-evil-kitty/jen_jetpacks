@@ -1,5 +1,5 @@
 dir = "@jen_jetpacks";
-name = "KJW's Jetpacks";
+name = "Jenna's Jetpacks";
 
 author = "Jenna";
 
