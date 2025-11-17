@@ -5,14 +5,14 @@
 
 
 ["ace_arsenal_displayclosed", {
-	if !([jen_player] call FUNC(hasJetpack)) exitWith {
+	if !([jen_player] call EFUNC(core,hasJetpack)) exitWith {
 	jen_player setVariable [QGVAR(hasJetpack),false,true];
 	};
-	jen_player setVariable [QGVAR(hasJetpack),([jen_player] call FUNC(hasJetpack)),true];
+	jen_player setVariable [QGVAR(hasJetpack),([jen_player] call EFUNC(core,hasJetpack)),true];
 	private _pack = backpackContainer jen_player;
 	private _packClass = typeOf _pack;
 	private _coolCoef = [configFile >> "CfgVehicles" >> _packclass, QGVAR(coolCoef),1] call BIS_fnc_returnConfigEntry;
-	[jen_player,_pack,_coolCoef] call FUNC(addCoolingHandle);
+	[jen_player,_pack,_coolCoef] call EFUNC(core,addCoolingHandle);
 	}] call CBA_fnc_addEventHandler;
 
 
@@ -21,7 +21,7 @@ private _action =
 	QGVAR(refuelAction), //Action name
 	"Refuel Jetpack", //Display name
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", 
-	{[jen_player, "", backpackContainer jen_player, 100] call FUNC(doRefuel)}, //Code
+	{[jen_player, "", backpackContainer jen_player, 100] call EFUNC(core,doRefuel)}, //Code
 	{
 		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;
@@ -58,7 +58,7 @@ private _action =
 	QGVAR(refuelAction), //Action name
 	"Refuel Jetpack", //Display name
 	"\z\ace\addons\refuel\ui\icon_refuel_interact.paa", //Icon path
-	{[jen_player, "", backpackContainer jen_player, 100] call FUNC(doRefuel)}, //Code
+	{[jen_player, "", backpackContainer jen_player, 100] call EFUNC(core,doRefuel)}, //Code
 	{
 		_pack = backpackContainer jen_player;
 		_packclass = typeOf _pack;
