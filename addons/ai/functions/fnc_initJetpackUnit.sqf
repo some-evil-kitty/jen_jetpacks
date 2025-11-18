@@ -14,6 +14,15 @@ if (_unit isNil QGVAR(hoverHeight)) then {
     _unit setVariable [QGVAR(hoverHeight), GVAR(defaultHoverHeight)];
 };
 _unit setUnitPos "UP";
+
+_unit addEventHandler ["AnimChanged", {
+	params ["_unit", "_anim"];
+    if !(_unit call EFUNC(core,hasJetpack)) exitWith {};
+    if (stance _unit isNotEqualTo "STAND") then {
+        _unit playActionNow "PlayerStand";
+    };
+}];
+
 if !(isNil "lambs_danger_fnc_setdisableai") then {
 	[[_unit],0] call lambs_danger_fnc_setdisableai;
 };
