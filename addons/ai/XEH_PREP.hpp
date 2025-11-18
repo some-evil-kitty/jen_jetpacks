@@ -26,6 +26,7 @@ PREP(state_combat_decideTarget);
 PREP(state_combat_land);
 PREP(state_combat_landOnRoof);
 PREP(state_combat_landOnRoof_enter);
+PREP(state_combat_makeUnitLand);
 PREP(state_combat_findRoof);
 PREP(state_combat_fly);
 PREP(state_combat_fly_enter);

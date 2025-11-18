@@ -200,6 +200,7 @@ class GVAR(fsm_combatManager) {
     class LandOnRoof {
         onStateEntered = QFUNC(state_combat_landOnRoof_enter);
         onState = QFUNC(state_combat_landOnRoof);
+        onStateLeaving = QFUNC(state_combat_makeUnitLand);
         class OnGround {
             condition = QUOTE(!(_this call FUNC(inAir)));
             targetState = "FightOnRoof";
