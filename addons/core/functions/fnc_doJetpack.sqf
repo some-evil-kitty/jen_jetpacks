@@ -288,11 +288,13 @@ _unit setVelocity _vel;
 
 
 // Increment heat downward for cooling down
-if (_heat > 0) then {_heat = _heat - diag_deltaTime/3};
 
-_pack setVariable [QGVAR(fuelAmount), _fuel];
-_pack setVariable [QGVAR(overheat),_heat];
+if (_unit == jen_player) then {
+	if (_heat > 0) then {_heat = _heat - diag_deltaTime/3};
 
+	_pack setVariable [QGVAR(fuelAmount), _fuel];
+	_pack setVariable [QGVAR(overheat),_heat];
+};
 
 }, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _hoverCoef, _oldfreefall]] call CBA_fnc_addPerFrameHandler;
 _unit setVariable [QGVAR(mainHandle), _pfhHandle];
