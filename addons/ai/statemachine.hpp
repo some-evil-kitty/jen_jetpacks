@@ -200,6 +200,17 @@ class GVAR(fsm_combatManager) {
     class LandOnRoof {
         onStateEntered = QFUNC(state_combat_landOnRoof_enter);
         onState = QFUNC(state_combat_landOnRoof);
+        class OnGround {
+            condition = QUOTE(!(_this call FUNC(inAir)));
+            targetState = "FightOnRoof";
+        };
+        class NewContact {
+            condition = QUOTE(_this call FUNC(shouldRefresh));
+            targetState = "Urban";
+        };
+    };
+
+    class FightOnRoof {
         class NewContact {
             condition = QUOTE(_this call FUNC(contactChanged) || { _this call FUNC(shouldRefresh) });
             targetState = "Urban";
