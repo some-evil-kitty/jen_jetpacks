@@ -35,4 +35,7 @@ if (_potentialHouses isEqualTo []) exitWith {
     _unit setVariable [QGVAR(roofPos), [0, 0, 0]];
 };
 
-_unit setVariable [QGVAR(roofPos), selectRandom _potentialHouses];
+private _selectedHouse = selectRandom _potentialHouses;
+private _firstIntersect = (lineIntersectsSurfaces [_selectedHouse, [_selectedHouse#0, _selectedHouse#1, 0], _unit, _target, true, 1, "FIRE"]) #0;
+
+_unit setVariable [QGVAR(roofPos), _firstIntersect#0];
