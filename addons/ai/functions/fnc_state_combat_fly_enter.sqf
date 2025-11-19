@@ -4,4 +4,4 @@ params ["_unit"];
 
 [QGVAR(takeoff), _unit] call CBA_fnc_localEvent;
 
-_unit setVariable [QGVAR(lastUpdate), -1e99];
+_unit setVariable [QGVAR(lastUpdate), -1e38];

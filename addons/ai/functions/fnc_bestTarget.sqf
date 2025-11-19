@@ -13,7 +13,7 @@ if !(isNull _firing) exitWith {
 };
 
 private _allTargets = _unit targets [true, CONTACT_MAX_DISTANCE];
-private _bestDistance = 1e99;
+private _bestDistance = 1e38;
 private _bestTarget = objNull;
 {
     private _distance = _unit distance _x;

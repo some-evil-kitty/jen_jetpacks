@@ -12,7 +12,7 @@ class GVAR(fsm_flightManager) {
         class Falling {
             condition = QFUNC(falling);
             targetState = "FlyStart";
-        }
+        };
     };
 
     class FlyStart {
@@ -219,6 +219,10 @@ class GVAR(fsm_combatManager) {
     class FightOnRoof {
         class NewContact {
             condition = QUOTE(_this call FUNC(contactChanged) || { _this call FUNC(shouldRefresh) });
+            targetState = "Urban";
+        };
+        class InAirSuddenly {
+            condition = QUOTE(_this call FUNC(inAir));
             targetState = "Urban";
         };
     };

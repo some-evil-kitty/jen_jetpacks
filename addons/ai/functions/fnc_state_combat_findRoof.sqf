@@ -2,7 +2,9 @@
 
 params ["_unit"];
 private _target = _unit getVariable [QGVAR(combat_target), objNull];
-if (isNull _target) exitWith {};
+if (isNull _target) exitWith {
+    _unit setVariable [QGVAR(roofPos), [0, 0, 0]];
+};
 
 private _nearBuildings = _target nearObjects ["House", ROOF_COMBAT_RANGE];
 private _raycastsToDo = [];
