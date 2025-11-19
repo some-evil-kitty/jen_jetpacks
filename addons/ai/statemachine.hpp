@@ -3,6 +3,7 @@ class GVAR(fsm_flightManager) {
     skipNull = 1;
 
     class Ground {
+        onStateEntered = QFUNC(state_ground_enter);
         class RequestToTakeoff {
             condition = QFUNC(canTakeoff);
             events[] = { QGVAR(takeoff) };

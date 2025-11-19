@@ -39,6 +39,7 @@ PREP(state_combat_moveAway_enter);
 PREP(state_combat_moveAway_exit);
 PREP(state_flyStart);
 PREP(state_flyStart_enter);
+PREP(state_ground_enter);
 PREP(state_hover);
 PREP(state_land);
 PREP(state_land_enter);
