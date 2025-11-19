@@ -7,6 +7,7 @@ PREP(cleanup);
 PREP(contactChanged);
 PREP(contactDistance);
 PREP(enabled);
+PREP(falling);
 PREP(foundRoof);
 PREP(hasWaypoint);
 PREP(inAir);

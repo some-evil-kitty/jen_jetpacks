@@ -9,6 +9,10 @@ class GVAR(fsm_flightManager) {
             events[] = { QGVAR(takeoff) };
             targetState = "FlyStart";
         };
+        class Falling {
+            condition = QFUNC(falling);
+            targetState = "FlyStart";
+        }
     };
 
     class FlyStart {
