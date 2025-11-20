@@ -8,7 +8,6 @@
 
 params [["_unit",jen_player]];
 
-private _pack = backpackContainer _unit;
-private _packClass = typeOf _pack;
+private _packClass = backpack _unit;
 
 GVAR(hashCache) getOrDefault [_packClass,false,false]
