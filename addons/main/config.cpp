@@ -26,10 +26,11 @@ class CfgMods {
 
         action          = "https://discord.gg/jw2GCgN2Yr"; // Website URL, that can accessed from the expansions menu 
         actionName      = "Join the discord!";              // label of button/tooltip in extension menu
-        description     = "KJW's Jetpacks"; // Probably in context with action
+        description     = "Jenna's Jetpacks"; // Probably in context with action
 
         // Color used for DLC stripes and backgrounds (RGBA)
         dlcColor[] = {1, 0.0, 0.86, 1};
     };
 };
 // Configs go here
+#include "CfgSettings.hpp"

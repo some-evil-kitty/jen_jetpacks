@@ -7,6 +7,7 @@
 #define VERSION_AR MAJOR,MINOR,PATCH,BUILD
 
 #define REQUIRED_VERSION 2.12 // Change this if you want to be compatible with older Arma versions
+#define REQUIRED_CBA_VERSION {3,18,3}
 
 #ifdef COMPONENT_BEAUTIFIED
     #define COMPONENT_NAME QUOTE(jen - COMPONENT_BEAUTIFIED)
