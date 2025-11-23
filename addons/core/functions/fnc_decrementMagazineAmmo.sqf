@@ -26,6 +26,7 @@ private _magazinesContainer = [];
 private _hasDecremented = false;
 
 {
+	if _hasDecremented exitWith {};
 	_container = _x;
 
 	// Get all magazines of _magazine type
@@ -34,23 +35,18 @@ private _hasDecremented = false;
 	// Get the ammo count, filter out magazines with 0 ammo
 	_magazinesContainer = (_magazinesContainer apply {_x select 1}) select {_x != 0};
 
-	// If there are none, skip to next container
-	if (_magazinesContainer isEqualTo []) then {
+	// If there are none or this container does not contain the intended magazine, skip to the next
+	if ((_magazinesContainer isEqualTo []) || (_magazinesContainer find _magazineToAdjustCount == -1)) then {
 		continue;
 	};
 
-	// Sort, smallest first when removing
-	_magazinesContainer sort true;
-	{
-		if _hasDecremented exitWith {};
-		private _magCount = _x;
-		if (!_hasDecremented && (_magCount == _magazineToAdjustCount)) then {
-			_magCount = _magCount - 1;
-			_hasDecremented = true;
-		};
-		_container addMagazineAmmoCargo [_magazine,-1, _x];
-		if (_magCount > 0) then {
-			_container addMagazineAmmoCargo [_magazine, 1, _magCount];
-		};
-	} forEach _magazinesContainer;
+	private _magCount = _magazineToAdjustCount - 1; 
+
+	_container addMagazineAmmoCargo [_magazine, -1, _magazineToAdjustCount];
+	if (_magCount > 0) then {
+		_container addMagazineAmmoCargo [_magazine, 1, _magCount];
+	};
+
+	_hasDecremented = true;
+
 } forEach _containers;
