@@ -42,6 +42,7 @@ private _hasDecremented = false;
 	// Sort, smallest first when removing
 	_magazinesContainer sort true;
 	{
+		if _hasDecremented exitWith {};
 		private _magCount = _x;
 		if (!_hasDecremented && (_magCount == _magazineToAdjustCount)) then {
 			_magCount = _magCount - 1;
