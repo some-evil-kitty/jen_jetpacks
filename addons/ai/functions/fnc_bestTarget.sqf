@@ -12,7 +12,16 @@ if !(isNull _firing) exitWith {
     _firing
 };
 
-private _allTargets = _unit targets [true, CONTACT_MAX_DISTANCE];
+private _allTargets = _unit targets [true, CONTACT_MEDIUM_THRESHOLD];
+
+if (_allTargets isEqualTo []) then {
+    _allTargets = _unit targets [true, CONTACT_MAX_DISTANCE];
+};
+
+if (count _allTargets > CONTACT_MAX_TARGETS) then {
+    _allTargets resize (CONTACT_MAX_TARGETS)
+};
+
 private _bestDistance = 1e38;
 private _bestTarget = objNull;
 {
