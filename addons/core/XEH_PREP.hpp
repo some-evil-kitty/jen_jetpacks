@@ -1,6 +1,6 @@
 PREP(variableSync);
 PREP(doJetpack);
-PREP(initHUD);
+PREP(displayHUD);
 PREP(doRefuel);
 PREP(isSwimming);
 PREP(addCoolingHandle);

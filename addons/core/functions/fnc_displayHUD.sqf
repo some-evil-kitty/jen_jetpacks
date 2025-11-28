@@ -3,26 +3,40 @@
 //
 //
 // Handles jetpack HUD creation 
-// Example:
-// call knd_fnc_jetpackHUD
-//
+
 
 #include "script_component.hpp"
 
 
-// To show HUD:
-QGVAR(HUDLayer) cutRsc [QGVAR(RscHUD), "PLAIN"];
+params ["_activate"];
+
+disableSerialization;
+
+GVAR(HUDHandle) call cba_fnc_removePerFrameHandler;
+
+if !_activate exitWith {
+	(QGVAR(HUDLayer) call BIS_fnc_rscLayer) cutRsc ["Default", "PLAIN",-1,false];
+	GVAR(HUDHandle) = nil;
+};
+
+(QGVAR(HUDLayer) call BIS_fnc_rscLayer) cutRsc [QGVAR(RscHUD), "PLAIN"];
 private _display = uiNamespace getVariable QGVAR(RscHUD);
+if (isNull _display) exitWith {};
 private _jetpackBackgroundGauge = _display displayCtrl 4948;
 private _jetpackFuelGauge = _display displayCtrl 4947;
 private _jetpackHeatGauge = _display displayCtrl 4946;
 
 _jetpackBackgroundGauge ctrlSetBackgroundColor [0,0,0,0.2];
 
-_handle = [{
+GVAR(HUDHandle) = [{
     params ["_args","_handle"];
     _args params ["_jetpackFuelGauge","_jetpackHeatGauge","_jetpackBackgroundGauge"];
-	if (!([jen_player] call FUNC(hasJetpack)) OR visibleMap OR (jen_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitWith 
+	if !([jen_player] call FUNC(hasJetpack)) exitWith {
+		(QGVAR(HUDLayer) call BIS_fnc_rscLayer) cutRsc ["Default", "PLAIN",-1,false];
+		GVAR(HUDHandle) call cba_fnc_removePerFrameHandler;
+		GVAR(HUDHandle) = nil;
+	};
+	if (visibleMap OR (jen_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitWith 
 	{
 		{
 			_x ctrlShow false
