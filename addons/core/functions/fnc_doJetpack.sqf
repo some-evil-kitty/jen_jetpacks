@@ -76,6 +76,12 @@ _pack setVariable [QGVAR(tankSize),_fuelCapacity];
 [_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
 
 private _pfhHandle = _unit getVariable [QGVAR(mainHandle), -1];
+private _source = _unit getVariable [QGVAR(soundSource),objNull];
+if (isNull _source) then {
+	private _source = "#dynamicsound" createVehicle [0,0,0];
+	_source attachTo [_unit,[-0.009,-0.008,0.356],"spine3"];
+	_unit setVariable [QGVAR(soundSource),_source];
+};
 
 if !([_pfhHandle] call CBA_fnc_removePerFrameHandler) then {
 
@@ -119,7 +125,7 @@ _pfhHandle = [{
 if (isGamePaused) exitWith {};
 
 
-_this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_hoverCoef","_oldfreefall"];
+_this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_hoverCoef","_oldfreefall","_soundSource"];
 // Make sure damage is allowed
 
 
@@ -138,8 +144,8 @@ if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _u
 {
 	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
+	deleteVehicle _soundSource;
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
-	[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
 	[_pack] call FUNC(variableSync);
 };
 
@@ -158,7 +164,7 @@ if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (!isNull objectPa
 	if (_idletimer < 0) exitWith 
 	{
 		[_this select 1] call CBA_fnc_removePerFrameHandler;
-		[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
+		deleteVehicle _soundSource;
 		[_pack] call FUNC(variableSync);
 		[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 		_unit setVariable [QGVAR(isJetpacking),false];
@@ -186,7 +192,7 @@ if ((_unit == jen_player) && { _heat > GVAR(maxHeat) }) exitWith {
 	_heat = _heat + 5;
 	_pack setVariable [QGVAR(cooldown),true];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
-	[GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler;
+	deleteVehicle _soundSource;
 	[_pack] call FUNC(variableSync);
 	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
@@ -296,8 +302,20 @@ if (_unit == jen_player) then {
 	_pack setVariable [QGVAR(overheat),_heat];
 };
 
-}, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _hoverCoef, _oldfreefall]] call CBA_fnc_addPerFrameHandler;
+}, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _hoverCoef, _oldfreefall, _source]] call CBA_fnc_addPerFrameHandler;
 _unit setVariable [QGVAR(mainHandle), _pfhHandle];
+
+_unit setVariable [QGVAR(soundHandle), [
+{
+	_this select 0 params ["_unit"];
+	if (isGamePaused) exitWith {};
+	private _source = _unit getVariable [QGVAR(soundSource),objNull];
+	if (isNull _source) exitWith {
+		(_this select 1) call CBA_fnc_removePerFrameHandler;
+	};
+	[QGVAR(say3dGlobal), [_source,QGVAR(soundLoop)]] call CBA_fnc_globalEvent;
+}, 
+0.49, [_unit]] call CBA_fnc_addPerFrameHandler];
 
 } else 
 {
@@ -305,34 +323,6 @@ _unit setVariable [QGVAR(mainHandle), _pfhHandle];
 	[_pack] call FUNC(variableSync);
 	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
-	private _source = _unit getVariable [QGVAR(soundSource),objNull];
 	deleteVehicle _source;
 	playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 4,1,10]; 
 };
-
-
-if !([GVAR(soundHandle)] call CBA_fnc_removePerFrameHandler) then
-{
-	GVAR(soundHandle) = [
-		{
-			_this select 0 params ["_unit"];
-			if (isGamePaused) exitWith {};
-			private _volume = 3;
-			if (!(isTouchingGround _unit or [_unit] call FUNC(isSwimming))) then 
-			{
-				private _volumecoef = {_unit getVariable [_x, false]} count [QGVAR(controlUp)];
-				_volumecoef = _volumecoef + ({inputAction _x == 1} count ["moveBack","TurnLeft","TurnRight","MoveForward"]);
-				_volume = 4 + _volume * _volumecoef;
-			};
-			private _source = _unit getVariable [QGVAR(soundSource),objNull];
-			if (isNull _source) then {
-			private _source = "#dynamicsound" createVehicle [0,0,0];
-			_source attachTo [_unit,[0,0,0]];
-			_unit setVariable [QGVAR(soundSource),_source];
-			};
-			[QGVAR(say3dGlobal), [_source,QGVAR(soundLoop)]] call CBA_fnc_globalEvent;
-		}, 
-		
-		0.49, [_unit]] call CBA_fnc_addPerFrameHandler;
-};
-
