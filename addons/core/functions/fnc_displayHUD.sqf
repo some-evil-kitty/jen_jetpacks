@@ -15,7 +15,7 @@ disableSerialization;
 GVAR(HUDHandle) call cba_fnc_removePerFrameHandler;
 
 if !_activate exitWith {
-	(QGVAR(HUDLayer) call BIS_fnc_rscLayer) cutRsc ["Default", "PLAIN",-1,false];
+	(QGVAR(HUDLayer) call BIS_fnc_rscLayer) cutFadeOut 0;
 	GVAR(HUDHandle) = nil;
 };
 
