@@ -144,8 +144,6 @@ if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _u
 {
 	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
-	private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
-	deleteVehicle _soundSource;
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
 	[_pack] call FUNC(variableSync);
 };
@@ -165,8 +163,6 @@ if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (!isNull objectPa
 	if (_idletimer < 0) exitWith 
 	{
 		[_this select 1] call CBA_fnc_removePerFrameHandler;
-		private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
-		deleteVehicle _soundSource;
 		[_pack] call FUNC(variableSync);
 		[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 		_unit setVariable [QGVAR(isJetpacking),false];
@@ -192,8 +188,6 @@ if ((_unit == jen_player) && { _heat > GVAR(maxHeat) }) exitWith {
 	_heat = _heat + 5;
 	_pack setVariable [QGVAR(cooldown),true];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
-	private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
-	deleteVehicle _soundSource;
 	[_pack] call FUNC(variableSync);
 	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
@@ -309,6 +303,9 @@ _unit setVariable [QGVAR(soundHandle), [
 	_this select 0 params ["_unit"];
 	if (isGamePaused) exitWith {};
 	private _source = _unit getVariable [QGVAR(soundSource),objNull];
+	if !(_unit getVariable [QGVAR(isJetpacking),false]) then {
+		deleteVehicle _source;
+	};
 	if (isNull _source) exitWith {
 		(_this select 1) call CBA_fnc_removePerFrameHandler;
 	};
