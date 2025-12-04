@@ -89,23 +89,17 @@ if (isNull _vehicle) exitWith {};
 
 ["CAManBase", "SlotItemChanged", {
 	params ["_unit", "_name", "_slot", "_assigned"];
+	if (_unit != jen_player) exitWith {};
 	if (_slot == 901) then {
 		if ([_unit] call FUNC(hasJetpack)) then {
 			[true] call FUNC(displayHUD);
 			private _pack = backpackContainer _unit;
 			private _coolCoef = GET_NUMBER(configOf _pack >> QGVAR(coolCoef),1);
 			[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
-		} else {
-			[false] call FUNC(displayHUD);
 		};
 	};
 }] call CBA_fnc_addClassEventHandler;
 
-["vehicle",{
-	// turn jetpack hud off if in vehicle
-	private _notInVehicle = (objectParent jen_player == jen_player);
-	[_notInVehicle] call knd_fnc_jetpackHUD;
-}] call CBA_fnc_addPlayerEventHandler;
 
 //todo: add isNil logic
 bocr_main_varblacklist = bocr_main_varblacklist + [QGVAR(tankSize),QGVAR(coolDown),QGVAR(coolingHandle)];
@@ -124,7 +118,21 @@ GVAR(maxHeat) = 40;
 
 ["unit", {
     jen_player = (_this select 0);
+	[jen_player call FUNC(hasJetpack)] call FUNC(displayHUD);
 }, true] call CBA_fnc_addPlayerEventHandler;
+
+jen_player addEventHandler ["SlotItemChanged", {
+	params ["_unit", "_name", "_slot", "_assigned"];
+	if (_unit != jen_player) exitWith {};
+	if (_slot == 901) then {
+		if ([_unit] call FUNC(hasJetpack)) then {
+			[true] call FUNC(displayHUD);
+			private _pack = backpackContainer _unit;
+			private _coolCoef = GET_NUMBER(configOf _pack >> QGVAR(coolCoef),1);
+			[_unit,_pack,_coolCoef] call FUNC(addCoolingHandle);
+		};
+	};
+}];
 
 GVAR(timeSinceLastBeep) = 2;
 

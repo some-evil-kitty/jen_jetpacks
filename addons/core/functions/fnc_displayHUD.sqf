@@ -32,11 +32,11 @@ GVAR(HUDHandle) = [{
     params ["_args","_handle"];
     _args params ["_jetpackFuelGauge","_jetpackHeatGauge","_jetpackBackgroundGauge"];
 	if !([jen_player] call FUNC(hasJetpack)) exitWith {
-		(QGVAR(HUDLayer) call BIS_fnc_rscLayer) cutRsc ["Default", "PLAIN",-1,false];
+		(QGVAR(HUDLayer) call BIS_fnc_rscLayer) cutFadeOut 0;
 		GVAR(HUDHandle) call cba_fnc_removePerFrameHandler;
 		GVAR(HUDHandle) = nil;
 	};
-	if (visibleMap OR (jen_player getVariable ["ACE_isUnconscious", false]) OR ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "")) exitWith 
+	if (visibleMap || (jen_player getVariable ["ACE_isUnconscious", false]) || ((call CBA_fnc_getActiveFeatureCamera) isNotEqualTo "") || !(isNull objectParent jen_player)) exitWith 
 	{
 		{
 			_x ctrlShow false

@@ -125,7 +125,7 @@ _pfhHandle = [{
 if (isGamePaused) exitWith {};
 
 
-_this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_hoverCoef","_oldfreefall","_soundSource"];
+_this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_hoverCoef","_oldfreefall"];
 // Make sure damage is allowed
 
 
@@ -144,6 +144,7 @@ if (isNull _pack OR !alive _unit OR !([_unit] call ace_common_fnc_isAwake) or _u
 {
 	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
+	private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
 	deleteVehicle _soundSource;
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
 	[_pack] call FUNC(variableSync);
@@ -164,13 +165,12 @@ if (isTouchingGround _unit or [_unit] call FUNC(isSwimming) or (!isNull objectPa
 	if (_idletimer < 0) exitWith 
 	{
 		[_this select 1] call CBA_fnc_removePerFrameHandler;
+		private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
 		deleteVehicle _soundSource;
 		[_pack] call FUNC(variableSync);
 		[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 		_unit setVariable [QGVAR(isJetpacking),false];
 		playSound3D [QPATHTOF(snd\jetpack_off.wss), _unit, false, getPosASL _unit, 5,1,20];
-		private _source = _unit getVariable [QGVAR(soundSource),objNull];
-		deleteVehicle _source;
 	};
 };
 
@@ -192,12 +192,11 @@ if ((_unit == jen_player) && { _heat > GVAR(maxHeat) }) exitWith {
 	_heat = _heat + 5;
 	_pack setVariable [QGVAR(cooldown),true];
 	[_this select 1] call CBA_fnc_removePerFrameHandler;
+	private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
 	deleteVehicle _soundSource;
 	[_pack] call FUNC(variableSync);
 	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
 	_unit setVariable [QGVAR(isJetpacking),false];
-	private _source = _unit getVariable [QGVAR(soundSource),objNull];
-	deleteVehicle _source;
 	playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
 };
 

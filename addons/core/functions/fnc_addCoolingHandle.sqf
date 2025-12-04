@@ -8,6 +8,8 @@
 
 params ["_unit","_pack","_coolCoef"];
 
+if !(local _unit) exitWith {};
+
 if (isNil {_pack getVariable [QGVAR(coolingHandle),nil]}) then {
 	private _handle = [
 	{
