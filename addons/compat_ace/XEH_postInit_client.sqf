@@ -76,4 +76,4 @@ private _action =
 
 }] call CBA_fnc_addEventHandler;
 
-[QGVAR(DOUBLES(stamina,factorID)), { [0.1, 1] select (jen_player getVariable [QGVAR(isJetpacking),true])) }] call ace_advanced_fatigue_fnc_addDutyFactor
+[QGVAR(DOUBLES(stamina,factorID)), { [0.1, 1] select (jen_player getVariable [QGVAR(isJetpacking),true]) }] call ace_advanced_fatigue_fnc_addDutyFactor
