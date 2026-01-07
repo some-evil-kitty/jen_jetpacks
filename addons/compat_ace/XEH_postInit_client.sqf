@@ -75,5 +75,3 @@ private _action =
 [_source, 0, ["ACE_MainActions"], _action] call ace_interact_menu_fnc_addActionToObject;
 
 }] call CBA_fnc_addEventHandler;
-
-[QGVAR(DOUBLES(stamina,factorID)), { [1, 0.1] select (jen_player getVariable [QGVAR(isJetpacking),true]) }] call ace_advanced_fatigue_fnc_addDutyFactor
