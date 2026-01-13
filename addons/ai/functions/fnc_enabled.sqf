@@ -2,4 +2,4 @@
 
 params ["_unit"];
 
-_unit getVariable [QGVAR(combat_enabled), false] && (_unit != jen_player) && (_unit checkAIFeature "PATH")
+_unit getVariable [QGVAR(combat_enabled), false] && (_unit != jen_player) && (_unit checkAIFeature "PATH") && (_unit call EFUNC(core,hasJetpack)) && (isNull objectParent _unit)
