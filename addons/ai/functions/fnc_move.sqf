@@ -4,6 +4,8 @@ params ["_unit", "_relativeCommand"];
 
 private _a = _unit getVariable [QEGVAR(core,acceleration), 0];
 
+if (_a == 0) exitWith {};
+
 private _ratioX = (_relativeCommand select 0) / _a;
 private _ratioY = (_relativeCommand select 1) / _a;
 

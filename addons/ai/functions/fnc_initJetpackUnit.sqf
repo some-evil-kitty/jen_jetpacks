@@ -6,6 +6,8 @@ if !(local _unit) exitWith {
     [QGVAR(initUnit), _unit, _unit] call CBA_fnc_targetEvent;
 };
 
+if !((_unit != jen_player) && (_unit checkAIFeature "PATH") && (_unit call EFUNC(core,hasJetpack)) && (isNull objectParent _unit)) exitWith {};
+
 if (_unit isNil QGVAR(combat_enabled)) then {
     _unit setVariable [QGVAR(combat_enabled), true];
 };
