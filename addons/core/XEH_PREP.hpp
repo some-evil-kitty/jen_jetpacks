@@ -9,3 +9,4 @@ PREP(hasJetpack);
 PREP(jetpackParticles);
 PREP(cacheJetpacks);
 PREP(decrementMagazineAmmo);
+PREP(cachedCall);
