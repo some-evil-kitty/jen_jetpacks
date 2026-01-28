@@ -47,3 +47,4 @@ PREP(state_land_enter);
 PREP(state_moveTo);
 PREP(state_moveTo_leave);
 PREP(terrainType);
+PREP(getSortedTargets);

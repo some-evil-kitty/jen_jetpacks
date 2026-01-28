@@ -10,3 +10,4 @@ PREP(jetpackParticles);
 PREP(cacheJetpacks);
 PREP(decrementMagazineAmmo);
 PREP(cachedCall);
+PREP(eraseCache);

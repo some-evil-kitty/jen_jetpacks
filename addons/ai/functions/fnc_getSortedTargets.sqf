@@ -2,7 +2,6 @@
 
 params ["_unit"];
 
-[array, parameters, algorithm, direction, filter] call BIS_fnc_sortBy
 
 private _allTargets = _unit targets [true, CONTACT_MEDIUM_THRESHOLD];
 
