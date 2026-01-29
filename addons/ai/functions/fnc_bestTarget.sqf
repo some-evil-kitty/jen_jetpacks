@@ -12,23 +12,15 @@ if !(isNull _firing) exitWith {
     _firing
 };
 
-private _allTargets = _unit targets [true, CONTACT_MEDIUM_THRESHOLD];
+private _allTargets = [_unit, FUNC(getSortedTargets), _unit, QGVAR(sortedTargets), 2] call EFUNC(core,cachedCall);
+
+_allTargets = _allTargets select {alive _x};
 
 if (_allTargets isEqualTo []) then {
-    _allTargets = _unit targets [true, CONTACT_MAX_DISTANCE];
+    [_unit, GVAR(fsm_combatManager), ([_unit, GVAR(fsm_combatManager)] call CBA_statemachine_fnc_getCurrentState), "Idle"] call CBA_statemachine_fnc_manualTransition;
+    objNull
 };
 
-if (count _allTargets > CONTACT_MAX_TARGETS) then {
-    _allTargets resize (CONTACT_MAX_TARGETS)
-};
+private _bestTarget = _allTargets#0;
 
-private _bestDistance = 1e38;
-private _bestTarget = objNull;
-{
-    private _distance = _unit distance _x;
-    if (_distance < _bestDistance) then {
-        _bestDistance = _distance;
-        _bestTarget = _x;
-    };
-} forEach _allTargets;
 _bestTarget
