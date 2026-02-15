@@ -22,8 +22,7 @@ private _handle = [
 		_handle call CBA_fnc_removePerFrameHandler;
 	};
 	if isNull _pack exitWith {
-		[_this select 1] call CBA_fnc_removePerFrameHandler;
-		_pack setVariable [QGVAR(coolingHandle),nil];
+		_handle call CBA_fnc_removePerFrameHandler;
 	};
 	if (_unit getVariable [QGVAR(isJetpacking),false]) exitWith {};
 	private _heat = _pack getVariable [QGVAR(overheat),0];
