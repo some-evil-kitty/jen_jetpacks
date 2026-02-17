@@ -18,7 +18,7 @@ private _handle = [
 	if (isGamePaused) exitWith {};
 	params ["_args", "_handle"];
 	_args params ["_unit","_pack","_coolCoef"];
-	if (_handle != (_pack getVariable [QGVAR(coolingHandle), _handle]) exitWith {
+	if (_handle != (_pack getVariable [QGVAR(coolingHandle), _handle])) exitWith {
 		_handle call CBA_fnc_removePerFrameHandler;
 	};
 	if isNull _pack exitWith {
