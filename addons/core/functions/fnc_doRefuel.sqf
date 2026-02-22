@@ -17,7 +17,7 @@ if (isNil {_fuelAmount}) then {
 
 if !(isNil {ace_common}) then {
 	[_unit, "Acts_carFixingWheel", 1] call ace_common_fnc_doAnimation;
-	[		
+	[ace_common_fnc_progressBar, 	[		
 		5, 
 		[_unit, _item, _jetpack, _fuelamount,_magazineData], 
 		{
@@ -43,7 +43,8 @@ if !(isNil {ace_common}) then {
 			[_unit, "AmovPknlMstpSnonWnonDnon", 2] call ace_common_fnc_doAnimation
 		}
 		, "Refueling Jetpack..."
-	] call ace_common_fnc_progressBar
+	] ] call CBA_fnc_execNextFrame;
+
 } else {
 	_unit switchMove "Acts_carFixingWheel";
 	closeDialog 0;
