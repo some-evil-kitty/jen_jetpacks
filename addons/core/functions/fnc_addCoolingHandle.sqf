@@ -11,7 +11,9 @@ params ["_unit","_pack","_coolCoef"];
 if !(local _unit) exitWith {};
 
 private _oldHandle = _pack getVariable [QGVAR(coolingHandle),nil];
-[_oldHandle] call CBA_fnc_removePerFrameHandler;
+if !(isNil "_oldHandle") then {
+	_oldHandle call CBA_fnc_removePerFrameHandler;
+};
 
 private _handle = [
 {
