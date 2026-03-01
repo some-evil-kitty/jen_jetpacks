@@ -16,8 +16,6 @@ PREP(initJetpackUnit);
 PREP(move);
 PREP(pid_angle);
 PREP(pid_horizontal);
-PREP(pid_horizontal_x);
-PREP(pid_horizontal_y);
 PREP(pid_vertical);
 PREP(pid_vertical_altitude);
 PREP(pid_vertical_speed);

@@ -27,17 +27,7 @@ if (_ratioY < -GVAR(defaultFlightTolerance)) then {
     _moveBackward = true;
 };
 
-if ((_relativeCommand select 2) < 0) then {
-    _a = -9.81;
-};
-private _ratioZ = (_relativeCommand select 2) / _a;
-
-private _moveUp = false;
-if (_a > 0) then {
-    _moveUp = _ratioZ > (1 + GVAR(defaultHoverTolerance));
-} else {
-    _moveUp = _ratioZ < (1 - GVAR(defaultHoverTolerance));
-};
+private _moveUp = (_relativeCommand select 2) > 0;
 
 _unit setVariable [QEGVAR(core,controlUp), _moveUp];
 _unit setVariable [QEGVAR(core,controlLeft), _moveLeft];

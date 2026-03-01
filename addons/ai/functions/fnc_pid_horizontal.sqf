@@ -29,8 +29,8 @@ private _predictedPosition = _position vectorAdd (_velocity vectorMultiply _time
 
 private _zeroEffortMiss =  _predictedPosition vectorDiff _waypointPosition;
 
-private _commandedAccelerationX = ([_unit, _zeroEffortMiss select 0, _timeToGo] call FUNC(pid_horizontal_x));
-private _commandedAccelerationY = ([_unit, _zeroEffortMiss select 1, _timeToGo] call FUNC(pid_horizontal_y));
+private _commandedAccelerationX = [_unit getVariable QGVAR(pid_horizontal_speed_x), _zeroEffortMiss select 0] call CBA_pid_fnc_update;
+private _commandedAccelerationY = [_unit getVariable QGVAR(pid_horizontal_speed_y), _zeroEffortMiss select 1] call CBA_pid_fnc_update;
 
-private _relativeCommand = _unit vectorWorldToModelVisual [_commandedAccelerationX, _commandedAccelerationY, 0];
+private _relativeCommand = _unit vectorWorldToModelVisual [_commandedAccelerationX / _timeToGo, _commandedAccelerationY / _timeToGo, 0];
 _relativeCommand 

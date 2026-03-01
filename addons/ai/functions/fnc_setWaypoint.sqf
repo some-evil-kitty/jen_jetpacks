@@ -7,9 +7,7 @@ _unit setVariable [QGVAR(waypoint), _waypoint];
 _unit setVariable [QGVAR(hoverHeight), _hoverAltitude];
 
 if !(_unit isNil QGVAR(pid_verticalAltitude)) then {
-    private _pid = _unit getVariable QGVAR(pid_verticalAltitude);
-    _pid set [4, _hoverAltitude];
-    _unit setVariable [QGVAR(pid_verticalAltitude), _pid];
+    [_unit getVariable QGVAR(pid_verticalAltitude), _hoverAltitude] call CBA_pid_fnc_setpoint;
 };
 
 if !(_unit call FUNC(inAir)) then {
