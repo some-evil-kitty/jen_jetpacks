@@ -11,15 +11,20 @@ params ["_unit","_pack","_coolCoef"];
 if !(local _unit) exitWith {};
 
 private _oldHandle = _pack getVariable [QGVAR(coolingHandle),nil];
-[_oldHandle] call CBA_fnc_removePerFrameHandler;
+if !(isNil "_oldHandle") then {
+	_oldHandle call CBA_fnc_removePerFrameHandler;
+};
 
 private _handle = [
 {
 	if (isGamePaused) exitWith {};
-	_this select 0 params ["_unit","_pack","_coolCoef"];
+	params ["_args", "_handle"];
+	_args params ["_unit","_pack","_coolCoef"];
+	if (_handle != (_pack getVariable [QGVAR(coolingHandle), _handle])) exitWith {
+		_handle call CBA_fnc_removePerFrameHandler;
+	};
 	if isNull _pack exitWith {
-		[_this select 1] call CBA_fnc_removePerFrameHandler;
-		_pack setVariable [QGVAR(coolingHandle),nil];
+		_handle call CBA_fnc_removePerFrameHandler;
 	};
 	if (_unit getVariable [QGVAR(isJetpacking),false]) exitWith {};
 	private _heat = _pack getVariable [QGVAR(overheat),0];
@@ -28,7 +33,7 @@ private _handle = [
 	_pack setVariable [QGVAR(overheat),_heat];
 	};
 	if (_pack isNotEqualTo (backpackContainer _unit)) then {
-		[_this select 1] call CBA_fnc_removePerFrameHandler;
+		[_handle] call CBA_fnc_removePerFrameHandler;
 		_pack setVariable [QGVAR(coolingHandle),nil];
 		_pack setVariable [QGVAR(overheat),_heat,true];
 	};
