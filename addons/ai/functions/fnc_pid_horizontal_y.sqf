@@ -1,19 +1,11 @@
 #include "script_component.hpp"
 
-params ["_unit"];
+params ["_unit", "_zem", "_ttgo"];
 
-private _anglePid = _unit getVariable QGVAR(pid_angle);
-_anglePid params ["_pGain", "_iGain", "_dGain", "_errorHistory", "_setpoint"];
+private _horizontalPid = _unit getVariable QGVAR(pid_horizontal_speed_y);
+_horizontalPid params ["_pGain", "_iGain", "_dGain", "_errorHistory", "_setpoint"];
 
-private _absoluteError = _setpoint - direction _unit;
-private _error = _absoluteError;
-if (_absoluteError < -180) then {
-    _error = 360 + _absoluteError;
-};
-if (_absoluteError > 180) then {
-    _error = _absoluteError - 360;
-};
-
+private _error = _setpoint - _zem;
 _errorHistory pushBack [
     CBA_missionTime,
     _error
@@ -57,11 +49,6 @@ private _tn_prev = 0;
     _tn_prev = _tn;
 } forEach _errorHistory;
 
-private _deltaAngle = (_error * _pGain + _sum * _iGain + _derivative * _dGain);
-private _rotateSpeed = _unit getVariable [QGVAR(rotateSpeed), GVAR(defaultRotateSpeed)];
+private _deltaPosition = (_error * _pGain + _sum * _iGain + _derivative * _dGain);
 
-private _clippedRotation = -_rotateSpeed max (_deltaAngle min _rotateSpeed);
-
-private _newDirection = _clippedRotation * diag_deltaTime + direction _unit;
-private _currentDir = vectorDir _unit;
-_unit setVectorDir [sin _newDirection, cos _newDirection, _currentDir select 2];
+_deltaPosition / _ttgo

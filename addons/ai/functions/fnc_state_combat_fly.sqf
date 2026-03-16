@@ -18,7 +18,9 @@ if (CBA_missionTime - (_unit getVariable QGVAR(lastUpdate)) > 15) then {
 
 private _direction = (getPosATLVisual _unit) vectorFromTo _targetPosition;
 private _angle = acos ([0, 1, 0] vectorCos _direction);
-[_unit getVariable QGVAR(pid_angle), _angle] call CBA_pid_fnc_setpoint;
+private _pid = _unit getVariable QGVAR(pid_angle);
+_pid set [4, _angle];
+_unit setVariable [QGVAR(pid_angle), _pid];
 _unit setVariable [QGVAR(setRotation), true];
 
 _unit call FUNC(pid_angle);

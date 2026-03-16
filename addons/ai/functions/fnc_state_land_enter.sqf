@@ -2,18 +2,19 @@
 
 params ["_unit"];
 
-[
-    _unit getVariable QGVAR(pid_verticalAltitude),
-    0.7,
-    0.3,
-    0.8
-] call CBA_pid_fnc_setGains;
-[
-    _unit getVariable QGVAR(pid_verticalSpeed),
-    6.0,
-    0.25,
-    0.0
-] call CBA_pid_fnc_setGains;
+_unit setVariable [QGVAR(pid_verticalAltitude), [
+    0.7,                                // p gain
+    0.3,                                // i gain
+    0.8,                                // d gain
+    [],                                 // error history
+    0                                   // setpoint
+]];
 
-[_unit getVariable QGVAR(pid_verticalAltitude), 0] call CBA_pid_fnc_setpoint;
-[_unit getVariable QGVAR(pid_verticalSpeed), -0.5] call CBA_pid_fnc_setpoint;
+_unit setVariable [QGVAR(pid_verticalSpeed), [
+    3.0,                                // p gain
+    0.5,                                // i gain
+    0.0,                                // d gain
+    [],                                 // error history
+    -0.5                                // setpoint
+]];
+

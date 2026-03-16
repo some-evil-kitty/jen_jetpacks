@@ -71,7 +71,9 @@ if !(_unit getVariable [QGVAR(setRotation), false]) then {
 
     private _angle = acos ([0, 1, 0] vectorCos vectorNormalized _direction);
 
-    [_unit getVariable QGVAR(pid_angle), _angle] call CBA_pid_fnc_setpoint;
+    private _pid = _unit getVariable QGVAR(pid_angle);
+    _pid set [4, _angle];
+    _unit setVariable [QGVAR(pid_angle), _pid];
 
     _unit call FUNC(pid_angle);
 } else {
