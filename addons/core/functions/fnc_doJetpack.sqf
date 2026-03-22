@@ -57,7 +57,7 @@ if !_externalCondition exitWith {};
 
 private _launcher = secondaryWeapon _unit;
 
-if (_launcher isNotEqualTo "") then {
+if (!GVAR(ignoreLaunchers) && (_launcher isNotEqualTo "")) then {
 	if !(isNil {CBA_disposable_NormalLaunchers get _launcher}) exitWith {
 		_acceleration = _acceleration min 3;
 		_resistance = _resistance * 1.1;
