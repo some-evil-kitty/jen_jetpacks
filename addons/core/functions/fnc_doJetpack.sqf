@@ -11,7 +11,7 @@
 
 params ["_unit"];
 
-if (!isNull objectParent _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit getVariable ["ace_dragging_isDragging",false]) OR (_unit getVariable ["ace_captives_isHandcuffed",false]) || !(isNil {(_unit getVariable "ace_sitting_sittingStatus")})) exitWith {}; 
+if (!isNull objectParent _unit OR (lifeState _unit == "INCAPACITATED") OR (_unit getVariable ["ace_dragging_isDragging",false]) OR (_unit getVariable ["ace_captives_isHandcuffed",false])) exitWith {}; 
 
 if (_unit getVariable [QGVAR(jetpackDisabled),false]) exitWith {};
 
