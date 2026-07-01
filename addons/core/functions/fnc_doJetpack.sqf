@@ -120,7 +120,7 @@ if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldo
 		[{(getPosVisual _this)#2 > GVAR(fallControlThreshold)}, {
 			_this setVariable [QGVAR(canControlFall), true];
 		}, _unit, 3, {}] call CBA_fnc_waitUntilAndExecute;
-		_this setVariable [QGVAR(canControlFall), false];
+		_unit setVariable [QGVAR(canControlFall), false];
 	};
 
 	_unit setPosASL _pos;

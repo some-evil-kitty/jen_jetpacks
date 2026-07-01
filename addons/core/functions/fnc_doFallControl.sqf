@@ -77,8 +77,8 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
     private _projectedTime = (2 * _height) / _verticalSpeed;
     private _lateralDerivative = _lateralSpeed / _projectedTime;
 
-    private _verticalSpeed = _verticalSpeed - (_verticalDerivative * diag_deltaTime);
-    private _lateralSpeed = _lateralSpeed - (_lateralDerivative * diag_deltaTime);
+    private _verticalSpeed = _verticalSpeed + (_verticalDerivative * diag_deltaTime) + (9.8 * diag_deltaTime);
+    private _lateralSpeed = _lateralSpeed + (_lateralDerivative * diag_deltaTime);
 
     _velocity = [
         (sin _direction * _lateralSpeed),
@@ -88,4 +88,4 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
 
     _unit setVelocity _velocity;
 
-}, [_unit, backpackContainer _unit, _fuelCoef, _heatCoef], 0] call CBA_fnc_addPerFrameHandler;
+}, 0, [_unit, backpackContainer _unit, _fuelCoef, _heatCoef]] call CBA_fnc_addPerFrameHandler;
