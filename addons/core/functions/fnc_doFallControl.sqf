@@ -21,6 +21,7 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
         deleteVehicle _soundSource;
         [_this select 1] call CBA_fnc_removePerFrameHandler;
         [_pack] call FUNC(variableSync);
+        playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
     };
 
     private _heat = _pack getVariable [QGVAR(overheat),0];
@@ -32,6 +33,27 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
     private _fuel = _pack getVariable [QGVAR(fuelAmount),_maxFuel];
 
     _fuel = _fuel - (_fuelCoef * diag_deltaTime);
+    _heat = _heat + (_heatCoef * diag_deltaTime);
+
+    _pack setVariable [QGVAR(overheat), _heat];
+    _pack setVariable [QGVAR(fuelAmount), _fuel];
+
+    if (_heat > GVAR(maxHeat)) exitWith {
+        _heat = _heat + 5;
+        _pack setVariable [QGVAR(cooldown),true];
+        [_this select 1] call CBA_fnc_removePerFrameHandler;
+        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+        deleteVehicle _soundSource;
+        [_pack] call FUNC(variableSync);
+        [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
+        _unit setVariable [QGVAR(isJetpacking),false];
+        playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
+    };
+
+    if (_pack getVariable [QGVAR(cooldown),false] OR _fuel < 0.01) exitWith 
+    {
+        _pack setVariable [QGVAR(overheat),_heat];
+    };
 
     // get variables
     private _velocity = velocity _unit;
@@ -40,7 +62,11 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
 
     // early exit for landed
     if (_height < 0.05) exitWith {
+        _handle call CBA_fnc_removePerFrameHandler;
+        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+        deleteVehicle _soundSource;
         [_pack] call FUNC(variableSync);
+        playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
         [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
     };
 
@@ -53,8 +79,6 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
 
     private _verticalSpeed = _verticalSpeed - (_verticalDerivative * diag_deltaTime);
     private _lateralSpeed = _lateralSpeed - (_lateralDerivative * diag_deltaTime);
-
-
 
     _velocity = [
         (sin _direction * _lateralSpeed),
