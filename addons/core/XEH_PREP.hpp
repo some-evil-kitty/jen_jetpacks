@@ -11,3 +11,4 @@ PREP(cacheJetpacks);
 PREP(decrementMagazineAmmo);
 PREP(cachedCall);
 PREP(eraseCache);
+PREP(doFallControl);

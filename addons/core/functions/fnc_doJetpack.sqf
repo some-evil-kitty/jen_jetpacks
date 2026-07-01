@@ -40,6 +40,7 @@ private _ascensionCoef = GET_NUMBER(_config >> QGVAR(ascensionCoef),1);
 private _jumpCoef = GET_NUMBER(_config >> QGVAR(jumpCoef),1);
 private _forwardCoef = GET_NUMBER(_config >> QGVAR(forwardCoef),0);
 private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),GVAR(maxFuel));
+private _hasFallControl = (GET_NUMBER(_config >> QGVAR(hasFallControl),0)) == 1;
 
 // Global multipliers
 
@@ -49,10 +50,11 @@ _heatCoef = _heatCoef * GVAR(globalheatCoef);
 private _externalCondition = true;
 
 //allow external disablement of jetpacks and modification fom custom conditions
+// params are out of order for backwards compat
 
-private _argsArray = [_unit,_externalCondition,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_hoverCoef,_ascensionCoef,_jumpCoef,_fuelCapacity];
+private _argsArray = [_unit,_externalCondition,_acceleration,_resistance,_fuelCoef,_heatCoef,_coolCoef,_strafeCoef,_hoverCoef,_ascensionCoef,_jumpCoef,_fuelCapacity,_forwardCoef,_hasFallControl];
 [QGVAR(jetpackEvent), _argsArray] call CBA_fnc_localEvent;
-_argsArray params ["_unit","_externalCondition","_acceleration","_resistance","_fuelCoef","_heatCoef","_coolCoef","_strafeCoef","_hoverCoef","_ascensionCoef","_jumpCoef","_fuelCapacity"];
+_argsArray params ["_unit","_externalCondition","_acceleration","_resistance","_fuelCoef","_heatCoef","_coolCoef","_strafeCoef","_hoverCoef","_ascensionCoef","_jumpCoef","_fuelCapacity", "_forwardCoef", "_hasFallControl"];
 
 if !_externalCondition exitWith {};
 
@@ -132,7 +134,7 @@ _pfhHandle = [{
 if (isGamePaused) exitWith {};
 
 
-_this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_hoverCoef","_oldfreefall"];
+_this select 0 params ["_unit","_acceleration","_resistance","_fuelCoef","_heatCoef","_ascensionCoef","_strafeCoef","_hoverCoef","_oldfreefall","_hasFallControl"];
 // Make sure damage is allowed
 
 
@@ -306,9 +308,20 @@ if (_unit == jen_player) then {
 
 	_pack setVariable [QGVAR(fuelAmount), _fuel];
 	_pack setVariable [QGVAR(overheat),_heat];
+
+	private _height = (getPosVisual _unit) select 2;
+	if (_height < GVAR(fallControlThreshold)) then {
+		[_unit, _fuelCoef, _heatCoef] call FUNC(doFallControl);
+		_unit setVariable [QGVAR(isJetpacking),false];
+		private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+		deleteVehicle _soundSource;
+		[_this select 1] call CBA_fnc_removePerFrameHandler;
+		[_pack] call FUNC(variableSync);
+	};
+
 };
 
-}, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _hoverCoef, _oldfreefall, _source]] call CBA_fnc_addPerFrameHandler;
+}, 0, [_unit,_acceleration, _resistance,_fuelCoef,_heatCoef,_ascensioncoef,_strafeCoef, _hoverCoef, _oldfreefall, _hasFallControl]] call CBA_fnc_addPerFrameHandler;
 _unit setVariable [QGVAR(mainHandle), _pfhHandle];
 
 _unit setVariable [QGVAR(soundHandle), [
