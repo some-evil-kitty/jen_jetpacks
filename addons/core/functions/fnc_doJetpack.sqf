@@ -42,6 +42,7 @@ private _forwardCoef = GET_NUMBER(_config >> QGVAR(forwardCoef),0);
 private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),GVAR(maxFuel));
 private _hasFallControl = (GET_NUMBER(_config >> QGVAR(hasFallControl),0)) == 1;
 
+
 // Global multipliers
 
 _fuelCoef = _fuelCoef * GVAR(globalFuelCoef);
@@ -115,6 +116,13 @@ if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldo
 		(_vel select 1) + (cos _dir * _forwardVelocity),
 		(_vel select 2) + 7 * _jumpCoef
 	];
+	if (_hasFallControl) then {
+		[{(getPosVisual _this)#2 > GVAR(fallControlThreshold)}, {
+			_this setVariable [QGVAR(canControlFall), true];
+		}, _unit, 3, {}] call CBA_fnc_waitUntilAndExecute;
+		_this setVariable [QGVAR(canControlFall), false];
+	};
+
 	_unit setPosASL _pos;
 	_unit setVelocity _vel;
 	playSound3D [QPATHTOF(snd\jetpack_ignition.wss), _unit, false, getPosASL _unit,5,1,30];
@@ -310,7 +318,7 @@ if (_unit == jen_player) then {
 	_pack setVariable [QGVAR(overheat),_heat];
 
 	private _height = (getPosVisual _unit) select 2;
-	if (_height < GVAR(fallControlThreshold)) then {
+	if (_height < GVAR(fallControlThreshold) && (_unit getVariable [QGVAR(canControlFall), false])) then {
 		[_unit, _fuelCoef, _heatCoef] call FUNC(doFallControl);
 		_unit setVariable [QGVAR(isJetpacking),false];
 		private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
