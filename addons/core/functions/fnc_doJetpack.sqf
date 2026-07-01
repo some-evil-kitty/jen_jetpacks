@@ -38,6 +38,7 @@ private _strafeCoef = GET_NUMBER(_config >> QGVAR(strafeCoef),1);
 private _hoverCoef = GET_NUMBER(_config >> QGVAR(hoverCoef),1);
 private _ascensionCoef = GET_NUMBER(_config >> QGVAR(ascensionCoef),1);
 private _jumpCoef = GET_NUMBER(_config >> QGVAR(jumpCoef),1);
+private _forwardCoef = GET_NUMBER(_config >> QGVAR(forwardCoef),0);
 private _fuelCapacity = GET_NUMBER(_config >> QGVAR(fuelCapacity),GVAR(maxFuel));
 
 // Global multipliers
@@ -105,7 +106,13 @@ if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldo
 	_pos = getPosASL _unit;
 	_pos set [2, (_pos select 2) + 0.05];
 	_vel = velocity _unit;
-	_vel set [2, (_vel select 2) + 7 * _jumpCoef];
+	private _dir = direction _unit;
+	private _forwardVelocity = 5 * _forwardCoef;
+	_vel = [
+		(_vel select 0) + (sin _dir * _forwardVelocity),
+		(_vel select 1) + (cos _dir * _forwardVelocity),
+		(_vel select 2) + 7 * _jumpCoef
+	];
 	_unit setPosASL _pos;
 	_unit setVelocity _vel;
 	playSound3D [QPATHTOF(snd\jetpack_ignition.wss), _unit, false, getPosASL _unit,5,1,30];
