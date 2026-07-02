@@ -7,7 +7,7 @@
 #include "..\script_component.hpp"
 params ["_unit", "_fuelCoef", "_heatCoef"];
 
-[{
+GVAR(fallControlHandle) = [{
     params ["_args", "_handle"];
     _args params ["_unit", "_pack", "_fuelCoef", "_heatCoef"];
 
@@ -59,7 +59,6 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
     private _velocity = velocity _unit;
     private _height = (getPosVisual _unit)#2;
     private _direction = direction _unit;
-
     // early exit for landed
     if (_height < 0.05) exitWith {
         _handle call CBA_fnc_removePerFrameHandler;
@@ -71,14 +70,18 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
     };
 
     // derived variables
+    private _direction = _velocity#0 atan2 _velocity#1;
     private _verticalSpeed = _velocity#2;
     private _lateralSpeed = vectorMagnitude [_velocity#0, _velocity#1];
     private _verticalDerivative = (_verticalSpeed ^ 2) / (2 * _height);
     private _projectedTime = (2 * _height) / _verticalSpeed;
     private _lateralDerivative = _lateralSpeed / _projectedTime;
 
-    private _verticalSpeed = _verticalSpeed + (_verticalDerivative * diag_deltaTime) + (9.8 * diag_deltaTime);
-    private _lateralSpeed = _lateralSpeed + (_lateralDerivative * diag_deltaTime);
+    // Want to stop laterally before stopping vertically
+    _lateralDerivative = _lateralDerivative * 1.25;
+
+    private _verticalSpeed = _verticalSpeed + (((_verticalDerivative * diag_deltaTime) max 0) + (9.8 * diag_deltaTime));
+    private _lateralSpeed = _lateralSpeed + ((_lateralDerivative * diag_deltaTime) min 0);
 
     _velocity = [
         (sin _direction * _lateralSpeed),
@@ -87,5 +90,16 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
     ];
 
     _unit setVelocity _velocity;
+
+    // final sanity check
+
+    if ((vectorMagnitude _velocity) < 0.01) exitWith {
+        _handle call CBA_fnc_removePerFrameHandler;
+        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+        deleteVehicle _soundSource;
+        [_pack] call FUNC(variableSync);
+        playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
+        [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
+    };
 
 }, 0, [_unit, backpackContainer _unit, _fuelCoef, _heatCoef]] call CBA_fnc_addPerFrameHandler;
