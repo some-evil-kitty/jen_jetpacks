@@ -88,4 +88,15 @@ GVAR(fallControlHandle) = [{
 
     _unit setVelocity _velocity;
 
+    // final sanity check
+
+    if ((vectorMagnitude _velocity) < 0.1) exitWith {
+        _handle call CBA_fnc_removePerFrameHandler;
+        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+        deleteVehicle _soundSource;
+        [_pack] call FUNC(variableSync);
+        playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
+        [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
+    };
+
 }, 0, [_unit, backpackContainer _unit, _fuelCoef, _heatCoef]] call CBA_fnc_addPerFrameHandler;
