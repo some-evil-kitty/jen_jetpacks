@@ -325,11 +325,9 @@ if (_unit == jen_player) then {
 	_pack setVariable [QGVAR(overheat),_heat];
 
 	private _height = (getPosVisual _unit) select 2;
-	if (_height < GVAR(fallControlThreshold) && (_unit getVariable [QGVAR(canControlFall), false])) then {
+	if (_height < GVAR(fallControlThreshold) && (_unit getVariable [QGVAR(canControlFall), false]) && (_vel#2 < 0)) then {
 		[_unit, _fuelCoef, _heatCoef] call FUNC(doFallControl);
 		_unit setVariable [QGVAR(isJetpacking),false];
-		private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
-		deleteVehicle _soundSource;
 		[_this select 1] call CBA_fnc_removePerFrameHandler;
 		[_pack] call FUNC(variableSync);
 	};
