@@ -117,4 +117,4 @@ ADDON = true;
 
 
 jen_player = objNull;
-GVAR(fallControlThreshold) = 3.5;
+GVAR(fallControlThreshold) = 5;

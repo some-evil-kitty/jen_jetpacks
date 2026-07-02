@@ -59,7 +59,6 @@ GVAR(fallControlHandle) = [{
     private _velocity = velocity _unit;
     private _height = (getPosVisual _unit)#2;
     private _direction = direction _unit;
-
     // early exit for landed
     if (_height < 0.05) exitWith {
         _handle call CBA_fnc_removePerFrameHandler;
@@ -71,14 +70,18 @@ GVAR(fallControlHandle) = [{
     };
 
     // derived variables
+    private _direction = _velocity#0 atan2 _velocity#1;
     private _verticalSpeed = _velocity#2;
     private _lateralSpeed = vectorMagnitude [_velocity#0, _velocity#1];
     private _verticalDerivative = (_verticalSpeed ^ 2) / (2 * _height);
     private _projectedTime = (2 * _height) / _verticalSpeed;
     private _lateralDerivative = _lateralSpeed / _projectedTime;
 
-    private _verticalSpeed = _verticalSpeed - ((_verticalDerivative * diag_deltaTime) max 0) + (9.8 * diag_deltaTime);
-    private _lateralSpeed = _lateralSpeed - ((_lateralDerivative * diag_deltaTime) max 0);
+    // Want to stop laterally before stopping vertically
+    _lateralDerivative = _lateralDerivative * 1.25;
+
+    private _verticalSpeed = _verticalSpeed + (((_verticalDerivative * diag_deltaTime) max 0) + (9.8 * diag_deltaTime));
+    private _lateralSpeed = _lateralSpeed + ((_lateralDerivative * diag_deltaTime) min 0);
 
     _velocity = [
         (sin _direction * _lateralSpeed),
@@ -90,7 +93,7 @@ GVAR(fallControlHandle) = [{
 
     // final sanity check
 
-    if ((vectorMagnitude _velocity) < 0.1) exitWith {
+    if ((vectorMagnitude _velocity) < 0.01) exitWith {
         _handle call CBA_fnc_removePerFrameHandler;
         private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
         deleteVehicle _soundSource;
