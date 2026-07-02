@@ -7,7 +7,7 @@
 #include "..\script_component.hpp"
 params ["_unit", "_fuelCoef", "_heatCoef"];
 
-[{
+GVAR(fallControlHandle) = [{
     params ["_args", "_handle"];
     _args params ["_unit", "_pack", "_fuelCoef", "_heatCoef"];
 
@@ -77,8 +77,8 @@ params ["_unit", "_fuelCoef", "_heatCoef"];
     private _projectedTime = (2 * _height) / _verticalSpeed;
     private _lateralDerivative = _lateralSpeed / _projectedTime;
 
-    private _verticalSpeed = _verticalSpeed + (_verticalDerivative * diag_deltaTime) + (9.8 * diag_deltaTime);
-    private _lateralSpeed = _lateralSpeed + (_lateralDerivative * diag_deltaTime);
+    private _verticalSpeed = _verticalSpeed - ((_verticalDerivative * diag_deltaTime) max 0) + (9.8 * diag_deltaTime);
+    private _lateralSpeed = _lateralSpeed - ((_lateralDerivative * diag_deltaTime) max 0);
 
     _velocity = [
         (sin _direction * _lateralSpeed),

@@ -20,6 +20,13 @@ if !([_unit] call FUNC(hasJetpack)) exitWith {};
 private _pack = backpackContainer _unit;
 private _packclass = typeOf _pack;
 private _config = configFile >> "CfgVehicles" >> _packclass;
+if (GVAR(fallControlHandle) call CBA_fnc_removePerFrameHandler) exitWith {
+	private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+	deleteVehicle _soundSource;
+	[_pack] call FUNC(variableSync);
+	playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
+	[QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
+};
 
 if (_unit getVariable [QGVAR(debounce), false]) exitWith {};
 
