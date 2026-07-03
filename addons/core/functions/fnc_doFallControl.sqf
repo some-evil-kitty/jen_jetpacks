@@ -53,6 +53,13 @@ GVAR(fallControlHandle) = [{
     if (_pack getVariable [QGVAR(cooldown),false] OR _fuel < 0.01) exitWith 
     {
         _pack setVariable [QGVAR(overheat),_heat];
+        [_this select 1] call CBA_fnc_removePerFrameHandler;
+        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+        deleteVehicle _soundSource;
+        [_pack] call FUNC(variableSync);
+        [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
+        _unit setVariable [QGVAR(isJetpacking),false];
+        playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
     };
 
     // get variables
