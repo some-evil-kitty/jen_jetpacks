@@ -8,6 +8,7 @@
 params ["_unit", "_fuelCoef", "_heatCoef"];
 
 GVAR(fallControlHandle) = [{
+    if (isGamePaused) exitWith {};
     params ["_args", "_handle"];
     _args params ["_unit", "_pack", "_fuelCoef", "_heatCoef"];
 

@@ -111,6 +111,14 @@ _unit setUnitFreefallHeight 10000;
 private _pack = backpackContainer _unit;
 private _fuel = _pack getVariable [QGVAR(fuelAmount),_fuelCapacity];
 
+_unit setVariable [QGVAR(canControlFall),_hasFallControl];
+if (_hasFallControl) then {
+	[{(getPosVisual _this)#2 > GVAR(fallControlThreshold)}, {
+		_this setVariable [QGVAR(canControlFall), true];
+	}, _unit, 3, {}] call CBA_fnc_waitUntilAndExecute;
+	_unit setVariable [QGVAR(canControlFall), false];
+};
+
 if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldown),false])) then
 {
 	_pos = getPosASL _unit;
@@ -123,12 +131,6 @@ if (isTouchingGround _unit AND _fuel > 0.1 AND !(_pack getVariable [QGVAR(cooldo
 		(_vel select 1) + (cos _dir * _forwardVelocity),
 		(_vel select 2) + 7 * _jumpCoef
 	];
-	if (_hasFallControl) then {
-		[{(getPosVisual _this)#2 > GVAR(fallControlThreshold)}, {
-			_this setVariable [QGVAR(canControlFall), true];
-		}, _unit, 3, {}] call CBA_fnc_waitUntilAndExecute;
-		_unit setVariable [QGVAR(canControlFall), false];
-	};
 
 	_unit setPosASL _pos;
 	_unit setVelocity _vel;
