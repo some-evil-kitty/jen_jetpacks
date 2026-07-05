@@ -68,7 +68,7 @@ GVAR(fallControlHandle) = [{
     private _height = (getPosVisual _unit)#2;
     private _direction = direction _unit;
     // early exit for landed
-    if (_height < 0.05) exitWith {
+    if (_height < 0.1) exitWith {
         _handle call CBA_fnc_removePerFrameHandler;
         private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
         deleteVehicle _soundSource;
@@ -85,6 +85,18 @@ GVAR(fallControlHandle) = [{
     private _projectedTime = (2 * _height) / _verticalSpeed;
     private _lateralDerivative = _lateralSpeed / _projectedTime;
 
+    // Sanity check, no going up allowed
+    if (_verticalSpeed > 0.05) exitWith {
+        _pack setVariable [QGVAR(overheat),_heat];
+        [_this select 1] call CBA_fnc_removePerFrameHandler;
+        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+        deleteVehicle _soundSource;
+        [_pack] call FUNC(variableSync);
+        [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
+        _unit setVariable [QGVAR(isJetpacking),false];
+        playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
+    };
+
     // Want to stop laterally before stopping vertically
     _lateralDerivative = _lateralDerivative * 1.25;
 
@@ -98,16 +110,5 @@ GVAR(fallControlHandle) = [{
     ];
 
     _unit setVelocity _velocity;
-
-    // final sanity check
-
-    if ((vectorMagnitude _velocity) < 0.01) exitWith {
-        _handle call CBA_fnc_removePerFrameHandler;
-        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
-        deleteVehicle _soundSource;
-        [_pack] call FUNC(variableSync);
-        playSound3D [QPATHTOF(snd\jetpack_shutdown.wss), _unit, false, getPosASL _unit, 5,1,10];
-        [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
-    };
 
 }, 0, [_unit, backpackContainer _unit, _fuelCoef, _heatCoef]] call CBA_fnc_addPerFrameHandler;
