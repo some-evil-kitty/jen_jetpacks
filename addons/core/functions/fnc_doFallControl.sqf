@@ -77,6 +77,12 @@ GVAR(fallControlHandle) = [{
         [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
     };
 
+    // return control if above the control threshold
+    if (_height > GVAR(fallControlThreshold)) exitWith {
+        _handle call CBA_fnc_removePerFrameHandler;
+        _unit call FUNC(doJetpack);
+    };
+
     // derived variables
     private _direction = _velocity#0 atan2 _velocity#1;
     private _verticalSpeed = _velocity#2;

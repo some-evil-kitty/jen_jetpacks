@@ -2,7 +2,6 @@
 //
 //
 //
-// Performs all checks for jetpack and turns it on/off as needed. Backpack must contain knd_isjetpack = 1 in order to be considered a jetpack.
 //
 //
 //

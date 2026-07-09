@@ -3,7 +3,6 @@
 // Refuels a worn jetpack and "eats" the provided item
 //
 // Example:
-// ["knd_jetpackfuel", 200] call knd_fnc_jetpackRefuel
 #include "script_component.hpp"
 
 
