@@ -77,6 +77,13 @@ GVAR(fallControlHandle) = [{
         [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
     };
 
+    if (_height > GVAR(fallControlThreshold)) exitWith {
+        _handle call CBA_fnc_removePerFrameHandler;
+        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
+        deleteVehicle _soundSource;
+        _unit call FUNC(doJetpack);
+    };
+
     // derived variables
     private _direction = _velocity#0 atan2 _velocity#1;
     private _verticalSpeed = _velocity#2;
