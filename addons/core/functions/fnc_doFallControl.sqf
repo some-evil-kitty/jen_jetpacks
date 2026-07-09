@@ -80,8 +80,6 @@ GVAR(fallControlHandle) = [{
     // return control if above the control threshold
     if (_height > GVAR(fallControlThreshold)) exitWith {
         _handle call CBA_fnc_removePerFrameHandler;
-        private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
-        deleteVehicle _soundSource;
         _unit call FUNC(doJetpack);
     };
 

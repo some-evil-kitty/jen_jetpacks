@@ -28,7 +28,7 @@ private _handle = [
 	};
 	if (_unit getVariable [QGVAR(isJetpacking),false]) exitWith {};
 	private _heat = _pack getVariable [QGVAR(overheat),0];
-	if (_heat < (knd_jetpack_maxheat * 0.7)) then { _pack setVariable [QGVAR(cooldown),false]};
+	if (_heat < (GVAR(maxHeat) * 0.7)) then { _pack setVariable [QGVAR(cooldown),false]};
 	if (_heat > 0) exitWith {_heat = _heat - (diag_deltaTime * _coolCoef);
 	_pack setVariable [QGVAR(overheat),_heat];
 	};
