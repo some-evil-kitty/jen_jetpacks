@@ -77,6 +77,7 @@ GVAR(fallControlHandle) = [{
         [QGVAR(particleEvent), [_unit,false]] call CBA_fnc_globalEvent;
     };
 
+    // return control if above the control threshold
     if (_height > GVAR(fallControlThreshold)) exitWith {
         _handle call CBA_fnc_removePerFrameHandler;
         private _soundSource = _unit getVariable [QGVAR(soundSource),objNull];
