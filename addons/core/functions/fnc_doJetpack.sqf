@@ -269,7 +269,7 @@ _vel = [
 
 if (_moveRight) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
-_fuel = _fuel - diag_deltaTime;
+_fuel = _fuel - (_fuelCoef * diag_deltaTime);
 _speed = diag_deltaTime * 5 * _acceleration * _strafeCoef;
 _vel =  [
 	(_vel select 0) + (sin (_dir + 90) * _speed),
@@ -279,7 +279,7 @@ _vel =  [
 
 if (_moveLeft) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
-_fuel = _fuel - diag_deltaTime;
+_fuel = _fuel - (_fuelCoef * diag_deltaTime);
 _speed = diag_deltaTime * 5 * _acceleration * _strafeCoef;
 _vel =  [
 	(_vel select 0) + (sin (_dir - 90) * _speed),
@@ -289,7 +289,7 @@ _vel =  [
 
 if (_moveBackward) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
-_fuel = _fuel - diag_deltaTime;
+_fuel = _fuel - (_fuelCoef * diag_deltaTime);
 _speed = diag_deltaTime * -5 * _acceleration;
 _vel =  [
 	(_vel select 0) + (sin (_dir) * _speed),
@@ -299,7 +299,7 @@ _vel =  [
 
 if (_moveUp) then {
 _heat = _heat + (_heatCoef * diag_deltaTime);
-_fuel = _fuel - diag_deltaTime;
+_fuel = _fuel - (_fuelCoef * diag_deltaTime);
 _vel =  [
 	(_vel select 0) ,
 	(_vel select 1) ,
