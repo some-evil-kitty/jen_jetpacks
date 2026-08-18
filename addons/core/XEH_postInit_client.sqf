@@ -101,9 +101,6 @@ if (isNull _vehicle) exitWith {};
 }] call CBA_fnc_addClassEventHandler;
 
 
-//todo: add isNil logic
-bocr_main_varblacklist = bocr_main_varblacklist + [QGVAR(tankSize),QGVAR(coolDown),QGVAR(coolingHandle)];
-
 
 [missionNamespace,"arsenalOpened", {	
 	jen_player setVariable [QGVAR(controls_ascend),false]
