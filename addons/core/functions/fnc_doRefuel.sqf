@@ -39,9 +39,18 @@ if !(isNil {ace_common}) then {
 			[_unit, "AmovPknlMstpSnonWnonDnon", 2] call ace_common_fnc_doAnimation
 		}, 
 		{
-			[_unit, "AmovPknlMstpSnonWnonDnon", 2] call ace_common_fnc_doAnimation
+			[_unit, "AmovPknlMstpSnonWnonDnon", 2] call ace_common_fnc_doAnimation;
+			["Too far away to refuel.", true, 5, 2] call ace_common_fnc_displayText
 		}
-		, "Refueling Jetpack..."
+		, "Refueling Jetpack...",
+		{
+			_this select 0 params ["_unit", "_item", "_jetpack", "_fuelAmount", "_magazineData"];
+			if (_unit != jen_player) then {
+				(_unit distance jen_player) < 4 } 
+			else {
+			true
+			}
+		}
 	] ] call CBA_fnc_execNextFrame;
 
 } else {
